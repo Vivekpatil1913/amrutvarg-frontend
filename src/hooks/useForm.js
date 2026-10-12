@@ -14,6 +14,16 @@ export function useForm(initial, validate, t) {
 
   const setValue = useCallback((key, value) => setValues((v) => ({ ...v, [key]: value })), []);
   const touch = useCallback((key) => setTouched((s) => ({ ...s, [key]: true })), []);
+  // Blur handler that validates a field when the user moves on — but not when
+  // focus is leaving towards a dismiss control (Cancel / close), so cancelling
+  // never flashes "required" errors.
+  const blur = useCallback(
+    (key) => (e) => {
+      if (e?.relatedTarget?.closest?.('[data-dismiss]')) return;
+      touch(key);
+    },
+    [touch],
+  );
   const errorFor = (key) => (attempted || touched[key] ? errors[key] : undefined);
 
   const reset = useCallback(() => {
@@ -44,5 +54,5 @@ export function useForm(initial, validate, t) {
     }
   };
 
-  return { values, setValue, touch, errorFor, errors, status, formError, reset, run, setValues };
+  return { values, setValue, touch, blur, errorFor, errors, status, formError, reset, run, setValues };
 }

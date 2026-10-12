@@ -5,18 +5,18 @@ import CountUp from '../CountUp';
 import DivisionWheel, { toneColor } from '../DivisionWheel';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { VARGS_SNAPSHOT_DATE } from '../../data/vargs';
+import { VARG_NAMES_EN, vargPlaceName } from '../../data/vargNamesEn';
 import { translations } from '../../i18n/translations';
 
 const PAGE = 8;
 const LONG_TEXT = 90;
-const blank = (v) => !v || !v.trim() || v.trim() === '-';
 
 function Pass({ varg, tone, index, onEnroll }) {
-  const { t, district, division } = useLanguage();
+  const { t, lang, district, division } = useLanguage();
   const v = t.vargs;
   const [expanded, setExpanded] = useState(false);
   const textId = useId();
-  const place = blank(varg.vargName) ? (blank(varg.schoolName) ? '' : varg.schoolName.trim()) : varg.vargName.trim();
+  const place = vargPlaceName(varg, lang);
   const long = place.length > LONG_TEXT;
 
   return (
@@ -115,6 +115,7 @@ export default function Vargs({ vargs, onEnroll }) {
           [
             x.vargName,
             x.schoolName,
+            VARG_NAMES_EN[x.id],
             x.district,
             x.taluka,
             x.vibhag,

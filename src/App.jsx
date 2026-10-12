@@ -5,11 +5,13 @@ import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import AdminLogin from './pages/AdminLogin';
 import NotFound from './pages/NotFound';
+import SceneBackdrop from './components/SceneBackdrop';
 
 function Shell() {
   const { switching, lang } = useLanguage();
   return (
     <div className={`app lang-${lang}${switching ? ' is-switching' : ''}`}>
+      <SceneBackdrop />
       <Header />
       <main id="main" tabIndex={-1}>
         <Routes>

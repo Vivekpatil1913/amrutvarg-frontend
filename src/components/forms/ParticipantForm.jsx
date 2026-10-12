@@ -11,6 +11,7 @@ import {
   focusFirstInvalid,
 } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { vargPlaceName } from '../../data/vargNamesEn';
 import { useForm } from '../../hooks/useForm';
 import { isDate, isEmail, isMobile, isPastDate, isPin } from '../../services/validation';
 import { submitParticipant } from '../../services/submissions';
@@ -125,12 +126,12 @@ const toPayload = (v, vargId) => {
 };
 
 export default function ParticipantForm({ varg, onClose }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const s = t.student;
   const formRef = useRef(null);
   const form = useForm(INITIAL, validate, t);
   const { values: v, setValue, setValues } = form;
-  const placeName = varg ? varg.vargName || varg.schoolName : '';
+  const placeName = vargPlaceName(varg, lang);
   const school = v.course === 'SCHOOL_STUDENT';
 
   const close = () => {
@@ -151,7 +152,7 @@ export default function ParticipantForm({ varg, onClose }) {
       id,
       value: v[key],
       onChange: (e) => setValue(key, e.target.value),
-      onBlur: () => form.touch(key),
+      onBlur: form.blur(key),
       ...describe(id, error, hint),
     };
   };
@@ -182,7 +183,7 @@ export default function ParticipantForm({ varg, onClose }) {
   const declError = form.errorFor('declarationAccepted');
 
   return (
-    <Modal open={!!varg} onClose={close} title={s.title} subtitle={done ? placeName : t.common.requiredNote} size="lg">
+    <Modal open={!!varg} onClose={close} icon="graduation" title={s.title} subtitle={done ? placeName : t.common.requiredNote} size="lg">
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
       {form.status === 'sent' ? (
         <SuccessResult title={s.successTitle} desc={s.successDesc(placeName)} onClose={close} />

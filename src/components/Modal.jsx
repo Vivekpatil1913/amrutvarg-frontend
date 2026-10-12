@@ -7,7 +7,7 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 // Accessible dialog: focus trap, Escape to close, scroll lock, focus restore.
-export default function Modal({ open, title, subtitle, onClose, children, size = 'md' }) {
+export default function Modal({ open, title, subtitle, icon, onClose, children, size = 'md' }) {
   const { t } = useLanguage();
   const panelRef = useRef(null);
   const titleId = useId();
@@ -54,7 +54,14 @@ export default function Modal({ open, title, subtitle, onClose, children, size =
   if (!open) return null;
 
   return createPortal(
-    <div className="modal" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className="modal"
+      onMouseDown={(e) => {
+        if (e.target !== e.currentTarget) return;
+        e.preventDefault(); // keep focus where it is, so closing never fires blur validation
+        onClose();
+      }}
+    >
       <div
         ref={panelRef}
         className={`modal__panel modal__panel--${size}`}
@@ -63,13 +70,25 @@ export default function Modal({ open, title, subtitle, onClose, children, size =
         aria-labelledby={titleId}
       >
         <header className="modal__head">
-          <div>
+          {icon ? (
+            <span className="modal__icon" aria-hidden="true">
+              <Icon name={icon} size={18} />
+            </span>
+          ) : null}
+          <div className="modal__heading">
             <h2 id={titleId} className="modal__title">
               {title}
             </h2>
             {subtitle ? <p className="modal__subtitle">{subtitle}</p> : null}
           </div>
-          <button type="button" className="icon-btn" onClick={onClose} aria-label={t.common.close}>
+          <button
+            type="button"
+            className="icon-btn modal__close"
+            data-dismiss
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={onClose}
+            aria-label={t.common.close}
+          >
             <Icon name="close" />
           </button>
         </header>

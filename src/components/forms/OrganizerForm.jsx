@@ -40,7 +40,7 @@ export default function OrganizerForm({ open, onClose }) {
   const done = form.status === 'preview' || form.status === 'sent';
 
   return (
-    <Modal open={open} onClose={close} title={o.title} subtitle={done ? null : t.common.requiredNote} size="sm">
+    <Modal open={open} onClose={close} icon="flag" title={o.title} subtitle={done ? null : t.common.requiredNote} size="sm">
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
       {form.status === 'sent' ? <SuccessResult title={o.successTitle} desc={o.successDesc} onClose={close} /> : null}
       {!done ? (
@@ -57,7 +57,7 @@ export default function OrganizerForm({ open, onClose }) {
                     className="input"
                     value={form.values[key]}
                     onChange={(e) => form.setValue(key, e.target.value)}
-                    onBlur={() => form.touch(key)}
+                    onBlur={form.blur(key)}
                     {...(mobile
                       ? { type: 'tel', inputMode: 'numeric', maxLength: 10, placeholder: o.mobilePlaceholder, autoComplete: 'tel-national' }
                       : { maxLength: 255 })}

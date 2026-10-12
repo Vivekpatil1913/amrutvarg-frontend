@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import Icon from '../Icon';
 import { useLanguage } from '../../i18n/LanguageContext';
 import photoA from '../../assets/varg-3.jpg';
@@ -32,15 +32,51 @@ export default function Activities({ onNavigate }) {
   const [paused, setPaused] = useState(false);
   const photo = active % PHOTOS.length;
 
-  // Auto-advance every 3 s. One timeout per step: it is cleared whenever the
-  // active item changes, rotation pauses, or the section unmounts, so only a
-  // single timer ever runs. Paused while the pointer or keyboard focus is
-  // inside the section, so it never moves under someone reading or choosing.
+  // Direction of travel, so the stage wipes forward or back.
+  const prevActive = useRef(0);
+  const dir = active >= prevActive.current ? 'fwd' : 'back';
+  useEffect(() => {
+    prevActive.current = active;
+  }, [active]);
+
+  // Auto-advance every 3 s. A single timeout at a time: cleared when the step
+  // changes, rotation pauses, or the section unmounts. Pausing keeps the time
+  // remaining, so the progress ring (a 3 s CSS animation paused with the same
+  // flag) and the timer always finish together. Paused while the pointer or
+  // keyboard focus is inside the section.
+  const remaining = useRef(ROTATE_MS);
+  useEffect(() => {
+    remaining.current = ROTATE_MS;
+  }, [active]);
   useEffect(() => {
     if (paused) return undefined;
-    const id = window.setTimeout(() => setActive((i) => (i + 1) % a.list.length), ROTATE_MS);
-    return () => window.clearTimeout(id);
+    const started = performance.now();
+    const id = window.setTimeout(() => setActive((i) => (i + 1) % a.list.length), remaining.current);
+    return () => {
+      window.clearTimeout(id);
+      remaining.current = Math.max(0, remaining.current - (performance.now() - started));
+    };
   }, [active, paused, a.list.length]);
+
+  // Timeline rail: measured centres of the step numbers.
+  const listRef = useRef(null);
+  const [rail, setRail] = useState(null);
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) return undefined;
+    const measure = () => {
+      const lr = list.getBoundingClientRect();
+      const centres = [...list.querySelectorAll('.act__item-num')].map((n) => {
+        const r = n.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - lr.left, y: r.top + r.height / 2 - lr.top };
+      });
+      if (centres.length) setRail(centres);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, [t]);
 
   const onKey = (e, i) => {
     const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
@@ -71,7 +107,7 @@ export default function Activities({ onNavigate }) {
         </header>
 
         <div
-          className="act"
+          className={`act${paused ? ' is-paused' : ''}`}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onFocus={() => setPaused(true)}
@@ -94,6 +130,7 @@ export default function Activities({ onNavigate }) {
                 alt={i === photo ? t.hero.photoAlts[p.alt] : ''}
                 aria-hidden={i === photo ? undefined : 'true'}
                 className={`act__photo${i === photo ? ' is-shown' : ''}`}
+                data-dir={dir}
                 width="1280"
                 height="577"
                 loading="lazy"
@@ -102,7 +139,7 @@ export default function Activities({ onNavigate }) {
             <div className="act__shade" aria-hidden="true" />
             <span className="act__caption">{a.photoCaption}</span>
 
-            <div key={active} className="act__info">
+            <div key={active} className="act__info" data-dir={dir}>
               <div className="act__top">
                 <span className="act__icon">
                   <Icon name={ICONS[active]} size={24} />
@@ -146,7 +183,23 @@ export default function Activities({ onNavigate }) {
           </div>
 
           {/* Activity list (tabs) */}
-          <div className="act__list" role="tablist" aria-orientation="vertical" aria-label={a.choose} data-reveal style={{ '--d': 1 }}>
+          <div ref={listRef} className="act__list" role="tablist" aria-orientation="vertical" aria-label={a.choose} data-reveal style={{ '--d': 1 }}>
+            {/* Timeline: one segment between each pair of step numbers; segments
+                before the active step are filled. Drawn between badges, never over them. */}
+            {rail
+              ? rail.slice(1).map((c, i) => {
+                  const from = rail[i];
+                  const gap = 19; // badge radius + breathing room
+                  return (
+                    <span
+                      key={`seg-${i}`}
+                      className={`act__seg${i < active ? ' is-filled' : ''}`}
+                      aria-hidden="true"
+                      style={{ left: from.x, top: from.y + gap, height: Math.max(0, c.y - from.y - gap * 2), '--i': i }}
+                    />
+                  );
+                })
+              : null}
             {a.list.map((item, i) => {
               const selected = i === active;
               return (
@@ -166,7 +219,16 @@ export default function Activities({ onNavigate }) {
                   onClick={() => setActive(i)}
                   onKeyDown={(e) => onKey(e, i)}
                 >
-                  <span className="act__item-num">{num(`0${i + 1}`)}</span>
+                  <span className={`act__item-num${i < active ? ' is-done' : ''}`}>
+                    {selected ? (
+                      // Remounts per step, so the 3 s fill restarts in sync with the timer.
+                      <svg key={`ring-${active}`} className="act__ring" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+                        <circle className="act__ring-track" cx="18" cy="18" r="16" />
+                        <circle className="act__ring-fill" cx="18" cy="18" r="16" pathLength="100" />
+                      </svg>
+                    ) : null}
+                    <span className="act__item-num-text">{num(`0${i + 1}`)}</span>
+                  </span>
                   <span className="act__item-icon">
                     <Icon name={ICONS[i]} size={20} />
                   </span>

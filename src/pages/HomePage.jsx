@@ -12,6 +12,7 @@ import OrganizerForm from '../components/forms/OrganizerForm';
 import LeaderForm from '../components/forms/LeaderForm';
 import { useSectionNav } from '../components/layout/Header';
 import { useReveal } from '../hooks/useReveal';
+import { useSceneTheme } from '../hooks/useSceneTheme';
 import { useLanguage } from '../i18n/LanguageContext';
 import { vargs } from '../data/vargs';
 
@@ -22,6 +23,7 @@ export default function HomePage() {
 
   const { lang } = useLanguage();
   useReveal([lang]);
+  useSceneTheme(['hero', 'about', 'activities', 'session', 'growth', 'join', 'vargs', 'contact']);
 
   // Honour deep links such as /#vargs on first load.
   useEffect(() => {

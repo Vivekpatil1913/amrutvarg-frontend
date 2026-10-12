@@ -120,7 +120,7 @@ export default function LeaderForm({ open, onClose }) {
       className: 'input',
       value: v[key],
       onChange: (e) => setValue(key, e.target.value),
-      onBlur: () => form.touch(key),
+      onBlur: form.blur(key),
       ...describe(id, error),
     };
   };
@@ -134,7 +134,7 @@ export default function LeaderForm({ open, onClose }) {
   const done = form.status === 'preview' || form.status === 'sent';
 
   return (
-    <Modal open={open} onClose={close} title={l.formTitle} subtitle={done ? null : t.common.requiredNote} size="lg">
+    <Modal open={open} onClose={close} icon="award" title={l.formTitle} subtitle={done ? null : t.common.requiredNote} size="lg">
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
       {form.status === 'sent' ? <SuccessResult title={l.successTitle} desc={l.successDesc} onClose={close} /> : null}
       {!done ? (

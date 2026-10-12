@@ -99,7 +99,8 @@ export function FormActions({ onCancel, busy, submitLabel }) {
   const { t } = useLanguage();
   return (
     <div className="form-actions">
-      <button type="button" className="btn btn--ghost" onClick={onCancel} disabled={busy}>
+      {/* data-dismiss + no focus steal on press: cancelling never triggers blur validation */}
+      <button type="button" className="btn btn--ghost" data-dismiss onMouseDown={(e) => e.preventDefault()} onClick={onCancel} disabled={busy}>
         {t.common.cancel}
       </button>
       <button type="submit" className="btn btn--primary" disabled={busy} aria-busy={busy || undefined}>

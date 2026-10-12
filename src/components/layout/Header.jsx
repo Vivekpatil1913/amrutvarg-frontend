@@ -50,6 +50,7 @@ export default function Header() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const progressRef = useRef(null);
   const [active, setActive] = useState('hero');
   const [scale, setScale] = useState(readScale);
 
@@ -63,10 +64,24 @@ export default function Header() {
   }, [scale]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 24);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressRef.current?.style.setProperty('--progress', max > 0 ? String(window.scrollY / max) : '0');
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   // Sliding pill behind the active link, measured so it fits either language.
@@ -226,6 +241,7 @@ export default function Header() {
           </div>
         </div>
 
+        <span ref={progressRef} className="site-header__progress" aria-hidden="true" />
         <div id="mobile-menu" className="mobile-menu" hidden={!open}>
           <nav className="container" aria-label={t.a11y.mainNav}>
             <ul className="mobile-menu__list">

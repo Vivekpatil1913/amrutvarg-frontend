@@ -11,8 +11,6 @@ const INTENTS = [
   { key: 'official', icon: 'building' },
 ];
 
-// 9112227668 → "91122 27668" for reading; the tel: link keeps the raw digits.
-const groupDigits = (n) => n.replace(/^(\d{5})(\d{5})$/, '$1 $2');
 
 async function copyText(text) {
   try {
@@ -183,7 +181,7 @@ export default function Contact({ onOrganizer, onFindVarg }) {
 
         <div className="help__grid">
           {/* Direct line to the state coordinator: compact contact bar */}
-          <article className={`line${copied ? ' is-copied' : ''}`} data-reveal>
+          <article className="line" data-reveal>
             <span className="line__icon" aria-hidden="true">
               <Icon name="phone" size={18} />
             </span>
@@ -196,16 +194,6 @@ export default function Contact({ onOrganizer, onFindVarg }) {
               <h3 className="line__title">{c.cardTitle}</h3>
               <p className="line__desc">{c.cardDesc}</p>
             </div>
-
-            <a className="line__number" href={`tel:${STATE_COORDINATOR_PHONE}`} aria-label={`${c.call} ${groupDigits(STATE_COORDINATOR_PHONE)}`}>
-              <span aria-hidden="true">
-                {[...groupDigits(STATE_COORDINATOR_PHONE)].map((d, i) => (
-                  <span key={`d-${i}`} className={d === ' ' ? 'line__space' : 'line__digit'} style={{ '--i': i }}>
-                    {d === ' ' ? '' : d}
-                  </span>
-                ))}
-              </span>
-            </a>
 
             <div className="line__actions">
               <a className="line__btn line__btn--solid" href={`tel:${STATE_COORDINATOR_PHONE}`}>
