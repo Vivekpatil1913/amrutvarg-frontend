@@ -13,7 +13,7 @@ export default function Session() {
       <div className="container">
         <div className="session__top">
           <header data-reveal>
-            <p className="eyebrow eyebrow--light">
+            <p className="eyebrow">
               <span className="eyebrow__dot" aria-hidden="true" />
               {s.badge}
             </p>

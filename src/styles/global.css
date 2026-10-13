@@ -241,9 +241,6 @@ main:focus {
   border-radius: 50%;
   background: currentColor;
 }
-.eyebrow--light {
-  color: hsl(30 80% 78%);
-}
 
 .section {
   position: relative;
@@ -1733,11 +1730,30 @@ select.input {
   color: var(--ink);
   text-wrap: balance;
 }
-.curr__desc {
-  margin-top: var(--s-2);
-  font-size: 0.96rem;
-  line-height: 1.55;
-  color: var(--ink-2);
+/* What each activity builds, as small tags under the title */
+.curr__gains-label {
+  margin-top: var(--s-3);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.curr__gains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.curr__gains li {
+  padding: 3px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--brand-line);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 .curr__foot {
   display: flex;
@@ -1754,23 +1770,31 @@ select.input {
   isolation: isolate;
   margin-inline: clamp(8px, 1.6vw, 24px);
   border-radius: clamp(20px, 3vw, 36px);
-  background: var(--night);
-  color: var(--night-ink);
-  box-shadow: 0 40px 80px -40px hsl(20 40% 10% / 0.65), inset 0 0 0 1px hsl(30 20% 90% / 0.06);
+  /* Rich saffron (केशरी) to maroon, from the brand palette — neither white nor black */
+  background: linear-gradient(150deg, hsl(28 84% 52%) 0%, hsl(20 76% 46%) 55%, hsl(12 66% 40%) 100%);
+  color: var(--ink);
+  border: 0;
+  box-shadow: var(--shadow-lg);
 }
 .session__texture {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(55% 50% at 90% 0%, hsl(22 72% 52% / 0.22), transparent 70%),
-    radial-gradient(40% 40% at 0% 100%, hsl(22 72% 52% / 0.12), transparent 70%);
+  background: radial-gradient(55% 50% at 90% 0%, hsl(40 100% 75% / 0.22), transparent 70%),
+    radial-gradient(40% 40% at 0% 100%, hsl(0 0% 100% / 0.08), transparent 70%);
 }
-.session .section__title,
-.session h3 {
+/* Light heading text on the saffron band; the cards below keep dark text */
+.session .eyebrow {
+  color: hsl(40 95% 85%);
+}
+.session .section__title {
   color: #fff;
 }
 .session .section__lead {
-  color: var(--night-muted);
+  color: hsl(30 70% 92% / 0.92);
+}
+.session h3 {
+  color: var(--ink);
 }
 .session__top {
   position: relative;
@@ -1788,8 +1812,8 @@ select.input {
 .hour {
   padding: var(--s-4) var(--s-5);
   border-radius: var(--radius-lg);
-  background: hsl(30 20% 90% / 0.05);
-  border: 1px solid hsl(30 20% 90% / 0.1);
+  background: var(--bg);
+  border: 1px solid var(--line);
 }
 .hour__label {
   display: flex;
@@ -1798,7 +1822,7 @@ select.input {
   margin-bottom: var(--s-3);
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--night-muted);
+  color: var(--muted);
 }
 .hour__bar {
   display: flex;
@@ -1811,7 +1835,8 @@ select.input {
   place-items: center;
   height: 30px;
   border-radius: 7px;
-  background: hsl(22 72% 52% / calc(0.4 + var(--d) * 0.14));
+  /* Solid shades, deep to bright, so the white numbers stay readable on a light panel */
+  background: hsl(22 72% calc(34% + var(--d) * 4%));
   color: #fff;
   font-family: var(--font-display);
   font-weight: 700;
@@ -1839,14 +1864,15 @@ select.input {
   width: 10px;
   height: 10px;
   border-radius: 3px;
-  background: hsl(22 72% 52% / calc(0.4 + var(--d) * 0.14));
+  /* Solid shades, deep to bright, so the white numbers stay readable on a light panel */
+  background: hsl(22 72% calc(34% + var(--d) * 4%));
 }
 .hour__name {
-  color: var(--night-ink);
+  color: var(--ink);
 }
 .hour__min {
   margin-left: auto;
-  color: var(--night-muted);
+  color: var(--muted);
   white-space: nowrap;
 }
 
@@ -1869,14 +1895,15 @@ select.input {
   position: relative;
   padding: var(--s-4) var(--s-5) var(--s-5);
   border-radius: var(--radius);
-  background: var(--night-2);
-  border: 1px solid hsl(30 20% 90% / 0.09);
-  transition: transform 0.4s var(--ease), border-color 0.3s, background-color 0.3s;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  transition: transform 0.4s var(--ease), border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 .step:hover {
   transform: translateY(-3px);
-  border-color: hsl(22 72% 52% / 0.5);
-  background: hsl(20 10% 14%);
+  border-color: var(--brand-line);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 .step__head {
   display: flex;
@@ -1892,14 +1919,15 @@ select.input {
   height: 36px;
   border-radius: 50%;
   border: 1.5px solid hsl(22 72% 52% / 0.6);
-  color: #fff;
+  color: var(--brand-ink);
   font-family: var(--font-display);
   font-weight: 700;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 .step:hover .step__num {
   background: var(--brand-ink);
-  border-color: var(--brand-bright);
+  border-color: var(--brand-ink);
+  color: #fff;
 }
 .step__head::after {
   content: '';
@@ -1915,8 +1943,8 @@ select.input {
   gap: 5px;
   padding: 1px 9px;
   border-radius: 999px;
-  background: hsl(22 72% 52% / 0.18);
-  color: hsl(30 85% 80%);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
@@ -1928,7 +1956,7 @@ select.input {
 .step__desc {
   font-size: 0.92rem;
   line-height: 1.55;
-  color: var(--night-muted);
+  color: var(--muted);
 }
 
 
@@ -2258,11 +2286,7 @@ select.input {
   font-size: 0.84rem;
   color: var(--ink-2);
 }
-.path--leader {
-  background: var(--ink);
-  border-color: transparent;
-  color: var(--night-ink);
-}
+/* Same white card as the others; the faint ring and the filled icon set it apart. */
 .path--leader::before {
   content: '';
   position: absolute;
@@ -2275,18 +2299,9 @@ select.input {
   border: 1.5px dashed hsl(22 72% 52% / 0.5);
   box-shadow: 0 0 0 46px hsl(22 72% 52% / 0.06), 0 0 0 92px hsl(22 72% 52% / 0.04);
 }
-.path--leader .path__title {
-  color: #fff;
-}
-.path--leader .path__desc {
-  color: var(--night-muted);
-}
 .path--leader .path__icon {
   background: var(--brand-ink);
   color: #fff;
-}
-.path--leader .path__step {
-  -webkit-text-stroke-color: hsl(30 20% 90% / 0.25);
 }
 .path__note {
   display: flex;
@@ -2311,7 +2326,7 @@ select.input {
   margin-top: 3px;
 }
 .path__note a {
-  color: hsl(30 90% 80%);
+  color: var(--brand-ink);
   font-weight: 600;
 }
 
@@ -5363,7 +5378,7 @@ a.desk__link:hover .desk__link-arrow {
   --scene-gx: 92%;
   --scene-gy: 62%;
 }
-/* session: dusk behind the dark panel */
+/* session: dusk behind the session panel */
 :root[data-scene='session'] {
   --scene-a: hsl(26 45% 92%);
   --scene-b: hsl(18 42% 88%);

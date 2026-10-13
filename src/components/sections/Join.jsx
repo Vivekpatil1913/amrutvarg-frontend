@@ -73,7 +73,7 @@ export default function Join({ onFindVarg, onOrganizer, onLeader }) {
                 </p>
               ) : null}
               {p.key === 'leader' ? (
-                <p className="path__note">
+                <p className="path__note path__note--light">
                   <Icon name="info" size={15} />
                   <span>
                     {t.leader.listEmpty}{' '}
@@ -86,7 +86,7 @@ export default function Join({ onFindVarg, onOrganizer, onLeader }) {
               ) : null}
               <button
                 type="button"
-                className={`btn ${p.key === 'leader' ? 'btn--light' : 'btn--primary'} path__action`}
+                className="btn btn--primary path__action"
                 onClick={actions[p.key]}
               >
                 <Icon name={labels[p.key].icon} size={18} />

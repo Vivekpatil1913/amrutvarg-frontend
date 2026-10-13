@@ -132,34 +132,35 @@ const mr = {
       {
         key: 'yoga',
         title: 'योग, प्राणायाम, सूर्यनमस्कार व शारीरिक व्यायाम',
-        desc: 'हलका व्यायाम आणि सूर्यनमस्कार यांसोबत योगासने, प्राणायाम व ताणाचे व्यायाम — शरीर निरोगी व सक्रिय ठेवण्यासाठी.',
+        gains: ['निरोगी शरीर', 'सक्रियता'],
       },
       {
         key: 'shlok',
         title: 'प्रार्थना',
-        desc: 'प्रार्थनेमुळे सकारात्मक मूल्ये, शिस्त आणि एकतेची भावना विकसित होण्यास मदत होते.',
+        gains: ['सकारात्मक मूल्ये', 'शिस्त', 'एकता'],
       },
       {
         key: 'indoor',
         title: 'बौद्धिक उपक्रम व बैठे खेळ',
-        desc: '"चार व सात", "आकाश–धरती–पाताळ" यांसारखे बैठे खेळ, कोडी आणि स्मरणशक्तीचे खेळ — एकाग्रता व समस्या सोडवण्याची क्षमता वाढते.',
+        gains: ['एकाग्रता', 'समस्या सोडवण्याची क्षमता'],
       },
       {
         key: 'outdoor',
         title: 'मैदानी खेळ',
-        desc: 'मैदानावरील सांघिक खेळांतून संघभावना, चपळता, रणनीती, निर्णयक्षमता, समन्वय आणि खिलाडूवृत्ती विकसित होते.',
+        gains: ['संघभावना', 'चपळता', 'निर्णयक्षमता', 'खिलाडूवृत्ती'],
       },
       {
         key: 'songs',
         title: 'समूहगीत व संगीत',
-        desc: 'प्रेरणादायी व देशभक्तीपर गीते तालासुरात एकत्र गाताना एकजूट आणि आनंदी सहभाग वाढतो.',
+        gains: ['एकजूट', 'आनंदी सहभाग'],
       },
       {
         key: 'stories',
         title: 'प्रेरणादायी कथा व व्यक्तिमत्त्व विकास',
-        desc: 'प्रेरणादायी कथा आणि राष्ट्रीय घोषणांमधून संस्कार दृढ होतात; आत्मविश्वास, सांघिक भावना, नेतृत्व, संवाद कौशल्य आणि जबाबदारीची जाणीव विकसित होते.',
+        gains: ['आत्मविश्वास', 'नेतृत्व', 'संवाद कौशल्य', 'जबाबदारी'],
       },
     ],
+    gainsLabel: 'यातून विकसित होते',
     viewSession: 'संपूर्ण दैनिक सत्र पहा',
     stepLabel: (n) => `पायरी ${n}`,
   },
@@ -172,7 +173,7 @@ const mr = {
     steps: [
       { num: '१', title: 'प्रार्थना', desc: 'प्रार्थनेमुळे सकारात्मक मूल्ये, शिस्त आणि एकतेची भावना विकसित होण्यास मदत होते.', min: 0 },
       { num: '२', title: 'शरीर शिथिलीकरण', desc: 'हलका व्यायाम आणि सूर्यनमस्कार यांचा समावेश असतो.', min: 5 },
-      { num: '३', title: 'बैठे खेळ', desc: '"चार व सात", "आकाश–धरती–पाताळ" यांसारखे खेळ. एकाग्रता वाढते.', min: 10 },
+      { num: '३', title: 'बैठे खेळ', desc: 'जागेवर बसून खेळले जाणारे खेळ — लक्ष, स्मरणशक्ती आणि त्वरित प्रतिसाद वाढतो.', min: 10 },
       { num: '४', title: 'आज्ञा अभ्यास', min: 10 },
       { num: '५', title: 'मैदानी खेळ', desc: 'संघभावना, चपळता, रणनीती आणि निर्णयक्षमता विकसित होते.', min: 20 },
       { num: '६', title: 'व्यक्तिमत्त्व विकास', desc: 'गीत, प्रेरणादायी कथा आणि राष्ट्रीय घोषणा.', min: 15 },
@@ -180,7 +181,7 @@ const mr = {
     ],
   },
   growth: {
-    badge: 'विकास',
+    badge: 'परिपूर्ण व्यक्तिमत्व विकास',
     title: 'विद्यार्थ्यांमधील विकास',
     lead: 'अमृत वर्ग या गुणांच्या जडणघडणीवर लक्ष केंद्रित करतो.',
     list: [
@@ -667,34 +668,35 @@ const en = {
       {
         key: 'yoga',
         title: 'Yoga, Pranayama, Surya Namaskar & Physical Exercises',
-        desc: 'Light exercises and Surya Namaskar, along with yoga postures, pranayama breathing and stretching, keep the body healthy and active.',
+        gains: ['Good health', 'Staying active'],
       },
       {
         key: 'shlok',
         title: 'Prayers',
-        desc: 'Prayers help develop positive values, discipline, and a sense of unity.',
+        gains: ['Positive values', 'Discipline', 'Unity'],
       },
       {
         key: 'indoor',
         title: 'Intellectual Activities & Indoor Games',
-        desc: 'Seated games such as "Char va Saat" and "Aakash-Dharati-Patal", along with puzzles and memory games, sharpen concentration and problem-solving.',
+        gains: ['Concentration', 'Problem-solving'],
       },
       {
         key: 'outdoor',
         title: 'Outdoor Games',
-        desc: 'Team games on the field develop teamwork, agility, strategy, decision-making, coordination and sportsmanship.',
+        gains: ['Teamwork', 'Agility', 'Decision-making', 'Sportsmanship'],
       },
       {
         key: 'songs',
         title: 'Group Songs & Music',
-        desc: 'Singing inspirational and patriotic songs together, in rhythm, builds unity and joyful participation.',
+        gains: ['Unity', 'Joyful participation'],
       },
       {
         key: 'stories',
         title: 'Inspirational Stories & Personality Development',
-        desc: 'Inspiring stories and national slogans strengthen values and nurture self-confidence, team spirit, leadership, communication and responsibility.',
+        gains: ['Self-confidence', 'Leadership', 'Communication', 'Responsibility'],
       },
     ],
+    gainsLabel: 'What it builds',
     viewSession: 'View the full daily session',
     stepLabel: (n) => `Step ${n}`,
   },
@@ -707,7 +709,7 @@ const en = {
     steps: [
       { num: '1', title: 'Prayer', desc: 'Prayers help develop positive values, discipline, and a sense of unity.', min: 0 },
       { num: '2', title: 'Relaxation', desc: 'Light exercises and sun salutations help keep the body healthy and active.', min: 5 },
-      { num: '3', title: 'Seated Games', desc: 'Games like "Char va Saat" and "Aakash-Dharati-Patal" improve concentration.', min: 10 },
+      { num: '3', title: 'Seated Games', desc: 'Games played while seated that sharpen attention, memory and quick responses.', min: 10 },
       { num: '4', title: 'Command Practice', min: 10 },
       { num: '5', title: 'Field Games', desc: 'Teamwork, agility, strategy, and decision-making are developed.', min: 20 },
       { num: '6', title: 'Personality Development', desc: 'Songs, inspiring stories, and national slogans strengthen values.', min: 15 },
@@ -715,7 +717,7 @@ const en = {
     ],
   },
   growth: {
-    badge: 'Growth',
+    badge: 'Holistic Personality Development',
     title: 'Student Growth',
     lead: 'Amrut Varg focuses on nurturing these qualities.',
     list: [

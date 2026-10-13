@@ -43,7 +43,12 @@ export default function Activities({ onNavigate }) {
                 </span>
               </div>
               <h3 className="curr__title">{item.title}</h3>
-              <p className="curr__desc">{item.desc}</p>
+              <p className="curr__gains-label">{a.gainsLabel}</p>
+              <ul className="curr__gains">
+                {item.gains.map((g) => (
+                  <li key={g}>{g}</li>
+                ))}
+              </ul>
             </li>
           ))}
         </ol>
