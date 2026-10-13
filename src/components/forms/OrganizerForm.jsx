@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Modal from '../Modal';
-import { Field, describe, FormActions, FormError, PreviewResult, SuccessResult, focusFirstInvalid } from '../FormControls';
+import { DistrictOptions, Field, describe, FormActions, FormError, PreviewResult, SuccessResult, focusFirstInvalid } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useForm } from '../../hooks/useForm';
 import { isMobile } from '../../services/validation';
@@ -50,19 +50,28 @@ export default function OrganizerForm({ open, onClose }) {
               const id = `org-${key}`;
               const error = form.errorFor(key);
               const mobile = key === 'mobile';
+              const control = {
+                id,
+                className: 'input',
+                value: form.values[key],
+                onChange: (e) => form.setValue(key, e.target.value),
+                onBlur: form.blur(key),
+                ...describe(id, error),
+              };
               return (
                 <Field key={key} id={id} label={o[key]} required error={error}>
+                  {key === 'district' ? (
+                    <select {...control}>
+                      <DistrictOptions />
+                    </select>
+                  ) : (
                   <input
-                    id={id}
-                    className="input"
-                    value={form.values[key]}
-                    onChange={(e) => form.setValue(key, e.target.value)}
-                    onBlur={form.blur(key)}
+                    {...control}
                     {...(mobile
                       ? { type: 'tel', inputMode: 'numeric', maxLength: 10, placeholder: o.mobilePlaceholder, autoComplete: 'tel-national' }
                       : { maxLength: 255 })}
-                    {...describe(id, error)}
                   />
+                  )}
                 </Field>
               );
             })}

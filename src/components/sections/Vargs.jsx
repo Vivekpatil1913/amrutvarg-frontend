@@ -1,11 +1,13 @@
 import { useId, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '../Icon';
 import Mandala from '../Mandala';
 import CountUp from '../CountUp';
 import DivisionWheel, { toneColor } from '../DivisionWheel';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { VARGS_SNAPSHOT_DATE } from '../../data/vargs';
+import { useVargsSourceNote } from '../../data/VargsProvider';
 import { VARG_NAMES_EN, vargPlaceName } from '../../data/vargNamesEn';
+import { vargPath } from '../../data/vargLinks';
 import { translations } from '../../i18n/translations';
 
 const PAGE = 8;
@@ -27,14 +29,21 @@ function Pass({ varg, tone, index, onEnroll }) {
             <Icon name="mapPin" size={18} />
           </span>
           <div>
-            <h3 className="pass__district">{district(varg.district)}</h3>
+            <h3 className="pass__district">
+              {/* Stretched over the whole card: clicking anywhere opens this varg's details. */}
+              <Link
+                to={vargPath(varg)}
+                state={{ fromList: true }}
+                preventScrollReset
+                className="pass__open"
+                aria-label={v.detailsFor(place ? `${district(varg.district)}: ${place}` : district(varg.district))}
+              >
+                {district(varg.district)}
+              </Link>
+            </h3>
             <p className="pass__division">{division(varg.vibhag) ? v.division(division(varg.vibhag)) : '—'}</p>
           </div>
         </div>
-        <span className="pass__stamp">
-          <Icon name="checkCircle" size={14} />
-          {v.statusApproved}
-        </span>
       </div>
 
       <div className="pass__body">
@@ -77,8 +86,9 @@ function Pass({ varg, tone, index, onEnroll }) {
 }
 
 export default function Vargs({ vargs, onEnroll }) {
-  const { t, num, lang, district, division, formatDate } = useLanguage();
+  const { t, num, lang, district, division } = useLanguage();
   const v = t.vargs;
+  const sourceNote = useVargsSourceNote();
   const [query, setQuery] = useState('');
   const [div, setDiv] = useState('');
   const [dist, setDist] = useState('');
@@ -301,9 +311,9 @@ export default function Vargs({ vargs, onEnroll }) {
                 </div>
               ) : null}
 
-              <p className="results__source">
+              <p className="results__source" role="status">
                 <Icon name="info" size={15} />
-                {v.source(formatDate(VARGS_SNAPSHOT_DATE))}
+                {sourceNote}
               </p>
             </div>
           </div>

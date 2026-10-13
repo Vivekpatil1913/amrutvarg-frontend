@@ -13,7 +13,6 @@ export default function Footer() {
   const official = [
     { href: OFFICIAL_LINKS.portal, label: t.resources.items[0].title },
     { href: OFFICIAL_LINKS.amrut, label: t.resources.items[1].title },
-    { href: OFFICIAL_LINKS.coordinators, label: t.resources.items[2].title },
   ];
 
   return (
@@ -36,17 +35,21 @@ export default function Footer() {
         <nav className="footer__col" aria-label={t.footer.explore}>
           <h2 className="footer__heading">{t.footer.explore}</h2>
           <ul className="footer__links">
-            {NAV_ITEMS.map(({ id, key }) => (
+            {NAV_ITEMS.map(({ id, key, to }) => (
               <li key={id}>
-                <a
-                  href={`#${id}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    goTo(id);
-                  }}
-                >
-                  {t.nav[key]}
-                </a>
+                {to ? (
+                  <Link to={to}>{t.nav[key]}</Link>
+                ) : (
+                  <a
+                    href={`#${id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      goTo(id);
+                    }}
+                  >
+                    {t.nav[key]}
+                  </a>
+                )}
               </li>
             ))}
             <li>

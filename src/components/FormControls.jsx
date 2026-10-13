@@ -1,6 +1,23 @@
 import Icon from './Icon';
 import { useLanguage } from '../i18n/LanguageContext';
 import { OFFICIAL_LINKS } from '../i18n/translations';
+import { sortDistricts } from '../data/districts';
+
+// Options for a district <select>: all 36 districts, valued by Marathi name
+// (as the AMRUT VARG service stores them) and labelled in the current language.
+export function DistrictOptions() {
+  const { t, lang, district } = useLanguage();
+  return (
+    <>
+      <option value="">{t.common.select}</option>
+      {sortDistricts(district, lang).map((n) => (
+        <option key={n} value={n}>
+          {district(n)}
+        </option>
+      ))}
+    </>
+  );
+}
 
 // Field wrapper: label, optional hint, inline error wired via aria-describedby.
 export function Field({ id, label, required, error, hint, children, wide }) {

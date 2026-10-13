@@ -1,0 +1,1605 @@
+// Yashogatha (success stories). These are ILLUSTRATIVE SAMPLE stories, shown
+// with a disclaimer until verified stories from Amrut Varg students are
+// supplied — they name no student, school, place, award or figure.
+//
+// To add a story: append an object with a unique `slug` (used in the URL
+// /yashogatha/:slug), a `category` key from STORY_CATEGORIES, and the same
+// fields under `en` and `mr`. `image` is optional ('varg1' | 'varg2' |
+// 'varg3'); stories without one get an illustrated cover in their theme colour.
+
+// Icon and cover hue per theme; the labels live in translations (yashogatha.categories).
+export const STORY_CATEGORIES = {
+  personality: { icon: 'sparkle', hue: 22 },
+  confidence: { icon: 'sun', hue: 38 },
+  communication: { icon: 'chat', hue: 186 },
+  leadership: { icon: 'flag', hue: 8 },
+  creativity: { icon: 'bulb', hue: 328 },
+  discipline: { icon: 'clock', hue: 212 },
+  learning: { icon: 'graduation', hue: 146 },
+  social: { icon: 'globe', hue: 168 },
+  community: { icon: 'heart', hue: 350 },
+  challenges: { icon: 'arrowUp', hue: 28 },
+  habits: { icon: 'leaf', hue: 96 },
+  group: { icon: 'users', hue: 258 },
+};
+
+// Shown on the home page, in this order.
+export const FEATURED_SLUGS = ['discovering-my-own-voice', 'first-step-into-the-circle', 'leading-the-surya-namaskar'];
+
+export const stories = [
+  {
+    slug: "discovering-my-own-voice",
+    category: "personality",
+    image: "varg1",
+    en: {
+      title: "Finding a Voice of One's Own",
+      short: "A quiet student slowly learns to share opinions, beginning with small thoughts after story time in Amrut Varg.",
+      intro: "This sample story imagines a student who rarely spoke in class, even when he had something to say. It shows how the gentle rhythm of Amrut Varg could help such a child begin to express his thoughts.",
+      challenge: "The student often had ideas but kept them hidden, worried that others might laugh or disagree. In group work, he simply nodded along with whatever the louder voices decided.",
+      journey: [
+        "In the Personality Development session, the Varg leader would tell an inspiring story and then invite everyone to say what they felt about it. For the first few days the student only listened, but the leader never forced anyone and kept the circle friendly.",
+        "One day the leader asked a simple question about the story's hero, and the student answered in a single short sentence. Nobody laughed; a few classmates nodded, and the leader thanked him warmly.",
+        "Over the following weeks, he began adding a reason to his answers and sometimes even disagreed politely with a classmate. The national slogans recited together at the end of the session also helped him get used to hearing his own voice aloud."
+      ],
+      change: [
+        "Gradually he started speaking a little more in regular lessons as well, raising a hand when he knew an answer. He learned that an opinion shared respectfully is valued, even when others see things differently."
+      ],
+      lessons: [
+        "Every voice in a group deserves to be heard.",
+        "Small steps in speaking build lasting confidence.",
+        "Disagreeing politely is a sign of respect, not rudeness.",
+        "A safe, kind circle helps quiet students open up."
+      ],
+      conclusion: "This story is a reminder that quiet children often have valuable thoughts waiting to be shared. With patience and encouragement, Amrut Varg can give them space to discover their own voice."
+    },
+    mr: {
+      title: "स्वतःचा आवाज सापडताना",
+      short: "अबोल स्वभावाचा एक विद्यार्थी अमृत वर्गातील कथांनंतरच्या गप्पांमधून हळूहळू आपले मत मांडायला शिकतो.",
+      intro: "ही नमुना कथा वर्गात क्वचितच बोलणाऱ्या एका विद्यार्थ्याची कल्पना करते. अमृत वर्गाची सौम्य, शिस्तबद्ध दिनचर्या अशा मुलाला आपले विचार व्यक्त करायला कशी मदत करू शकते, हे यातून दिसते.",
+      challenge: "या विद्यार्थ्याकडे अनेक कल्पना असत, पण कोणी हसेल किंवा विरोध करेल या भीतीने तो त्या मनातच ठेवत असे. गटकामात मोठ्या आवाजात बोलणारे जे ठरवतील, त्याला तो फक्त मान डोलावून होकार देत असे.",
+      journey: [
+        "व्यक्तिमत्त्व विकास सत्रात वर्ग प्रमुख एखादी प्रेरक गोष्ट सांगत आणि नंतर प्रत्येकाला त्याबद्दल काय वाटले ते विचारत. सुरुवातीचे काही दिवस हा विद्यार्थी फक्त ऐकत राहिला; पण वर्ग प्रमुखांनी कधीही कोणावर बोलण्याची सक्ती केली नाही आणि वातावरण नेहमी आपुलकीचे ठेवले.",
+        "एके दिवशी गोष्टीतील नायकाविषयी एक साधा प्रश्न विचारला गेला, आणि त्याने एका छोट्या वाक्यात उत्तर दिले. कोणीही हसले नाही; काही मित्रांनी मान डोलावली आणि वर्ग प्रमुखांनी त्याचे मनापासून कौतुक केले.",
+        "पुढच्या काही आठवड्यांत तो आपल्या उत्तरामागचे कारणही सांगू लागला आणि कधी कधी एखाद्या मित्राच्या मताशी नम्रपणे असहमतीही दाखवू लागला. सत्राच्या शेवटी सगळ्यांनी मिळून दिलेल्या राष्ट्रीय घोषणांमुळे त्याला स्वतःचा आवाज मोठ्याने ऐकण्याची सवय झाली."
+      ],
+      change: [
+        "हळूहळू तो नेहमीच्या तासांमध्येही थोडे थोडे बोलू लागला आणि उत्तर माहीत असेल तेव्हा हात वर करू लागला. इतरांचा दृष्टिकोन वेगळा असला तरी आदराने मांडलेले मत मोलाचे ठरते, हे त्याला उमगले."
+      ],
+      lessons: [
+        "गटातील प्रत्येक आवाज ऐकला जाण्यास पात्र असतो.",
+        "बोलण्याची छोटी छोटी पावले टिकाऊ आत्मविश्वास घडवतात.",
+        "नम्रपणे असहमती दाखवणे हा उद्धटपणा नसून आदरच आहे.",
+        "सुरक्षित, प्रेमळ वातावरणात अबोल मुलेही मोकळी होतात."
+      ],
+      conclusion: "अबोल मुलांच्या मनातही मौल्यवान विचार दडलेले असतात, याची ही कथा आठवण करून देते. संयम आणि प्रोत्साहनाच्या जोरावर अमृत वर्ग त्यांना स्वतःचा आवाज शोधण्यासाठी अवकाश देऊ शकतो."
+    }
+  },
+  {
+    slug: "first-step-into-the-circle",
+    category: "confidence",
+    image: "varg2",
+    en: {
+      title: "The First Step into the Circle",
+      short: "A hesitant newcomer who stood outside the circle on his first day slowly becomes a confident part of it.",
+      intro: "This sample story imagines a student's very first day at Amrut Varg, when even joining the opening circle felt too difficult. It follows how a sense of belonging might grow one small step at a time.",
+      challenge: "When the Varg leader called “मंडलं कुरु”, the other students quickly joined hands and formed a circle, but the newcomer stayed at the edge of the ground. He knew no one, and the unfamiliar Sanskrit words made him feel even more out of place.",
+      journey: [
+        "The leader did not push him; instead, a student in the circle simply left a gap beside him and gestured him in. On the second day he stepped into that space, though he barely moved his lips during the prayer.",
+        "Within a week he had learned the words of “ॐ सहनाववतु” and found himself saying them aloud with everyone. In the seated game “चार व सात”, he laughed for the first time when he and his neighbour made the same mistake together.",
+        "Little by little, the circle stopped feeling like a group of strangers. He began arriving early, and one day he was the one who made space for another newcomer."
+      ],
+      change: [
+        "The student realised that feeling nervous in a new place is natural and that a welcoming gesture can make all the difference. His growing sense of belonging gave him the courage to take part in every activity of the session.",
+        "The memory of his own first day made him especially kind towards anyone who looked unsure."
+      ],
+      lessons: [
+        "Every journey begins with one small step.",
+        "A simple welcome can turn a stranger into a friend.",
+        "Belonging grows through shared routines.",
+        "Remembering our own hesitation makes us kinder to others."
+      ],
+      conclusion: "This story pictures how a circle can widen to include everyone. In Amrut Varg, the very first activity of each day quietly teaches that no one should be left outside."
+    },
+    mr: {
+      title: "मंडलाच्या दिशेने पहिले पाऊल",
+      short: "पहिल्या दिवशी मंडलाबाहेर संकोचून उभा असलेला एक नवा विद्यार्थी हळूहळू त्याचाच एक आत्मविश्वासू भाग बनतो.",
+      intro: "ही नमुना कथा अमृत वर्गातील एका विद्यार्थ्याच्या अगदी पहिल्या दिवसाची कल्पना करते, जेव्हा सुरुवातीच्या मंडलात सामील होणेसुद्धा त्याला कठीण वाटत होते. आपलेपणाची भावना एकेका छोट्या पावलाने कशी फुलू शकते, याचा मागोवा ही कथा घेते.",
+      challenge: "वर्ग प्रमुखांनी “मंडलं कुरु” अशी आज्ञा देताच बाकीची मुले पटकन हातात हात घालून मंडल करून उभी राहिली, पण हा नवा विद्यार्थी मैदानाच्या कडेलाच थांबून राहिला. तिथे त्याच्या ओळखीचे कोणीच नव्हते, आणि अनोळखी संस्कृत शब्दांमुळे तर आपण अधिकच परके आहोत, असे त्याला वाटत होते.",
+      journey: [
+        "वर्ग प्रमुखांनी त्याच्यावर कोणतीही जबरदस्ती केली नाही; उलट मंडलातील एका मुलाने आपल्या शेजारी थोडी जागा मोकळी ठेवून त्याला खुणेनेच बोलावले. दुसऱ्या दिवशी तो त्या जागी येऊन उभा राहिला, जरी प्रार्थनेच्या वेळी त्याचे ओठ जेमतेमच हलत होते.",
+        "आठवडाभरात त्याला “ॐ सहनाववतु” चे शब्द पाठ झाले आणि तो सगळ्यांसोबत मोठ्याने प्रार्थना म्हणू लागला. “चार व सात” या बैठ्या खेळात तो आणि त्याचा शेजारी एकाच वेळी चुकले, तेव्हा तो पहिल्यांदाच मनमोकळे हसला.",
+        "हळूहळू ते मंडल अनोळखी मुलांचा घोळका न वाटता आपला परिवार वाटू लागले. तो वेळेआधी येऊ लागला, आणि एके दिवशी दुसऱ्या एका नवख्या मुलासाठी जागा करून देणारा तोच होता."
+      ],
+      change: [
+        "नव्या ठिकाणी बावरणे स्वाभाविक आहे आणि स्वागताची एक छोटी कृतीही मोठा फरक घडवू शकते, हे त्याला उमगले. वाढत्या आपलेपणामुळे सत्रातील प्रत्येक उपक्रमात सहभागी होण्याचे धैर्य त्याला मिळाले.",
+        "आपल्या पहिल्या दिवसाची आठवण मनात असल्याने, जो कोणी गोंधळलेला दिसे त्याच्याशी तो विशेष आपुलकीने वागू लागला."
+      ],
+      lessons: [
+        "प्रत्येक प्रवासाची सुरुवात एका छोट्या पावलाने होते.",
+        "साधे स्वागतही अनोळखी व्यक्तीला मित्र बनवू शकते.",
+        "एकत्र पाळलेल्या दिनक्रमातून आपलेपणा वाढतो.",
+        "आपला संकोच आठवला की आपण इतरांशी अधिक प्रेमाने वागतो."
+      ],
+      conclusion: "एखादे मंडल सगळ्यांना सामावून घेण्यासाठी कसे विस्तारू शकते, याचे चित्र ही कथा रेखाटते. अमृत वर्गातील दिवसाचा पहिलाच उपक्रम कोणालाही बाहेर ठेवू नये, ही शिकवण शांतपणे देतो."
+    }
+  },
+  {
+    slug: "leading-the-surya-namaskar",
+    category: "confidence",
+    image: "varg3",
+    en: {
+      title: "Leading the Sun Salutation",
+      short: "Asked to demonstrate सूर्यनमस्कार in front of everyone, a nervous student practises steadily and finds her confidence.",
+      intro: "This sample story imagines a student who was suddenly asked to lead the sun salutation for the whole group. It explores how practice and encouragement could turn her nervousness into quiet confidence.",
+      challenge: "She performed सूर्यनमस्कार carefully in her own place, but the thought of standing at the front with every eye on her made her hands tremble. On the first attempt she lost track of the sequence and stepped back, embarrassed.",
+      journey: [
+        "The Varg leader reassured her that mistakes were part of learning and offered to stand beside her for the next few days. She began practising at home each morning, saying the name of each position softly to herself.",
+        "Breaking the sequence into parts helped: first the breathing, then the order of positions, then the pace. During शरीर शिथिलीकरण she watched how the leader kept a steady rhythm so that everyone could follow.",
+        "When she led the group again, she still felt nervous but kept going, and the group moved with her. Each day her voice grew steadier and her movements more graceful."
+      ],
+      change: [
+        "Leading the warm-up gave her a new sense of responsibility, since others depended on her to set a clear pace. She learned that confidence does not mean having no fear, but acting well in spite of it.",
+        "That confidence began to show elsewhere too, such as when she volunteered to read aloud in class."
+      ],
+      lessons: [
+        "Preparation turns nervousness into steady confidence.",
+        "Mistakes on the first try are steps in learning.",
+        "Leading others means setting a clear and steady pace.",
+        "Courage is acting well even when we feel afraid."
+      ],
+      conclusion: "This story imagines how a simple morning routine can become a training ground for leadership. In Amrut Varg, standing at the front for a few minutes can help a student stand taller in life."
+    },
+    mr: {
+      title: "सूर्यनमस्काराचे नेतृत्व",
+      short: "सर्वांसमोर सूर्यनमस्काराचे प्रात्यक्षिक दाखवायला सांगितल्यावर घाबरलेली एक विद्यार्थिनी नियमित सरावाने आत्मविश्वास कमावते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थिनीचे चित्र रेखाटते, जिला अचानक संपूर्ण वर्गासमोर सूर्यनमस्कारांचे नेतृत्व करायला सांगितले गेले. सराव आणि प्रोत्साहनाने तिची भीती शांत आत्मविश्वासात कशी बदलू शकते, हे यात पाहायला मिळते.",
+      challenge: "आपल्या जागी उभी राहून ती काळजीपूर्वक सूर्यनमस्कार करत असे, पण सगळ्यांच्या नजरा आपल्यावर असताना पुढे उभे राहायचे, या कल्पनेनेच तिचे हात थरथरू लागले. पहिल्या प्रयत्नात ती स्थितींचा क्रमच विसरली आणि ओशाळून मागे सरकली.",
+      journey: [
+        "चुका हा शिकण्याचाच एक भाग आहे, असे सांगून वर्ग प्रमुखांनी तिला धीर दिला आणि पुढचे काही दिवस तिच्या शेजारी उभे राहण्याची तयारी दाखवली. ती रोज सकाळी घरी सराव करू लागली आणि प्रत्येक स्थितीचे नाव मनाशी हळूच उच्चारू लागली.",
+        "संपूर्ण क्रमाचे छोटे भाग केल्याने तिला मदत झाली: आधी श्वास, मग स्थितींचा क्रम आणि शेवटी गती. शरीर शिथिलीकरणाच्या वेळी सगळ्यांना सहज अनुसरता यावे म्हणून वर्ग प्रमुख कशी एकसारखी लय राखतात, याचे तिने बारकाईने निरीक्षण केले.",
+        "पुन्हा वर्गाचे नेतृत्व करताना तिच्या मनात धाकधूक होतीच, पण ती थांबली नाही, आणि सगळा गट तिच्यासोबत लयीत हालचाल करू लागला. दिवसागणिक तिचा आवाज अधिक स्थिर आणि हालचाली अधिक डौलदार होत गेल्या."
+      ],
+      change: [
+        "इतरांची गती आपल्यावर अवलंबून आहे, या जाणिवेमुळे तिच्यात जबाबदारीची नवी भावना निर्माण झाली. आत्मविश्वास म्हणजे भीती नसणे नव्हे, तर भीती असूनही चांगली कृती करणे, हे तिला कळले.",
+        "हा आत्मविश्वास इतर ठिकाणीही दिसू लागला; वर्गात मोठ्याने वाचन करण्यासाठी ती स्वतःहून पुढे येऊ लागली."
+      ],
+      lessons: [
+        "पूर्वतयारीमुळे धाकधुकीचे रूपांतर स्थिर आत्मविश्वासात होते.",
+        "पहिल्या प्रयत्नातील चुका म्हणजे शिकण्याच्या पायऱ्याच असतात.",
+        "नेतृत्व करणे म्हणजे इतरांसाठी स्पष्ट आणि स्थिर लय ठरवणे.",
+        "भीती वाटत असतानाही योग्य कृती करणे, हेच खरे धैर्य."
+      ],
+      conclusion: "सकाळचा एक साधा दिनक्रम नेतृत्वाचे प्रशिक्षण केंद्र कसा बनू शकतो, याची कल्पना ही कथा करते. अमृत वर्गात काही मिनिटे सगळ्यांपुढे उभे राहण्याचा अनुभव विद्यार्थ्याला आयुष्यात ताठ मानेने उभे राहायला शिकवू शकतो."
+    }
+  },
+  {
+    slug: "the-habit-of-self-reflection",
+    category: "personality",
+    en: {
+      title: "Ending Each Day with Reflection",
+      short: "Inspired by the calm of the closing peace mantra, a student begins a simple daily habit of looking back on her day.",
+      intro: "This sample story pictures a student who rushed from one task to the next without ever pausing to think. It imagines how the quiet close of each Amrut Varg session might plant the seed of a reflective habit.",
+      challenge: "Her days were busy and scattered, and the same small mistakes kept repeating — a forgotten notebook, a hasty word to a friend. She rarely stopped to ask why things had gone well or badly.",
+      journey: [
+        "Every Amrut Varg session ended with the शांती मंत्र, recited together in stillness. The student noticed that those few calm moments left her mind clearer than at any other time of the day.",
+        "The Varg leader once suggested that the same calm could be carried home: before sleeping, sit quietly for a minute and recall one thing that went well and one thing that could be better. She decided to try it, writing two short lines in a small notebook.",
+        "At first she forgot on many evenings, but the daily routine of the Varg reminded her that regular practice matters more than perfection. Slowly the two lines became a habit she looked forward to."
+      ],
+      change: [
+        "Looking back each night helped her notice patterns, such as rushing in the morning or speaking sharply when tired. She began planning small corrections for the next day and felt calmer and more in control of her routine.",
+        "She also started to notice good moments she might have missed — a kind word, a task finished on time — and that made her more grateful and cheerful."
+      ],
+      lessons: [
+        "A few quiet minutes can bring clarity to a busy day.",
+        "Noticing small mistakes is the first step to correcting them.",
+        "Regular practice matters more than doing it perfectly.",
+        "Reflection also helps us value the good things in life."
+      ],
+      conclusion: "This imagined journey shows how a peaceful moment in Amrut Varg can grow into a lifelong habit. Self-reflection helps a young person learn from each day and grow a little wiser."
+    },
+    mr: {
+      title: "दिवसाच्या शेवटी आत्मचिंतन",
+      short: "शांती मंत्राच्या प्रसन्न शांततेतून प्रेरणा घेऊन एक विद्यार्थिनी रोज दिवसाचा आढावा घेण्याची साधी सवय लावते.",
+      intro: "ही नमुना कथा एका अशा विद्यार्थिनीची कल्पना मांडते, जी क्षणभरही न थांबता एका कामातून दुसऱ्या कामाकडे धावत असे. अमृत वर्गाच्या प्रत्येक सत्राचा शांत शेवट तिच्या मनात आत्मचिंतनाचे बीज कसे रुजवू शकतो, हे यात दाखवले आहे.",
+      challenge: "तिचा दिवस धावपळीचा आणि विस्कळीत असे, त्यामुळे वही विसरणे, मैत्रिणीला घाईत काहीतरी बोलून जाणे अशा छोट्या चुका पुन्हा पुन्हा घडत. एखादी गोष्ट चांगली का झाली किंवा का बिघडली, याचा विचार करायला ती क्वचितच थांबत असे.",
+      journey: [
+        "अमृत वर्गाचे प्रत्येक सत्र शांती मंत्राने संपत असे; सगळे स्थिर बसून एकसुरात तो म्हणत. त्या काही शांत क्षणांनंतर आपले मन दिवसातील इतर कोणत्याही वेळेपेक्षा अधिक निर्मळ होते, हे तिच्या लक्षात आले.",
+        "एकदा वर्ग प्रमुखांनी सुचवले की हीच शांतता घरीही नेता येईल: झोपण्यापूर्वी एक मिनिट शांत बसून दिवसातली एक चांगली गोष्ट आणि सुधारता येईल अशी एक गोष्ट आठवायची. तिने हा प्रयोग करून पाहायचे ठरवले आणि एका छोट्या वहीत रोज दोन ओळी लिहू लागली.",
+        "सुरुवातीला बऱ्याच संध्याकाळी ती हे विसरून जाई; पण वर्गाच्या रोजच्या दिनक्रमाने तिला शिकवले होते की परिपूर्णतेपेक्षा नियमितपणा महत्त्वाचा. हळूहळू त्या दोन ओळी लिहिणे ही तिची आवडती सवय बनली."
+      ],
+      change: [
+        "रोज रात्री दिवसाकडे मागे वळून पाहिल्याने सकाळची घाई किंवा थकल्यावर तुटक बोलणे असे आपले स्वभावदोष तिला ओळखता येऊ लागले. दुसऱ्या दिवशी त्यात छोटे बदल करण्याचे ती ठरवू लागली आणि आपला दिनक्रम आपल्या हातात आहे, असा शांत भाव तिला जाणवू लागला.",
+        "नजरेतून सुटून गेले असते असे सुंदर क्षणही — कोणाचा तरी प्रेमळ शब्द, वेळेत पूर्ण झालेले काम — तिला दिसू लागले, आणि त्यामुळे ती अधिक कृतज्ञ व आनंदी झाली."
+      ],
+      lessons: [
+        "काही शांत मिनिटे धावपळीच्या दिवसालाही स्पष्टता देतात.",
+        "छोट्या चुका ओळखणे ही त्या सुधारण्याची पहिली पायरी आहे.",
+        "परिपूर्णतेपेक्षा सातत्य अधिक मोलाचे असते.",
+        "आत्मचिंतनामुळे आयुष्यातील चांगल्या गोष्टींचीही जाणीव होते."
+      ],
+      conclusion: "अमृत वर्गातील एक शांत क्षण आयुष्यभराच्या सवयीत कसा बदलू शकतो, हे या काल्पनिक प्रवासातून दिसते. आत्मचिंतनामुळे तरुण मन प्रत्येक दिवसातून शिकते आणि थोडे अधिक समंजस होते."
+    }
+  },
+  {
+    slug: "from-stage-fright-to-storytelling",
+    category: "confidence",
+    en: {
+      title: "From Stage Fright to Storytelling",
+      short: "A student terrified of speaking before a group gradually prepares to narrate an inspiring story to his Varg.",
+      intro: "This sample story imagines a student for whom speaking in front of others felt almost impossible. It traces how the supportive Personality Development session could help him find his feet, one small step at a time.",
+      challenge: "Whenever he had to speak before the class, his mind went blank and his voice dropped to a whisper. He loved reading stories on his own, but the idea of telling one aloud filled him with dread.",
+      journey: [
+        "The Varg leader invited volunteers to narrate a short inspiring story in a coming Personality Development session, and gently suggested that he consider it. Instead of a full story, the leader first asked him to share just the opening two or three sentences.",
+        "He chose a story about a young freedom fighter's courage and practised it at home, first in front of a mirror and then for his family. He learned to remember the story as a sequence of scenes instead of memorising every word, which made him less afraid of forgetting.",
+        "On the day, his voice shook at first, but his friends in the circle listened closely, and the story carried him along. When he finished, the group joined in a national slogan, and he felt a quiet sense of achievement."
+      ],
+      change: [
+        "The experience did not make his fear vanish overnight, but it showed him that fear could be managed. He began offering to speak more often and found that each time felt a little easier.",
+        "Telling stories also made him a more attentive reader, as he now looked for a message in each story that he might share with others."
+      ],
+      lessons: [
+        "Breaking a big task into small parts makes it manageable.",
+        "Remembering ideas works better than memorising words.",
+        "A supportive audience helps a speaker find courage.",
+        "Fear becomes smaller each time we face it."
+      ],
+      conclusion: "This story pictures how a frightened speaker might discover the joy of storytelling. Through practice and encouragement, Amrut Varg can help students turn their fears into new strengths."
+    },
+    mr: {
+      title: "भीतीकडून कथाकथनाकडे",
+      short: "चार लोकांसमोर बोलायला घाबरणारा एक विद्यार्थी हळूहळू तयारी करून आपल्या वर्गाला एक प्रेरक गोष्ट सांगतो.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना मांडते, ज्याला इतरांसमोर बोलणे जवळजवळ अशक्य वाटत असे. व्यक्तिमत्त्व विकास सत्रातील आश्वासक वातावरण त्याला एकेक पायरी चढत आत्मविश्वासापर्यंत कसे घेऊन जाऊ शकते, याचा मागोवा ही कथा घेते.",
+      challenge: "वर्गासमोर बोलायची वेळ आली की त्याचे मन कोरे होई आणि आवाज कुजबुजण्याइतका खाली जाई. एकट्याने गोष्टी वाचायला त्याला खूप आवडे, पण त्या मोठ्याने सांगायच्या, या कल्पनेनेच त्याच्या पोटात गोळा येई.",
+      journey: [
+        "पुढील व्यक्तिमत्त्व विकास सत्रात एखादी छोटी प्रेरक गोष्ट सांगण्यासाठी कोणी स्वतःहून पुढे यावे, असे आवाहन वर्ग प्रमुखांनी केले आणि त्यालाही याचा विचार करायला हळुवारपणे सुचवले. संपूर्ण गोष्टीऐवजी सुरुवातीला फक्त तिची सुरुवात, म्हणजे दोन-तीन वाक्येच सांगायला त्यांनी त्याला सांगितले.",
+        "त्याने एका तरुण स्वातंत्र्यसैनिकाच्या धैर्याची गोष्ट निवडली आणि आधी आरशासमोर, मग घरच्यांसमोर तिचा सराव केला. प्रत्येक शब्द पाठ करण्याऐवजी गोष्ट प्रसंगांच्या क्रमाने लक्षात ठेवायला तो शिकला, त्यामुळे विसरण्याची भीती कमी झाली.",
+        "प्रत्यक्ष दिवशी सुरुवातीला त्याचा आवाज कापत होता, पण मंडलातील मित्र लक्षपूर्वक ऐकत होते आणि गोष्टच त्याला पुढे घेऊन गेली. गोष्ट संपल्यावर सगळ्यांनी मिळून एक राष्ट्रीय घोषणा दिली, तेव्हा त्याच्या मनात एक शांत समाधान दाटून आले."
+      ],
+      change: [
+        "या अनुभवाने त्याची भीती एका रात्रीत नाहीशी झाली नाही, पण भीतीवर ताबा मिळवता येतो, हे त्याला दिसले. तो अधिक वेळा बोलण्यासाठी पुढे येऊ लागला आणि प्रत्येक वेळी ते थोडे सोपे वाटू लागले.",
+        "गोष्टी सांगू लागल्यापासून तो अधिक जाणीवपूर्वक वाचू लागला, कारण आता इतरांपर्यंत पोहोचवण्यासारखा संदेश तो प्रत्येक गोष्टीत शोधत असे."
+      ],
+      lessons: [
+        "मोठ्या कामाचे छोटे भाग केले की ते सोपे होते.",
+        "शब्द घोकण्यापेक्षा आशय लक्षात ठेवणे अधिक उपयोगी ठरते.",
+        "आश्वासक श्रोते वक्त्याला धैर्य देतात.",
+        "प्रत्येक वेळी सामना केल्यावर भीती थोडी लहान होते."
+      ],
+      conclusion: "घाबरणारा एक वक्ता कथाकथनातील आनंद कसा शोधू शकतो, याचे चित्र ही कथा उभे करते. सराव आणि प्रोत्साहनाच्या बळावर अमृत वर्ग विद्यार्थ्यांच्या भीतीचे रूपांतर नव्या सामर्थ्यात करायला मदत करू शकतो."
+    }
+  },
+  {
+    slug: "listening-before-speaking",
+    category: "communication",
+    en: {
+      title: "Listening Before Speaking",
+      short: "An eager student who always rushed to answer learns that truly listening first leads to better conversations.",
+      intro: "This sample story imagines a talkative, quick-thinking student who often answered before others had finished. It explores how group activities in Amrut Varg might teach her the value of listening.",
+      challenge: "In discussions she was always ready with a reply, but she often misunderstood the question or talked over her classmates. Some friends began to feel that she was not interested in what they had to say.",
+      journey: [
+        "In the Personality Development session, the Varg leader introduced a simple rule for discussions: before giving your view, briefly repeat what the previous speaker said. The student found this surprisingly hard at first, because she had been planning her own reply instead of listening.",
+        "Seated games also helped. In “आकाश–धरती–पाताळ”, anyone who moved before hearing the full call was out, and she was caught several times until she learned to wait and listen carefully.",
+        "During field games, she noticed that teams who listened to each other's suggestions planned better strategies. She began to ask quieter teammates for their ideas before sharing her own."
+      ],
+      change: [
+        "Her conversations became richer because she now understood others' points before responding. Friends felt respected, and she found that her own ideas were received more warmly when she had listened first.",
+        "She still loved to speak, but she now chose her moments more thoughtfully."
+      ],
+      lessons: [
+        "Listening fully is the first step to understanding.",
+        "Repeating what someone said shows that we value them.",
+        "Good teams listen before they decide.",
+        "Thoughtful replies are more powerful than quick ones."
+      ],
+      conclusion: "This story suggests that real communication begins with the ears, not the mouth. Amrut Varg's games and discussions offer daily practice in this important skill."
+    },
+    mr: {
+      title: "बोलण्याआधी ऐकण्याची कला",
+      short: "उत्तर द्यायला नेहमी उतावीळ असणारी एक विद्यार्थिनी आधी मनापासून ऐकल्याने संवाद अधिक चांगला होतो, हे शिकते.",
+      intro: "ही नमुना कथा अशा एका बोलक्या आणि चटपटीत विद्यार्थिनीची कल्पना करते, जी इतरांचे बोलणे पूर्ण होण्याआधीच उत्तर देत असे. अमृत वर्गातील सामूहिक उपक्रम तिला ऐकण्याचे महत्त्व कसे शिकवू शकतात, याचा शोध ही कथा घेते.",
+      challenge: "चर्चेत तिच्याकडे उत्तर नेहमी तयार असे, पण बऱ्याचदा प्रश्नच नीट न समजल्याने ती चुकत असे किंवा मैत्रिणींचे बोलणे मध्येच तोडत असे. आपल्या बोलण्यात तिला रस नाही, असे काही मैत्रिणींना वाटू लागले होते.",
+      journey: [
+        "व्यक्तिमत्त्व विकास सत्रात वर्ग प्रमुखांनी चर्चेसाठी एक सोपा नियम घालून दिला: आपले मत मांडण्यापूर्वी आधीचा वक्ता काय म्हणाला, ते थोडक्यात पुन्हा सांगायचे. सुरुवातीला हे तिला अनपेक्षितपणे कठीण गेले, कारण ऐकण्याऐवजी ती मनातल्या मनात स्वतःचे उत्तर तयार करत असे.",
+        "बैठ्या खेळांचीही तिला मदत झाली. “आकाश–धरती–पाताळ” खेळात पूर्ण आज्ञा ऐकण्याआधीच हालचाल करणारा बाद होत असे; ती अनेकदा बाद झाली आणि शेवटी थांबून नीट ऐकायला शिकली.",
+        "मैदानी खेळांत, एकमेकांच्या सूचना ऐकणारे संघ अधिक चांगली व्यूहरचना करतात, हे तिच्या लक्षात आले. आपले मत मांडण्यापूर्वी ती संघातील अबोल सहकाऱ्यांनाही त्यांच्या कल्पना विचारू लागली."
+      ],
+      change: [
+        "उत्तर देण्यापूर्वी इतरांचा मुद्दा समजून घेतल्याने तिचा संवाद अधिक अर्थपूर्ण झाला. मैत्रिणींना आपला मान राखला जात असल्याचे जाणवले, आणि आधी ऐकल्यावर आपल्या कल्पनांचेही अधिक मनापासून स्वागत होते, हे तिला दिसले.",
+        "बोलण्याची तिची आवड कायम राहिली, पण आता कधी बोलायचे ते ती अधिक विचारपूर्वक ठरवू लागली."
+      ],
+      lessons: [
+        "पूर्ण ऐकणे ही समजून घेण्याची पहिली पायरी आहे.",
+        "समोरच्याचे म्हणणे पुन्हा सांगितल्याने आपण त्याला महत्त्व देतो, हे दिसते.",
+        "चांगले संघ निर्णय घेण्याआधी ऐकतात.",
+        "घाईच्या उत्तरापेक्षा विचारपूर्वक दिलेले उत्तर अधिक प्रभावी ठरते."
+      ],
+      conclusion: "खरा संवाद तोंडाने नव्हे, तर कानांनी सुरू होतो, असे ही कथा सुचवते. अमृत वर्गातील खेळ आणि चर्चा या महत्त्वाच्या कौशल्याचा रोज सराव घडवतात."
+    }
+  },
+  {
+    slug: "captain-of-the-field",
+    category: "leadership",
+    en: {
+      title: "A Captain Who Picked Everyone",
+      short: "Made captain in a field game, a student learns that real leadership means bringing every teammate into play, not only the fastest.",
+      intro: "This sample story imagines a student who is chosen as team captain during the field games of an Amrut Varg session. It shows how a simple game can quietly reshape what leadership means to a young person.",
+      challenge: "At first, the student treated captaincy as a chance to win. Only the quickest runners got the ball, while quieter teammates stood at the edges, unsure of what to do. The team won a few rounds, but the game felt tense and some players lost interest.",
+      journey: [
+        "During the field games, the Varg leader paused play and asked each team to share how the game had felt. A few teammates admitted they had hardly touched the ball. The student listened, a little surprised, and began to see the team through their eyes.",
+        "In the next sessions, the student tried a new approach: giving every player a clear role, from guarding a corner to calling out positions. The command drill had already taught the group to respond quickly to a single voice, and that habit helped the team move together.",
+        "During Personality Development, an inspiring story about a leader who listened before acting stayed with the student. It gave words to what the field had already begun to teach."
+      ],
+      change: [
+        "Over the weeks, the student began to measure a good game not only by the result but by how many teammates felt involved. Quieter players started speaking up with ideas, and the team grew more confident as a whole. The student, too, became calmer and more patient, both on the ground and in the classroom."
+      ],
+      lessons: [
+        "A leader's first task is to make room for everyone.",
+        "Every teammate brings something useful when given a clear role.",
+        "Listening to the team is part of leading it.",
+        "Shared effort makes a game more joyful than winning alone."
+      ],
+      conclusion: "This imagined captain discovers that a team is strongest when no one is left on the sidelines. Amrut Varg offers such moments in ordinary games, where leadership is practised one inclusive choice at a time."
+    },
+    mr: {
+      title: "सगळ्यांना सोबत घेणारा संघनायक",
+      short: "मैदानी खेळात संघनायक झालेल्या विद्यार्थ्याला समजते की खरे नेतृत्व म्हणजे फक्त वेगवान नव्हे, तर प्रत्येक साथीदाराला खेळात सामावून घेणे.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, ज्याची अमृत वर्गातील मैदानी खेळात संघनायक म्हणून निवड होते. एखादा साधा खेळसुद्धा नेतृत्वाचा अर्थ किती हळुवारपणे बदलू शकतो, हे या कथेतून दिसते.",
+      challenge: "सुरुवातीला या विद्यार्थ्याला संघनायकपद म्हणजे फक्त जिंकण्याची संधी वाटत होती. चेंडू केवळ जलद धावणाऱ्यांकडेच जायचा, आणि शांत स्वभावाचे साथीदार कडेला उभे राहून काय करावे या विचारात असायचे. संघ काही फेऱ्या जिंकला, पण खेळात ताण जाणवू लागला आणि काहींचा उत्साह मावळला.",
+      journey: [
+        "मैदानी खेळ सुरू असताना वर्ग प्रमुखांनी खेळ थांबवला आणि प्रत्येक संघाला खेळ कसा वाटला ते सांगायला सांगितले. काही साथीदारांनी कबूल केले की चेंडू त्यांच्या हाती जवळजवळ आलाच नाही. हे ऐकून विद्यार्थी थोडा चकित झाला आणि आपल्या संघाकडे त्यांच्या नजरेतून पाहू लागला.",
+        "पुढच्या सत्रांमध्ये त्याने वेगळी पद्धत वापरून पाहिली. कोपरा सांभाळण्यापासून जागा सांगण्यापर्यंत प्रत्येकाला ठरावीक जबाबदारी दिली. आज्ञा अभ्यासामुळे एका आवाजाला तत्परतेने प्रतिसाद देण्याची सवय गटाला आधीच लागली होती, आणि त्यामुळे संघ एकदिलाने हालचाल करू लागला.",
+        "व्यक्तिमत्त्व विकासाच्या वेळी ऐकलेली, आधी ऐकून मग कृती करणाऱ्या नेत्याची प्रेरक गोष्ट त्याच्या मनात घर करून राहिली. मैदानाने जे शिकवायला सुरुवात केली होती, त्याला या गोष्टीने शब्द दिले."
+      ],
+      change: [
+        "आठवड्यांमागून आठवडे जात असताना तो चांगला खेळ फक्त निकालावरून नव्हे, तर किती साथीदारांना आपण खेळाचा भाग आहोत असे वाटले यावरून मोजू लागला. शांत खेळाडू आपल्या कल्पना मांडू लागले आणि संपूर्ण संघाचा आत्मविश्वास वाढला. तो स्वतःही मैदानावर आणि वर्गात अधिक संयमी आणि शांत झाला."
+      ],
+      lessons: [
+        "नेत्याचे पहिले काम म्हणजे सर्वांना सामावून घेणे.",
+        "स्पष्ट जबाबदारी मिळाली की प्रत्येक साथीदार उपयोगी ठरतो.",
+        "संघाचे ऐकणे हा नेतृत्वाचाच एक भाग आहे.",
+        "एकट्याने जिंकण्यापेक्षा सर्वांनी मिळून खेळण्यात अधिक आनंद असतो."
+      ],
+      conclusion: "कोणीही बाजूला राहिले नाही तरच संघ खऱ्या अर्थाने बलवान होतो, हे या कल्पित संघनायकाला उमगते. अमृत वर्ग अशा साध्या खेळांतून प्रत्येक समावेशक निर्णयाबरोबर नेतृत्वाचा सराव घडवतो."
+    }
+  },
+  {
+    slug: "a-song-of-our-own",
+    category: "creativity",
+    en: {
+      title: "The Group That Wrote a Song",
+      short: "A group of students composes its own short song on unity for the Personality Development session, finding their creative voice together.",
+      intro: "This sample story imagines a small group of students who decide to write their own song about unity. It shows how the Personality Development session can become a space not only to listen, but also to create.",
+      challenge: "The group enjoyed singing the familiar songs, but most members believed that writing a song was something only gifted people could do. One student in the group, a girl who often hummed tunes to herself, wondered aloud whether they could try. The idea felt exciting and a little frightening at the same time.",
+      journey: [
+        "With the Varg leader's encouragement, the group met for a few minutes after the session to share words that came to mind when they thought of unity: hands joined in a circle, a shared prayer, a team running together. They wrote these down and slowly shaped them into short lines.",
+        "Finding a tune was harder. Some suggestions did not fit, and there were friendly disagreements. The group learned to try each idea, keep what worked and let go of the rest without hurt feelings.",
+        "When the song was ready, the Varg leader invited them to share it during Personality Development. The rest of the Varg joined in for the chorus, and the simple lines echoed the spirit of सशक्त युवक – समर्थ भारत."
+      ],
+      change: [
+        "The experience showed the group that creativity is something everyone can practise. The student who first suggested the idea found new confidence in her own imagination, and others who had never written anything discovered they had ideas worth sharing."
+      ],
+      lessons: [
+        "Creativity grows when ideas are shared freely.",
+        "Disagreement can lead to something better when handled kindly.",
+        "Everyone has something to contribute to a creative effort.",
+        "Words we write ourselves often carry the deepest meaning."
+      ],
+      conclusion: "In this imagined scenario, a group turns a value they live every day into a song of their own. Amrut Varg nurtures such creative expression alongside discipline and teamwork."
+    },
+    mr: {
+      title: "आमचं स्वतःचं गाणं",
+      short: "व्यक्तिमत्त्व विकास सत्रासाठी एकतेवर स्वतःचे छोटेसे गाणे रचताना विद्यार्थ्यांच्या एका गटाला आपल्यातील सर्जनशीलतेचा सूर गवसतो.",
+      intro: "ही नमुना कथा एकतेवर स्वतःचे गाणे लिहायचे ठरवणाऱ्या विद्यार्थ्यांच्या एका छोट्या गटाची कल्पना करते. व्यक्तिमत्त्व विकासाचे सत्र केवळ ऐकण्याचेच नव्हे, तर निर्मितीचेही व्यासपीठ कसे बनू शकते, हे यातून दिसते.",
+      challenge: "गटाला ओळखीची गाणी म्हणायला आवडायचे, पण गाणे रचणे हे फक्त प्रतिभावंतांचे काम आहे असे बहुतेकांना वाटायचे. स्वतःशीच गुणगुणत राहणाऱ्या गटातील एका विद्यार्थिनीने आपण प्रयत्न करून पाहूया का, असे सहज विचारले. ही कल्पना उत्साह वाढवणारी होती, पण थोडी धाकधूकही वाटत होती.",
+      journey: [
+        "वर्ग प्रमुखांच्या प्रोत्साहनाने गट सत्रानंतर काही मिनिटे थांबू लागला. एकता म्हटले की मनात येणारे शब्द सगळ्यांनी सांगितले: वर्तुळात गुंफलेले हात, एकत्र म्हटलेली प्रार्थना, सोबत धावणारा संघ. हे शब्द लिहून घेऊन त्यांनी हळूहळू त्यांतून छोट्या ओळी घडवल्या.",
+        "चाल शोधणे अधिक अवघड ठरले. काही सूचना जुळल्या नाहीत आणि मैत्रीपूर्ण मतभेदही झाले. प्रत्येक कल्पना करून पाहायची, जे जमते ते ठेवायचे आणि बाकीचे मनाला लावून न घेता सोडून द्यायचे, हे गट शिकला.",
+        "गाणे तयार झाल्यावर वर्ग प्रमुखांनी त्यांना व्यक्तिमत्त्व विकासाच्या सत्रात ते सादर करण्याची संधी दिली. संपूर्ण वर्गाने धृपद उचलून धरले, आणि त्या साध्या ओळींतून सशक्त युवक – समर्थ भारत हा भाव गुंजत राहिला."
+      ],
+      change: [
+        "सर्जनशीलता ही प्रत्येकाला जोपासता येणारी गोष्ट आहे, हे या अनुभवाने गटाला दाखवून दिले. ही कल्पना पहिल्यांदा मांडणाऱ्या विद्यार्थिनीला आपल्या कल्पनाशक्तीवर नवा विश्वास वाटू लागला, आणि कधीच काही न लिहिलेल्यांनाही आपल्याकडे मांडण्याजोग्या कल्पना आहेत हे उमगले."
+      ],
+      lessons: [
+        "कल्पना मोकळेपणाने मांडल्या की सर्जनशीलता बहरते.",
+        "मतभेद आपुलकीने हाताळले तर त्यातून अधिक चांगले काही घडते.",
+        "निर्मितीच्या प्रयत्नात प्रत्येकाचा वाटा मोलाचा असतो.",
+        "स्वतः लिहिलेल्या शब्दांत अनेकदा सर्वात खोल अर्थ दडलेला असतो."
+      ],
+      conclusion: "या कल्पित प्रसंगात रोज अनुभवत असलेल्या मूल्याला गट आपल्या स्वतःच्या गाण्याचे रूप देतो. शिस्त आणि संघभावनेसोबतच अमृत वर्ग अशा सर्जनशील अभिव्यक्तीलाही खतपाणी घालतो."
+    }
+  },
+  {
+    slug: "the-punctuality-promise",
+    category: "discipline",
+    en: {
+      title: "Arriving Before the Circle Forms",
+      short: "A student who was always running late learns the value of punctuality from the steady rhythm of the session's fixed timetable.",
+      intro: "This sample story imagines a cheerful but habitually late student who keeps missing the start of every session. It shows how the predictable order of an Amrut Varg session can gently teach the worth of being on time.",
+      challenge: "The student usually arrived after the circle had formed and the prayer had begun. Slipping in quietly, she often missed the opening moments and felt rushed for the rest of the session. At home and school, too, lateness had become a habit she did not think much about.",
+      journey: [
+        "The Varg leader never scolded her, but one day asked her to notice how the session felt when she arrived late compared with the rare days she came early. She realised that on early days, the prayer felt calmer and the warm-up felt easier.",
+        "She made a small promise to herself to reach before मंडलं कुरु was called. To keep it, she began preparing her things in advance and leaving home a little earlier. Some days she still slipped, but the fixed order of the session gave her a clear target each time.",
+        "Being on time also meant she could take part fully in सूर्यनमस्कार and the seated games from the very beginning. The difference in how she felt was clear enough to keep her motivated."
+      ],
+      change: [
+        "Over time, punctuality stopped feeling like a rule and started feeling like respect, for herself and for the group waiting for everyone to arrive. The habit gradually spread to school mornings and family plans, making her days feel less hurried and more in her control."
+      ],
+      lessons: [
+        "Punctuality is a form of respect for others.",
+        "A fixed routine makes good habits easier to build.",
+        "Small daily preparations prevent last-minute rush.",
+        "Keeping a promise to oneself builds self-discipline."
+      ],
+      conclusion: "In this imagined journey, a student learns that arriving on time changes the whole experience of a day. Amrut Varg's steady daily rhythm helps young people turn punctuality into a lasting habit."
+    },
+    mr: {
+      title: "वेळेवर पोहोचण्याचा निश्चय",
+      short: "नेहमी उशिरा येणाऱ्या विद्यार्थिनीला सत्राच्या ठरलेल्या वेळापत्रकाच्या लयीतून वक्तशीरपणाचे मोल उमगते.",
+      intro: "ही नमुना कथा प्रत्येक सत्राची सुरुवात चुकवणाऱ्या, आनंदी पण उशिरा येण्याची सवय असलेल्या एका विद्यार्थिनीची कल्पना करते. अमृत वर्गाच्या सत्राचा ठरलेला क्रम वेळेचे महत्त्व किती सहजपणे शिकवू शकतो, हे यातून दिसते.",
+      challenge: "वर्तुळ तयार होऊन प्रार्थना सुरू झाल्यावरच ती सहसा पोहोचायची. हळूच गटात सामील होताना सुरुवातीचे क्षण तिच्याकडून सुटायचे आणि उरलेल्या सत्रात तिची धावपळ होत राहायची. घरी आणि शाळेतही उशीर करणे ही तिची अशी सवय झाली होती, जिच्याकडे ती फारसे लक्ष देत नव्हती.",
+      journey: [
+        "वर्ग प्रमुख तिला कधीच रागावले नाहीत, पण एके दिवशी त्यांनी तिला उशिरा आल्याचे दिवस आणि क्वचित लवकर आल्याचे दिवस यांत सत्र कसे वेगळे वाटते, याचे निरीक्षण करायला सांगितले. लवकर आल्याच्या दिवशी प्रार्थना अधिक शांत वाटते आणि शरीर शिथिलीकरणही अधिक सहज जाते, हे तिच्या लक्षात आले.",
+        "मंडलं कुरु ची आज्ञा होण्यापूर्वी पोहोचायचे, असे तिने स्वतःलाच एक छोटे वचन दिले. ते पाळण्यासाठी ती आपल्या वस्तू आधीच तयार ठेवू लागली आणि घरातून थोडी लवकर निघू लागली. काही दिवस अजूनही चुकायचे, पण सत्राच्या ठरलेल्या क्रमामुळे प्रत्येक वेळी तिच्यासमोर स्पष्ट उद्दिष्ट असायचे.",
+        "वेळेवर आल्याने सूर्यनमस्कार आणि बैठ्या खेळांत अगदी सुरुवातीपासून मनापासून भाग घेता येऊ लागला. आपल्याला किती वेगळे वाटते, हा फरक इतका स्पष्ट होता की तिचा उत्साह टिकून राहिला."
+      ],
+      change: [
+        "कालांतराने वक्तशीरपणा हा नियम न राहता स्वतःविषयीचा आणि सर्वांची वाट पाहणाऱ्या गटाविषयीचा आदर वाटू लागला. ही सवय हळूहळू शाळेच्या सकाळींपर्यंत आणि घरच्या कार्यक्रमांपर्यंत पोहोचली, त्यामुळे तिचे दिवस कमी धावपळीचे आणि अधिक तिच्या नियंत्रणात असल्यासारखे वाटू लागले."
+      ],
+      lessons: [
+        "वक्तशीरपणा म्हणजे इतरांविषयीचा आदर.",
+        "ठरलेल्या दिनक्रमामुळे चांगल्या सवयी लावणे सोपे जाते.",
+        "रोजची थोडी पूर्वतयारी शेवटच्या क्षणाची धावपळ टाळते.",
+        "स्वतःला दिलेले वचन पाळल्याने आत्मशिस्त वाढते."
+      ],
+      conclusion: "वेळेवर पोहोचल्याने संपूर्ण दिवसाचा अनुभवच बदलतो, हे या कल्पित प्रवासात एका विद्यार्थिनीला उमगते. अमृत वर्गाची रोजची स्थिर लय मुलांना वक्तशीरपणा ही कायमची सवय बनवायला मदत करते."
+    }
+  },
+  {
+    slug: "learning-through-play",
+    category: "learning",
+    en: {
+      title: "Sharper Minds Through Play",
+      short: "Seated games like “आकाश–धरती–पाताळ” sharpen a distracted student's concentration and memory, helping his studies too.",
+      intro: "This sample story imagines a student whose attention wandered easily, both in class and while studying at home. It explores how the playful yet focused seated games of Amrut Varg might strengthen his concentration.",
+      challenge: "He would read a page and realise he remembered nothing, and his thoughts drifted during lessons. Studying felt tiring, and he often gave up after a few minutes.",
+      journey: [
+        "In “आकाश–धरती–पाताळ”, players had to respond instantly and correctly to each call, and the calls kept changing speed. At first he was often out early, but the game was so enjoyable that he wanted to stay in longer each time.",
+        "In “चार व सात”, he had to keep track of numbers and remember which ones needed a special action. Without realising it, he was training his memory and his ability to hold attention on one task.",
+        "The Varg leader pointed out that the same focus used in the games could be used while studying. The student began studying in short, focused stretches, using small memory tricks inspired by the games."
+      ],
+      change: [
+        "Over time he found it easier to concentrate during lessons and to recall what he had read. Studying became less of a struggle, and he approached it with more patience.",
+        "He discovered that play and learning are not opposites, and that a focused mind can make both more enjoyable."
+      ],
+      lessons: [
+        "Games can train concentration in an enjoyable way.",
+        "Memory grows stronger with regular practice.",
+        "Short, focused study works better than long, distracted hours.",
+        "Play and learning can support each other."
+      ],
+      conclusion: "This story imagines how simple seated games might help a student learn better. In Amrut Varg, joyful play quietly helps the mind grow sharper."
+    },
+    mr: {
+      title: "खेळता खेळता शिकणे",
+      short: "“आकाश–धरती–पाताळ” सारख्या बैठ्या खेळांमुळे एका चंचल विद्यार्थ्याची एकाग्रता व स्मरणशक्ती वाढते आणि अभ्यासालाही मदत होते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याचे चित्र रेखाटते, ज्याचे लक्ष वर्गात असो वा घरी अभ्यास करताना, सहज विचलित होत असे. अमृत वर्गातील आनंददायी पण एकाग्रतेची मागणी करणारे बैठे खेळ त्याची लक्ष केंद्रित करण्याची क्षमता कशी वाढवू शकतात, याचा शोध ही कथा घेते.",
+      challenge: "एखादे पान वाचून झाल्यावर त्यातले काहीच आठवत नाही, असे त्याला वारंवार जाणवे, आणि तास सुरू असताना त्याचे मन भरकटत असे. अभ्यास त्याला थकवणारा वाटे आणि काही मिनिटांतच तो कंटाळून पुस्तक बाजूला ठेवत असे.",
+      journey: [
+        "“आकाश–धरती–पाताळ” खेळात प्रत्येक आज्ञेला क्षणार्धात आणि अचूक प्रतिसाद द्यावा लागे, आणि आज्ञांचा वेगही सतत बदलत असे. सुरुवातीला तो लवकरच बाद होई, पण खेळ इतका मजेदार होता की प्रत्येक वेळी जास्त काळ टिकून राहण्याची त्याला ओढ लागली.",
+        "“चार व सात” खेळात त्याला आकड्यांचा क्रम लक्षात ठेवावा लागे आणि कोणत्या आकड्यावर वेगळी कृती करायची हेही आठवावे लागे. नकळतच त्याच्या स्मरणशक्तीला आणि एकाच कामावर लक्ष टिकवण्याच्या क्षमतेला प्रशिक्षण मिळत होते.",
+        "खेळात वापरलेली हीच एकाग्रता अभ्यासातही वापरता येते, याकडे वर्ग प्रमुखांनी लक्ष वेधले. त्यानंतर तो कमी वेळेचे पण पूर्ण लक्ष देऊन केलेले अभ्यासाचे टप्पे आखू लागला आणि खेळांतून सुचलेल्या स्मरणाच्या छोट्या युक्त्या वापरू लागला."
+      ],
+      change: [
+        "काही काळाने तासांमध्ये लक्ष केंद्रित करणे आणि वाचलेले आठवणे त्याला अधिक सोपे वाटू लागले. अभ्यास म्हणजे झगडा वाटेनासा झाला आणि तो अधिक संयमाने अभ्यासाला बसू लागला.",
+        "खेळ आणि शिक्षण परस्परविरोधी नसून एकाग्र मन दोन्ही अधिक आनंददायी करू शकते, हे त्याला सापडले."
+      ],
+      lessons: [
+        "खेळांतून आनंदाने एकाग्रतेचे प्रशिक्षण मिळू शकते.",
+        "नियमित सरावाने स्मरणशक्ती अधिक बळकट होते.",
+        "दीर्घ पण विचलित अभ्यासापेक्षा कमी वेळेचा एकाग्र अभ्यास अधिक परिणामकारक ठरतो.",
+        "खेळ आणि शिकणे एकमेकांना पूरक ठरू शकतात."
+      ],
+      conclusion: "साधे बैठे खेळ विद्यार्थ्याला अधिक चांगल्या प्रकारे शिकायला कशी मदत करू शकतात, याची कल्पना ही कथा करते. अमृत वर्गात आनंदाने खेळलेले खेळच मनाला अधिक तल्लख बनवण्याचा सहज मार्ग ठरतात."
+    }
+  },
+  {
+    slug: "dignity-of-every-work",
+    category: "social",
+    en: {
+      title: "Every Job Deserves Respect",
+      short: "A story told in Personality Development helps a boy see the worth of every kind of work and the people who do it.",
+      intro: "This sample story imagines a boy who had never thought much about the people who quietly keep daily life running. It shows how one story shared in Amrut Varg could slowly change the way he looks at work and workers.",
+      challenge: "The boy often spoke carelessly to the sweeper at school and rarely thanked the vegetable seller or the bus conductor. He believed that only some jobs were important and that others were somehow lesser.",
+      journey: [
+        "During Personality Development, the Varg leader told a story about a great leader who swept the floor of his own ashram without hesitation. The class then talked about who cleans their roads, who grows their food and who repairs their homes.",
+        "In the following sessions, the Varg leader asked each student to share one task they had seen someone do for them that week. Listening to classmates describe the watchman, the cook and the cobbler, the boy realised how many hands supported his own day.",
+        "On the field, the group took turns collecting the cones and rolling up the ropes after games. Doing these small jobs himself, he noticed that no task felt small once he had done it with care."
+      ],
+      change: [
+        "Gradually, the boy began greeting the school sweeper by name and thanking the conductor when he got off the bus. At home, he started helping with chores he once called someone else’s work.",
+        "His tone became gentler, and classmates noticed that he no longer joked about people’s jobs. Respect, for him, became a daily habit rather than a lesson learnt once."
+      ],
+      lessons: [
+        "Every honest job keeps society running.",
+        "A simple thank-you can lift someone’s whole day.",
+        "Doing small tasks ourselves teaches us their true value.",
+        "Respect is shown in everyday words and actions."
+      ],
+      conclusion: "This scenario suggests how a single story, followed by reflection and practice, can widen a young person’s heart. When students learn to honour all work, they grow into fair and humble citizens."
+    },
+    mr: {
+      title: "प्रत्येक कामाला प्रतिष्ठा",
+      short: "व्यक्तिमत्त्व विकासात ऐकलेल्या एका गोष्टीमुळे एका विद्यार्थ्याला प्रत्येक कामाचे आणि ते करणाऱ्यांचे मोल उमगते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, ज्याने आपल्या आजूबाजूला शांतपणे राबणाऱ्या माणसांचा कधी फारसा विचारच केला नव्हता. अमृत वर्गात ऐकलेली एक गोष्ट त्याची कामाकडे आणि कष्टकऱ्यांकडे पाहण्याची दृष्टी हळूहळू कशी बदलू शकते, हे इथे मांडले आहे.",
+      challenge: "शाळेतील सफाई कामगारांशी तो बेफिकीरपणे बोलायचा आणि भाजीवाल्याला किंवा बसवाहकाला क्वचितच धन्यवाद म्हणायचा. काही कामे मोठी असतात आणि बाकीची कमी दर्जाची, असा त्याचा समज होता.",
+      journey: [
+        "व्यक्तिमत्त्व विकासाच्या वेळी वर्ग प्रमुखांनी एका थोर नेत्याची गोष्ट सांगितली, जे आपल्या आश्रमातील जमीन स्वतः संकोच न करता झाडत असत. त्यानंतर आपले रस्ते कोण स्वच्छ करते, आपले अन्न कोण पिकवते आणि आपली घरे कोण दुरुस्त करते, यावर वर्गात गप्पा रंगल्या.",
+        "पुढच्या काही वर्गांमध्ये वर्ग प्रमुखांनी प्रत्येकाला त्या आठवड्यात कोणीतरी आपल्यासाठी केलेले एक काम सांगायला सांगितले. पहारेकरी, स्वयंपाकी, चांभार यांच्याबद्दल मित्रांचे अनुभव ऐकताना आपला दिवस किती हातांच्या आधारावर चालतो, हे त्याला जाणवले.",
+        "मैदानावर खेळ संपल्यावर शंकू गोळा करणे आणि दोऱ्या गुंडाळणे हे काम सगळे आळीपाळीने करत. ही छोटी कामे स्वतः मन लावून करताना कोणतेच काम लहान नसते, याचा त्याला अनुभव आला."
+      ],
+      change: [
+        "हळूहळू तो शाळेतील सफाई कामगारांना नावाने नमस्कार करू लागला आणि बसमधून उतरताना वाहकाचे आभार मानू लागला. ज्या कामांना तो पूर्वी ‘दुसऱ्याचे काम’ म्हणायचा, त्या घरकामांतही तो आता हात लावू लागला.",
+        "त्याच्या बोलण्यात नम्रता आली आणि लोकांच्या व्यवसायावरून तो आता थट्टा करत नाही, हे मित्रांच्याही लक्षात आले. आदर हा त्याच्यासाठी एकदा शिकलेला धडा न राहता रोजची सवय बनला."
+      ],
+      lessons: [
+        "प्रत्येक प्रामाणिक काम समाजाचा गाडा चालवते.",
+        "साधे ‘धन्यवाद’ एखाद्याचा संपूर्ण दिवस उजळवू शकते.",
+        "छोटी कामे स्वतः केल्याने त्यांचे खरे मोल कळते.",
+        "आदर रोजच्या शब्दांतून आणि कृतीतून दिसतो."
+      ],
+      conclusion: "एक गोष्ट, त्यावरचे चिंतन आणि प्रत्यक्ष कृती मिळून तरुण मनाचा कसा विस्तार होऊ शकतो, हे या कथेतून दिसते. सर्व कामांचा सन्मान करायला शिकलेली मुले न्यायप्रिय आणि विनम्र नागरिक घडतात."
+    }
+  },
+  {
+    slug: "a-cleaner-neighbourhood",
+    category: "community",
+    en: {
+      title: "A Cleaner Corner of Our Lane",
+      short: "Keeping their session ground clean inspires a group of students to tidy a neglected corner of their neighbourhood on their own.",
+      intro: "This sample story imagines a small group of students who began to see their surroundings differently. It traces how a simple routine in Amrut Varg might spill over into caring for the neighbourhood.",
+      challenge: "Near the students’ homes was a corner where people dumped plastic and waste, and everyone walked past holding their noses. The students complained about it but assumed it was someone else’s job to fix.",
+      journey: [
+        "In Amrut Varg, every session ended with the group checking that the ground was left as clean as they found it. Over time, picking up stray wrappers became second nature, and the students began to feel a sense of ownership over the space.",
+        "During Personality Development, the Varg leader shared a story of villagers who cleaned their own lanes without waiting for help. The students began discussing whether they could do something similar, and the idea of the dirty corner came up.",
+        "With the Varg leader’s guidance and their parents’ permission, they planned carefully, deciding who would bring gloves and sacks and who would speak politely to neighbours. The teamwork they had practised in field games helped them divide tasks smoothly."
+      ],
+      change: [
+        "One weekend morning, the group cleared the corner and placed a few potted plants donated by neighbours. Some residents were surprised, a few joined in, and the students took turns checking the spot in the following weeks.",
+        "Each student felt a new pride in their neighbourhood and a growing confidence that young people can start change. They also learnt that keeping a place clean needs steady effort, not just one big day."
+      ],
+      lessons: [
+        "Responsibility starts with the space right around us.",
+        "A small group with a clear plan can inspire many.",
+        "Good habits from the Varg can serve the community.",
+        "Lasting change needs regular care."
+      ],
+      conclusion: "This illustrative scenario shows how a habit learnt on the Varg ground can grow into community service. When young people take the first step, neighbours often follow."
+    },
+    mr: {
+      title: "आमच्या गल्लीचा स्वच्छ कोपरा",
+      short: "वर्गाचे मैदान स्वच्छ ठेवण्याच्या सवयीतून प्रेरणा घेऊन काही विद्यार्थी स्वतःहून परिसरातील दुर्लक्षित कोपरा स्वच्छ करतात.",
+      intro: "ही नमुना कथा अशा काही विद्यार्थ्यांच्या गटाची कल्पना करते, ज्यांची आपल्या परिसराकडे पाहण्याची नजर बदलू लागली. अमृत वर्गातील एक साधी सवय परिसराची काळजी घेण्यापर्यंत कशी पोहोचू शकते, याचा मागोवा इथे घेतला आहे.",
+      challenge: "या मुलांच्या घराजवळ एक कोपरा होता, जिथे लोक प्लास्टिक आणि कचरा टाकत असत आणि तिथून जाताना सगळे नाक मुठीत धरत. मुले त्याबद्दल तक्रार करत, पण ते दुसऱ्या कोणाचे तरी काम आहे, असेच त्यांना वाटे.",
+      journey: [
+        "अमृत वर्गात प्रत्येक सत्राच्या शेवटी मैदान जसे मिळाले तसेच स्वच्छ ठेवले आहे ना, हे सगळे मिळून पाहत. कालांतराने पडलेले कागद उचलणे ही त्यांची सहज सवय झाली आणि त्या जागेबद्दल आपलेपणा वाटू लागला.",
+        "व्यक्तिमत्त्व विकासाच्या वेळी वर्ग प्रमुखांनी कोणाच्याही मदतीची वाट न पाहता आपल्या गल्ल्या स्वतः स्वच्छ करणाऱ्या गावकऱ्यांची गोष्ट सांगितली. आपणही असे काही करू शकतो का, यावर मुलांची चर्चा सुरू झाली आणि त्या घाणेरड्या कोपऱ्याचा विषय निघाला.",
+        "वर्ग प्रमुखांच्या मार्गदर्शनाखाली आणि पालकांच्या परवानगीने त्यांनी नीट नियोजन केले; हातमोजे व पोती कोण आणणार आणि शेजाऱ्यांशी नम्रपणे कोण बोलणार, हे ठरवले. मैदानी खेळांत सरावलेल्या संघभावनेमुळे कामांची वाटणी सहज झाली."
+      ],
+      change: [
+        "सुट्टीच्या एका सकाळी मुलांनी तो कोपरा साफ केला आणि शेजाऱ्यांनी दिलेल्या कुंड्या तिथे ठेवल्या. काही रहिवाशांना आश्चर्य वाटले, काही जण मदतीला आले आणि पुढचे काही आठवडे मुले आळीपाळीने त्या जागेवर लक्ष ठेवत राहिली.",
+        "प्रत्येकाला आपल्या परिसराबद्दल नवा अभिमान वाटू लागला आणि तरुणही बदलाची सुरुवात करू शकतात, हा विश्वास वाढला. एखादी जागा स्वच्छ ठेवण्यासाठी एक मोठा दिवस नव्हे, तर सातत्यपूर्ण प्रयत्न लागतात, हेही त्यांना समजले."
+      ],
+      lessons: [
+        "जबाबदारीची सुरुवात आपल्या अवतीभवतीच्या जागेपासून होते.",
+        "स्पष्ट नियोजन असलेला छोटा गटही अनेकांना प्रेरणा देऊ शकतो.",
+        "वर्गातील चांगल्या सवयी समाजाच्याही उपयोगी पडतात.",
+        "टिकाऊ बदलासाठी नियमित काळजी आवश्यक असते."
+      ],
+      conclusion: "वर्गाच्या मैदानावर लागलेली सवय समाजसेवेत कशी रूपांतरित होऊ शकते, हे ही कथा दाखवते. तरुणांनी पहिले पाऊल उचलले की शेजारीही अनेकदा त्यांच्या मागे येतात."
+    }
+  },
+  {
+    slug: "coming-back-stronger",
+    category: "challenges",
+    en: {
+      title: "Coming Back Stronger",
+      short: "After a long illness, a girl rejoins Amrut Varg, struggles to keep pace, and is gently supported back to strength and confidence.",
+      intro: "This sample story imagines a girl returning to Amrut Varg after weeks away due to illness. It explores how patience from others, and from herself, might help her find her place again.",
+      challenge: "When she came back, she tired quickly during the exercises and had forgotten several commands in the drill. Seeing her friends move ahead, she felt embarrassed and thought of giving up.",
+      journey: [
+        "The Varg leader noticed her hesitation and suggested she begin with gentle stretches and only a few rounds of सूर्यनमस्कार, adding more as she felt able. Instead of comparing herself with others, she was encouraged to notice her own small progress each day.",
+        "During the command drill, a classmate stood beside her and quietly helped her recall “निश्चलो भव” and “सुस्थितो भव”. Within a short time, the familiar commands came back, and her movements grew sharper again.",
+        "In field games, her team gave her roles that suited her energy at first, like keeping watch or guiding strategy. Being valued for her thinking, not just her speed, helped her feel part of the team from the start."
+      ],
+      change: [
+        "Over the following weeks, her stamina gradually returned and she joined the full session without needing to rest. More importantly, she learnt that setbacks are a part of life and that returning step by step is itself a kind of strength.",
+        "Having been supported herself, she became quick to notice when someone else was struggling and offered help without being asked."
+      ],
+      lessons: [
+        "Recovery is a journey of small, steady steps.",
+        "Comparing ourselves with others can hold us back.",
+        "A supportive group helps everyone rise again.",
+        "Those who have been helped often become the best helpers."
+      ],
+      conclusion: "This illustrative scenario reminds us that a caring circle can turn a difficult return into a fresh beginning. With patience and support, a setback can become a source of resilience."
+    },
+    mr: {
+      title: "पुन्हा उभारी",
+      short: "दीर्घ आजारानंतर वर्गात परतलेली एक विद्यार्थिनी सुरुवातीला मागे पडते, पण सर्वांच्या आधाराने पुन्हा आत्मविश्वास मिळवते.",
+      intro: "ही नमुना कथा आजारपणामुळे कित्येक आठवडे दूर राहिल्यानंतर अमृत वर्गात परतणाऱ्या एका विद्यार्थिनीची कल्पना करते. इतरांचा आणि स्वतःचाही संयम तिला पुन्हा आपली जागा मिळवायला कशी मदत करू शकतो, याचा शोध ही कथा घेते.",
+      challenge: "परतल्यावर व्यायाम करताना ती पटकन थकायची आणि आज्ञा अभ्यासातील अनेक आज्ञा ती विसरली होती. मैत्रिणी पुढे गेलेल्या पाहून तिला संकोच वाटू लागला आणि वर्ग सोडून द्यावा, असेही तिच्या मनात आले.",
+      journey: [
+        "वर्ग प्रमुखांनी तिची अडचण ओळखली आणि हलक्या ताणाच्या व्यायामांनी व मोजक्याच सूर्यनमस्कारांनी सुरुवात करून झेपेल तसे वाढवत जायला सुचवले. इतरांशी तुलना करण्याऐवजी रोजची आपली छोटी प्रगती पाहायला तिला प्रोत्साहन दिले गेले.",
+        "आज्ञा अभ्यासाच्या वेळी एक वर्गमैत्रीण तिच्या शेजारी उभी राहून ‘निश्चलो भव’ आणि ‘सुस्थितो भव’ हळूच आठवून देत असे. थोड्याच दिवसांत ओळखीच्या आज्ञा पुन्हा आठवू लागल्या आणि तिच्या हालचालींमध्ये पुन्हा नेमकेपणा आला.",
+        "मैदानी खेळांमध्ये तिच्या संघाने सुरुवातीला तिच्या ताकदीला साजेशा भूमिका दिल्या, जसे की लक्ष ठेवणे किंवा डावपेच सुचवणे. केवळ वेगासाठी नव्हे, तर विचारांसाठी आपली कदर होते, या जाणिवेने ती पहिल्या दिवसापासूनच संघाचा भाग असल्याचे तिला वाटले."
+      ],
+      change: [
+        "पुढच्या काही आठवड्यांत तिची दमछाक कमी होत गेली आणि विश्रांती न घेता ती पूर्ण वर्गात सहभागी होऊ लागली. त्याहूनही महत्त्वाचे म्हणजे अडथळे हा आयुष्याचा भाग असतो आणि टप्प्याटप्प्याने परत येणे हीसुद्धा एक ताकद आहे, हे ती शिकली.",
+        "स्वतःला आधार मिळाल्याने, कोणी अडखळत असेल तर ते तिच्या पटकन लक्षात येऊ लागले आणि न सांगता ती मदतीला धावू लागली."
+      ],
+      lessons: [
+        "बरे होणे हा छोट्या, स्थिर पावलांचा प्रवास असतो.",
+        "इतरांशी तुलना केल्याने आपण मागे राहू शकतो.",
+        "आधार देणारा गट प्रत्येकाला पुन्हा उभे राहायला मदत करतो.",
+        "ज्यांना मदत मिळाली ते अनेकदा उत्तम मदतनीस बनतात."
+      ],
+      conclusion: "काळजी घेणारे मंडल अवघड पुनरागमनालाही नवी सुरुवात कसे बनवू शकते, याची आठवण ही कथा करून देते. संयम आणि आधार मिळाल्यास अडथळाही लवचीकतेचा स्रोत ठरू शकतो."
+    }
+  },
+  {
+    slug: "early-to-rise",
+    category: "habits",
+    en: {
+      title: "A Calm Start to the Day",
+      short: "The steady rhythm of Amrut Varg helps a girl replace rushed, chaotic mornings with a calm and purposeful routine.",
+      intro: "This sample story imagines a girl whose mornings were always a race against the clock. It explores how the orderly flow of an Amrut Varg session might inspire her to bring the same calm into the start of her day.",
+      challenge: "She usually woke up late, skipped breakfast and rushed out with her bag half-packed, often forgetting books or homework. The hurry left her irritable and distracted for much of the day.",
+      journey: [
+        "In Amrut Varg, she noticed how each session moved in a fixed, unhurried order, from forming the circle to the closing शांती मंत्र. The Varg leader explained that a steady routine frees the mind to focus on what truly matters.",
+        "During Personality Development, the group talked about the value of early rising and shared simple ideas for a morning plan. The girl decided to try packing her bag at night and waking a little earlier than usual.",
+        "She began her mornings with a few rounds of सूर्यनमस्कार and a short moment of quiet, just as she did in the Varg. On days she slipped back into old habits, she simply started again the next morning without being hard on herself."
+      ],
+      change: [
+        "Over time, her mornings became calmer, and she had time for breakfast and a few minutes of revision before school. Her teachers noticed she seemed more settled, and she herself felt more in control of her day.",
+        "The discipline she built in small steps gave her confidence that she could shape her own habits. She began applying the same planning to her studies and evening schedule."
+      ],
+      lessons: [
+        "A calm morning sets the tone for the whole day.",
+        "Preparing the night before saves stress later.",
+        "Routines work best when built one small step at a time.",
+        "Missing a day is not failure; starting again is what counts."
+      ],
+      conclusion: "This illustrative scenario shows how the order of a single hour can inspire order in the rest of the day. Gentle, steady discipline helps young people take charge of their own time."
+    },
+    mr: {
+      title: "शांत सकाळची सुरुवात",
+      short: "अमृत वर्गाच्या शिस्तबद्ध लयीमुळे एका विद्यार्थिनीची धावपळीची सकाळ शांत आणि नियोजित दिनक्रमात बदलते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थिनीची कल्पना करते, जिची प्रत्येक सकाळ घड्याळाशी शर्यत असायची. अमृत वर्गातील नेटक्या क्रमातून प्रेरणा घेऊन ती तोच शांतपणा आपल्या दिवसाच्या सुरुवातीत कसा आणू शकते, हे इथे मांडले आहे.",
+      challenge: "ती बहुधा उशिरा उठायची, न्याहारी टाळायची आणि अर्धवट भरलेले दप्तर घेऊन घाईघाईत निघायची, त्यामुळे वह्या किंवा गृहपाठ अनेकदा घरीच राहायचा. या गडबडीमुळे दिवसभर तिची चिडचिड होत असे आणि लक्ष लागत नसे.",
+      journey: [
+        "मंडल तयार करण्यापासून शेवटच्या शांती मंत्रापर्यंत अमृत वर्गातील प्रत्येक सत्र ठरलेल्या, निवांत क्रमाने पुढे जाते, हे तिच्या लक्षात आले. ठरावीक दिनक्रमामुळे मन मोकळे राहते आणि खऱ्या महत्त्वाच्या गोष्टींवर लक्ष केंद्रित करता येते, असे वर्ग प्रमुखांनी समजावले.",
+        "व्यक्तिमत्त्व विकासात लवकर उठण्याचे महत्त्व आणि सकाळच्या नियोजनाच्या साध्या कल्पना यांवर गप्पा झाल्या. रात्रीच दप्तर भरून ठेवायचे आणि नेहमीपेक्षा थोडे लवकर उठायचे, असे तिने ठरवले.",
+        "वर्गाप्रमाणेच ती आता सकाळी काही सूर्यनमस्कार घालून आणि क्षणभर शांत बसून दिवसाची सुरुवात करू लागली. जुन्या सवयी डोके वर काढत तेव्हा स्वतःला दोष न देता ती दुसऱ्या दिवशी पुन्हा नव्याने सुरुवात करत असे."
+      ],
+      change: [
+        "कालांतराने तिच्या सकाळी शांत झाल्या आणि शाळेत जाण्याआधी न्याहारी व थोडी उजळणी करायला तिला वेळ मिळू लागला. ती अधिक स्थिर दिसते, हे शिक्षकांनाही जाणवले आणि आपला दिवस आपल्या हातात आहे, असे तिलाही वाटू लागले.",
+        "छोट्या छोट्या पावलांनी कमावलेल्या शिस्तीमुळे आपण आपल्या सवयी घडवू शकतो, हा आत्मविश्वास तिला मिळाला. हेच नियोजन ती अभ्यासात आणि संध्याकाळच्या वेळापत्रकातही वापरू लागली."
+      ],
+      lessons: [
+        "शांत सकाळ संपूर्ण दिवसाचा सूर ठरवते.",
+        "आदल्या रात्रीची तयारी दुसऱ्या दिवशीचा ताण वाचवते.",
+        "दिनक्रम एकेका छोट्या पावलाने उत्तम घडतो.",
+        "एखादा दिवस चुकणे म्हणजे अपयश नव्हे; पुन्हा सुरुवात करणे महत्त्वाचे."
+      ],
+      conclusion: "एका तासातील शिस्त उरलेल्या दिवसालाही कशी वळण लावू शकते, हे ही कथा दाखवते. सौम्य पण सातत्यपूर्ण शिस्त तरुणांना आपल्या वेळेचे खरे मालक बनवते."
+    }
+  },
+  {
+    slug: "the-strength-of-the-chain",
+    category: "group",
+    en: {
+      title: "The Strength of the Chain",
+      short: "A field game where everyone must hold hands teaches a group that they are only as strong as their coordination.",
+      intro: "This sample story imagines a group of students playing a chain game in which players must stay linked by holding hands. It shows how repeated failures and a shared reflection might turn a scattered group into a coordinated team.",
+      challenge: "In the first rounds, each student pulled in a different direction, the chain kept breaking, and they were easily caught by the other side. Some blamed the slowest players, while the fastest ones grew impatient.",
+      journey: [
+        "After a few broken chains, the Varg leader stopped the game and asked the group to sit in a circle. Together they talked about why the chain kept snapping, and slowly realised that speed meant nothing if they did not move as one.",
+        "The group decided to choose a leader at one end who would call out directions, much like the commands they followed in आज्ञा अभ्यास. They also agreed to match their pace to the slowest member so that no hand would slip.",
+        "In the next rounds, they practised moving together, with quiet signals passed down the line. The chain held longer each time, and the laughter of the group grew louder with every successful turn."
+      ],
+      change: [
+        "By the end of the session, the students had learnt to listen, adjust and trust one another. The fastest players discovered the value of patience, and the quieter ones found that their steady grip mattered just as much.",
+        "This understanding carried into other activities, from the drill to group projects at school, where they began planning and communicating before rushing ahead."
+      ],
+      lessons: [
+        "A team moves only as fast as its members move together.",
+        "Clear communication holds a group together.",
+        "Every member, fast or slow, has an important place.",
+        "Pausing to reflect can turn failure into success."
+      ],
+      conclusion: "This illustrative scenario shows how a simple game of linked hands can teach the heart of teamwork. When a group learns to move as one, it becomes far stronger than any single member."
+    },
+    mr: {
+      title: "साखळीची खरी ताकद",
+      short: "सगळ्यांनी हात धरूनच खेळायच्या एका मैदानी खेळातून गटाला कळते की ताळमेळ हीच त्यांची खरी ताकद आहे.",
+      intro: "ही नमुना कथा हात धरून साखळी टिकवून ठेवावी लागणाऱ्या खेळात सहभागी झालेल्या विद्यार्थ्यांच्या एका गटाची कल्पना करते. वारंवार येणारे अपयश आणि त्यावरचे एकत्र चिंतन विस्कळीत गटाला एकसंध संघात कसे बदलू शकते, हे इथे दाखवले आहे.",
+      challenge: "सुरुवातीच्या फेऱ्यांमध्ये प्रत्येक जण वेगळ्या दिशेने ओढायचा, साखळी सारखी तुटायची आणि दुसरा संघ त्यांना सहज पकडायचा. काही जण हळू धावणाऱ्यांना दोष देत, तर वेगवान मुले अधीर होत.",
+      journey: [
+        "साखळी काही वेळा तुटल्यानंतर वर्ग प्रमुखांनी खेळ थांबवला आणि सगळ्यांना मंडलात बसवले. साखळी का तुटते, यावर सगळ्यांनी मिळून विचार केला आणि सगळे एकत्र हलले नाहीत तर वेगाला काहीच अर्थ नाही, हे त्यांना हळूहळू उमगले.",
+        "आज्ञा अभ्यासातील आज्ञांप्रमाणेच दिशा सांगणारा एक नायक साखळीच्या एका टोकाला ठेवायचे गटाने ठरवले. कोणाचाही हात सुटू नये म्हणून सर्वांत हळू सदस्याच्या गतीशी आपली गती जुळवायचे, यावरही त्यांचे एकमत झाले.",
+        "पुढच्या फेऱ्यांमध्ये रांगेतून हलकेच इशारे पुढे देत त्यांनी एकत्र हालचाल करण्याचा सराव केला. प्रत्येक वेळी साखळी अधिक काळ टिकू लागली आणि प्रत्येक यशस्वी वळणासोबत गटाचे हसू अधिक खुलू लागले."
+      ],
+      change: [
+        "सत्र संपेपर्यंत विद्यार्थी एकमेकांचे ऐकायला, जुळवून घ्यायला आणि एकमेकांवर विश्वास ठेवायला शिकले होते. वेगवान खेळाडूंना संयमाचे मोल कळले आणि शांत स्वभावाच्या मुलांना आपली घट्ट पकडही तितकीच महत्त्वाची आहे, हे जाणवले.",
+        "ही समज पुढे आज्ञा अभ्यासापासून शाळेतील गट प्रकल्पांपर्यंत सगळीकडे दिसू लागली; घाई करण्याआधी ते नियोजन करू लागले आणि एकमेकांशी संवाद साधू लागले."
+      ],
+      lessons: [
+        "संघ तितकाच वेगाने पुढे जातो, जितके त्याचे सदस्य एकत्र चालतात.",
+        "स्पष्ट संवाद गटाला एकत्र बांधून ठेवतो.",
+        "वेगवान असो वा हळू, प्रत्येक सदस्याचे स्थान महत्त्वाचे आहे.",
+        "थांबून विचार केल्यास अपयशाचे यशात रूपांतर होऊ शकते."
+      ],
+      conclusion: "एकमेकांचे हात धरून खेळलेला एक साधा खेळ संघभावनेचे मर्म कसे शिकवू शकतो, हे ही कथा दाखवते. गट जेव्हा एकदिलाने हालचाल करायला शिकतो, तेव्हा तो कोणत्याही एका सदस्यापेक्षा कितीतरी अधिक सामर्थ्यवान होतो."
+    }
+  },
+  {
+    slug: "courtesy-that-opens-doors",
+    category: "personality",
+    en: {
+      title: "Courtesy That Opens Doors",
+      short: "Simple habits of greeting, thanking and respecting others slowly transform a student's relationships at home and school.",
+      intro: "This sample story imagines a student who was not unkind, but rarely remembered everyday courtesies. It explores how the respectful atmosphere of Amrut Varg could make good manners feel natural.",
+      challenge: "He would walk past elders without a greeting, take things from classmates without a word of thanks, and interrupt when others were talking. Without meaning to, he often left people feeling ignored.",
+      journey: [
+        "Amrut Varg began with everyone standing together in a circle and joining in the prayer, and the student noticed how each person waited for the others before starting. That shared respect, repeated every day, made him more aware of how he behaved around people.",
+        "After field games, the Varg leader encouraged players to shake hands with the other team and to thank whoever had helped them. In the Personality Development session, a story about a great person's humility stayed with him for days.",
+        "He decided to practise small things: greeting his grandparents each morning, thanking the shopkeeper, and waiting for his turn to speak. At first it felt awkward, but repetition made it easier."
+      ],
+      change: [
+        "Over time, he found that people responded to him more warmly. Teachers smiled more often, classmates were happier to work with him, and the atmosphere at home grew more affectionate.",
+        "He realised that courtesy costs nothing but builds trust and goodwill wherever one goes."
+      ],
+      lessons: [
+        "A greeting and a thank-you can brighten someone's day.",
+        "Respecting elders and peers strengthens relationships.",
+        "Good manners grow through daily practice.",
+        "Courtesy builds trust that opens many doors."
+      ],
+      conclusion: "This story suggests that small courtesies, practised regularly, can quietly change a young person's world. Amrut Varg offers a daily setting where such values can take root."
+    },
+    mr: {
+      title: "सौजन्याने उघडणारी दारे",
+      short: "नमस्कार करणे, आभार मानणे आणि इतरांचा आदर राखणे या साध्या सवयींनी एका विद्यार्थ्याचे घरातील व शाळेतील नाते बदलू लागते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, जो मनाने वाईट नव्हता, पण रोजच्या शिष्टाचारांकडे त्याचे फारसे लक्ष नसे. अमृत वर्गातील आदरयुक्त वातावरणामुळे चांगल्या सवयी सहजपणे अंगी कशा बाणू शकतात, याचा वेध ही कथा घेते.",
+      challenge: "मोठ्यांसमोरून तो नमस्कार न करताच निघून जाई, मित्रांकडून वस्तू घेताना आभाराचा एक शब्दही काढत नसे आणि इतर बोलत असताना मध्येच बोलत असे. त्याच्या नकळत, आपल्याकडे दुर्लक्ष होते आहे असे लोकांना वाटत असे.",
+      journey: [
+        "अमृत वर्गाची सुरुवात सगळ्यांनी मंडल करून एकत्र प्रार्थना म्हणण्याने होत असे, आणि प्रत्येकजण इतरांसाठी थांबूनच सुरुवात करतो हे त्याने पाहिले. रोज अनुभवलेल्या या परस्पर आदरामुळे आपण इतरांशी कसे वागतो, याबद्दल तो अधिक सजग झाला.",
+        "मैदानी खेळांनंतर प्रतिस्पर्धी संघाशी हस्तांदोलन करावे आणि मदत करणाऱ्याचे आभार मानावेत, असे वर्ग प्रमुख आवर्जून सांगत. व्यक्तिमत्त्व विकास सत्रात ऐकलेली एका थोर व्यक्तीच्या नम्रतेची गोष्ट त्याच्या मनात कित्येक दिवस घोळत राहिली.",
+        "त्याने छोट्या गोष्टींपासून सुरुवात करायचे ठरवले: रोज सकाळी आजी-आजोबांना नमस्कार करणे, दुकानदाराचे आभार मानणे आणि बोलण्यासाठी आपली पाळी येईपर्यंत थांबणे. सुरुवातीला हे थोडे अवघडल्यासारखे वाटले, पण सरावाने ते सहज होत गेले."
+      ],
+      change: [
+        "काही काळाने लोक आपल्याशी अधिक आपुलकीने वागतात, हे त्याला जाणवू लागले. शिक्षक अधिक वेळा हसून बोलू लागले, मित्र त्याच्यासोबत काम करायला उत्सुक असू लागले आणि घरातील वातावरणही अधिक स्नेहपूर्ण झाले.",
+        "सौजन्यासाठी काहीच खर्च करावा लागत नाही, पण ते जिथे जाऊ तिथे विश्वास आणि सद्भावना निर्माण करते, हे त्याच्या लक्षात आले."
+      ],
+      lessons: [
+        "एक नमस्कार आणि आभाराचा एक शब्द कोणाचाही दिवस प्रसन्न करू शकतो.",
+        "मोठ्यांचा आणि मित्रांचा आदर केल्याने नाती दृढ होतात.",
+        "चांगल्या सवयी रोजच्या सरावातून घडतात.",
+        "सौजन्यातून निर्माण होणारा विश्वास अनेक दारे उघडतो."
+      ],
+      conclusion: "नियमितपणे पाळलेले छोटे शिष्टाचार एखाद्या तरुणाचे जग शांतपणे कसे बदलू शकतात, हे ही कथा सुचवते. अशी मूल्ये रुजवण्यासाठी अमृत वर्ग रोजचे एक हक्काचे व्यासपीठ देतो."
+    }
+  },
+  {
+    slug: "clear-commands-clear-minds",
+    category: "communication",
+    en: {
+      title: "Clear Commands, Clear Minds",
+      short: "Giving commands during the drill teaches a soft-spoken student to speak with clarity, volume and precision.",
+      intro: "This sample story imagines a student who mumbled whenever he spoke, so that people often asked him to repeat himself. It explores how taking turns to call out commands in आज्ञा अभ्यास could sharpen both his voice and his thinking.",
+      challenge: "His answers in class were often correct but hard to hear, and his words tended to run together. When he was first given a turn to lead the drill, his command was so soft that half the group did not react.",
+      journey: [
+        "The Varg leader explained that a command must be short, loud and clear so that everyone can act on it at once. He showed how to breathe from the stomach and project the voice for “सुस्थितो भव” and “निश्चलो भव” instead of straining the throat.",
+        "The student practised saying each command distinctly — “उत्तिष्ठो भव”, “असिनो भव”, “गणनम् कुरु” — paying attention to every syllable. He noticed that when his command was crisp, the whole group moved together, and when it was vague, there was confusion.",
+        "With each turn he grew more precise, and he began to think about the right moment and tone for each command. Leading the drill also required him to stay alert and watch the whole group carefully."
+      ],
+      change: [
+        "His everyday speech gradually became clearer and more confident, and classmates no longer had to ask him to repeat himself. He also began organising his thoughts before speaking, so his explanations became shorter and easier to follow.",
+        "He learned that clear speech comes from a clear mind, and that precise words help others act with confidence."
+      ],
+      lessons: [
+        "Clear, well-projected speech helps everyone understand.",
+        "Precise words prevent confusion in a group.",
+        "Organising thoughts before speaking leads to better communication.",
+        "Leading a drill builds both alertness and responsibility."
+      ],
+      conclusion: "This story imagines how a few seconds of calling commands each day can transform the way a student speaks. In Amrut Varg, the discipline of आज्ञा अभ्यास becomes practice in clear communication."
+    },
+    mr: {
+      title: "स्पष्ट आज्ञा, स्पष्ट विचार",
+      short: "आज्ञा अभ्यासात आज्ञा देण्याच्या संधीतून हळू बोलणारा एक विद्यार्थी स्पष्ट, खणखणीत आणि नेमके बोलायला शिकतो.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, जो बोलताना पुटपुटत असे आणि त्यामुळे लोकांना त्याला पुन्हा पुन्हा विचारावे लागे. आज्ञा अभ्यासात आळीपाळीने आज्ञा देण्याच्या अनुभवाने त्याचा आवाज आणि विचार दोन्ही कसे धारदार होऊ शकतात, याचा शोध ही कथा घेते.",
+      challenge: "वर्गात त्याची उत्तरे बहुतेक वेळा बरोबर असत, पण ती नीट ऐकू येत नसत आणि शब्द एकमेकांत मिसळून जात. पहिल्यांदा आज्ञा अभ्यासाचे नेतृत्व करायची संधी मिळाली, तेव्हा त्याची आज्ञा इतकी हळू होती की अर्ध्या गटाने हालचालच केली नाही.",
+      journey: [
+        "आज्ञा छोटी, मोठ्या आवाजातील आणि स्पष्ट असली पाहिजे, म्हणजे सगळे एकाच क्षणी तिचे पालन करू शकतात, असे वर्ग प्रमुखांनी समजावले. घसा ताणण्याऐवजी पोटातून श्वास घेऊन “सुस्थितो भव” आणि “निश्चलो भव” या आज्ञा खणखणीत आवाजात कशा द्यायच्या, हे त्यांनी करून दाखवले.",
+        "“उत्तिष्ठो भव”, “असिनो भव”, “गणनम् कुरु” अशी प्रत्येक आज्ञा प्रत्येक अक्षराकडे लक्ष देत स्पष्टपणे उच्चारण्याचा त्याने सराव केला. आज्ञा ठसठशीत असली की सगळा गट एकसाथ हालचाल करतो आणि ती अस्पष्ट असली की गोंधळ उडतो, हे त्याच्या लक्षात आले.",
+        "प्रत्येक संधीसोबत तो अधिक नेमका होत गेला, आणि प्रत्येक आज्ञेची योग्य वेळ व सूर यांचा विचार करू लागला. आज्ञा अभ्यासाचे नेतृत्व करताना सजग राहून संपूर्ण गटावर लक्ष ठेवणेही आवश्यक असते, याचाही त्याला अनुभव आला."
+      ],
+      change: [
+        "त्याचे रोजचे बोलणे हळूहळू अधिक स्पष्ट आणि आत्मविश्वासपूर्ण झाले; मित्रांना आता त्याला पुन्हा विचारावे लागत नसे. बोलण्यापूर्वी तो विचारांची मांडणी करू लागला, त्यामुळे त्याचे स्पष्टीकरण अधिक नेटके आणि समजायला सोपे झाले.",
+        "स्पष्ट बोलणे स्पष्ट विचारांतून येते आणि नेमके शब्द इतरांना आत्मविश्वासाने कृती करायला मदत करतात, ही जाणीव त्याला झाली."
+      ],
+      lessons: [
+        "स्पष्ट आणि खणखणीत आवाजामुळे सर्वांना नीट समजते.",
+        "नेमक्या शब्दांमुळे गटातील गोंधळ टळतो.",
+        "बोलण्यापूर्वी विचारांची मांडणी केल्याने संवाद सुधारतो.",
+        "आज्ञा अभ्यासाचे नेतृत्व सजगता आणि जबाबदारी दोन्ही वाढवते."
+      ],
+      conclusion: "रोज काही क्षण आज्ञा देण्याचा अनुभव विद्यार्थ्याची बोलण्याची पद्धत कशी बदलू शकतो, याची कल्पना ही कथा करते. अमृत वर्गात आज्ञा अभ्यासाची शिस्त स्पष्ट संवादाचा सराव बनते."
+    }
+  },
+  {
+    slug: "sharing-the-spotlight",
+    category: "leadership",
+    en: {
+      title: "Learning to Step Back",
+      short: "A confident student who always wanted to be in front discovers the quiet strength of letting others take the lead.",
+      intro: "This sample story imagines a lively, outspoken student who loves being at the front of every activity. It explores how Amrut Varg can help such a natural leader grow into a more generous one.",
+      challenge: "The student was always the first to volunteer, the loudest voice in songs, and the one who answered every question. Others in the group had begun to hold back, assuming the same person would lead every time. The student did not notice that this enthusiasm was leaving little space for anyone else.",
+      journey: [
+        "One day the Varg leader asked different participants to take turns giving the commands in आज्ञा अभ्यास, such as सुस्थितो भव and निश्चलो भव. The student was asked to stand in the line and follow instead. It felt strange at first, but it also showed how hard it is to call commands clearly and how much a leader depends on a willing group.",
+        "Later, during a seated game, a shy classmate hesitated before calling the next move. Instead of jumping in, the student waited and nodded encouragingly. The classmate finished the turn, and the small moment of trust did not go unnoticed by either of them."
+      ],
+      change: [
+        "Gradually, the student began to see leadership as something that can be shared rather than held. The habit of stepping forward did not disappear, but it was balanced by a new habit of inviting others first.",
+        "The group became livelier as more voices joined in, and the student found a different kind of satisfaction in watching friends grow in confidence."
+      ],
+      lessons: [
+        "A good leader also knows how to be a good follower.",
+        "Giving others a turn helps the whole group grow.",
+        "Patience can be a form of encouragement.",
+        "Confidence is most useful when it lifts others too."
+      ],
+      conclusion: "In this imagined journey, a student who once wanted every spotlight learns to share it. Amrut Varg creates room for such growth by letting everyone, in turn, lead and follow."
+    },
+    mr: {
+      title: "मागे राहण्यातलं मोठेपण",
+      short: "नेहमी पुढे राहू पाहणाऱ्या एका आत्मविश्वासू विद्यार्थिनीला इतरांना नेतृत्वाची संधी देण्यातील शांत बळ उमगते.",
+      intro: "ही नमुना कथा प्रत्येक उपक्रमात पुढे असणाऱ्या एका उत्साही, बोलक्या विद्यार्थिनीची कल्पना मांडते. अशा जन्मजात नेतृत्वगुणांना अमृत वर्ग अधिक उदार रूप कसे देऊ शकतो, याचा वेध ही कथा घेते.",
+      challenge: "प्रत्येक कामासाठी हात वर करणारी पहिली तीच असायची, गाण्यांमध्ये तिचा आवाज सर्वात मोठा असायचा आणि प्रत्येक प्रश्नाचे उत्तरही तीच द्यायची. आता प्रत्येक वेळी तीच पुढाकार घेणार, असे समजून गटातील इतर जण मागे राहू लागले होते. आपल्या उत्साहामुळे इतरांना फारशी जागाच उरत नाही, हे तिच्या लक्षातही आले नव्हते.",
+      journey: [
+        "एके दिवशी वर्ग प्रमुखांनी आज्ञा अभ्यासात सुस्थितो भव, निश्चलो भव अशा आज्ञा देण्याची संधी वेगवेगळ्या सहभागींना आळीपाळीने दिली. तिला मात्र रांगेत उभे राहून आज्ञा पाळायला सांगितले. सुरुवातीला हे विचित्र वाटले, पण स्पष्टपणे आज्ञा देणे किती अवघड असते आणि नेता साथ देणाऱ्या गटावर किती अवलंबून असतो, हेही तिला जाणवले.",
+        "नंतर एका बैठ्या खेळात एक लाजाळू वर्गमैत्रीण पुढची चाल सांगताना अडखळली. मध्येच बोलण्याऐवजी ती थांबली आणि मान डोलावून तिला धीर दिला. मैत्रिणीने आपली फेरी पूर्ण केली, आणि विश्वासाचा तो छोटासा क्षण दोघींच्याही मनात कोरला गेला."
+      ],
+      change: [
+        "हळूहळू तिला नेतृत्व ही धरून ठेवण्याची नव्हे, तर वाटून घेण्याची गोष्ट वाटू लागली. पुढे होण्याची तिची सवय गेली नाही, पण आधी इतरांना संधी देण्याच्या नव्या सवयीने तिला समतोल लाभला.",
+        "अधिक आवाज सहभागी होऊ लागल्याने गट अधिक चैतन्यमय झाला, आणि मैत्रिणींचा आत्मविश्वास वाढताना पाहण्यात तिला एक वेगळेच समाधान मिळू लागले."
+      ],
+      lessons: [
+        "चांगल्या नेत्याला चांगले अनुयायी होणेही जमायला हवे.",
+        "इतरांना संधी दिल्याने संपूर्ण गटाची प्रगती होते.",
+        "धीर धरणे हेसुद्धा प्रोत्साहनच असते.",
+        "इतरांनाही उभारी देणारा आत्मविश्वास सर्वात मोलाचा ठरतो."
+      ],
+      conclusion: "या कल्पित प्रवासात प्रत्येक वेळी केंद्रस्थानी राहू पाहणारी विद्यार्थिनी ते स्थान इतरांसोबत वाटून घ्यायला शिकते. प्रत्येकाला आळीपाळीने नेतृत्व करण्याची आणि साथ देण्याची संधी देऊन अमृत वर्ग अशा वाढीला वाव देतो."
+    }
+  },
+  {
+    slug: "new-rules-for-an-old-game",
+    category: "creativity",
+    en: {
+      title: "A Fresh Twist on a Seated Game",
+      short: "A student suggests a creative variation of a familiar seated game, and the Varg leader lets the whole group try it out.",
+      intro: "This sample story imagines a curious student who enjoys the seated games but keeps wondering how they could be made even more interesting. It shows how a supportive Varg leader can turn a simple suggestion into a lesson in creative thinking.",
+      challenge: "The group had played \"आकाश–धरती–पाताळ\" many times and knew it well. The student noticed that some players had started to lose focus because the game felt predictable. He had an idea for a change but was unsure whether it was proper to suggest altering a game everyone already knew.",
+      journey: [
+        "After a session, the student shyly shared his idea with the Varg leader: adding a new action that players would have to remember along with the usual ones, so that everyone had to listen even more closely. The Varg leader listened carefully and suggested trying it the next day.",
+        "When the group played the new version, there was plenty of laughter as players mixed up the actions. After a few rounds, the student noticed the rules needed one small adjustment to be fair, and he proposed it himself. The game became both more challenging and more fun.",
+        "The Varg leader later explained to the group that the purpose of the game, building concentration, was still at its heart. The new rules simply gave it fresh energy."
+      ],
+      change: [
+        "The student learned that ideas can be tested, improved and shared without fear. He began to look at everyday tasks with the same playful question: how could this be done a little differently? His classmates also felt encouraged to suggest their own ideas in future sessions."
+      ],
+      lessons: [
+        "Creative ideas often begin with a simple question.",
+        "Testing and adjusting an idea is part of creating something new.",
+        "A good change keeps the original purpose in mind.",
+        "Sharing an idea respectfully opens the door for others to do the same."
+      ],
+      conclusion: "In this imagined scenario, a familiar game becomes a small laboratory of creativity. Amrut Varg welcomes such thoughtful suggestions, helping young minds see that tradition and fresh ideas can go hand in hand."
+    },
+    mr: {
+      title: "जुन्या खेळाला नवी रंगत",
+      short: "एक विद्यार्थी ओळखीच्या बैठ्या खेळात कल्पक बदल सुचवतो आणि वर्ग प्रमुख संपूर्ण गटाला तो खेळून पाहण्याची संधी देतात.",
+      intro: "ही नमुना कथा बैठे खेळ आवडणाऱ्या, पण ते अधिक रंजक कसे करता येतील याचा सतत विचार करणाऱ्या एका जिज्ञासू विद्यार्थ्याची कल्पना करते. एखाद्या साध्या सूचनेचे रूपांतर सर्जनशील विचारांच्या धड्यात करण्यास पाठिंबा देणारे वर्ग प्रमुख कशी मदत करू शकतात, हे यातून दिसते.",
+      challenge: "गटाने “आकाश–धरती–पाताळ” हा खेळ अनेकदा खेळला होता आणि तो सर्वांच्या चांगलाच परिचयाचा होता. खेळ अपेक्षित वळणाने जात असल्याने काही खेळाडूंचे लक्ष विचलित होऊ लागल्याचे त्याच्या लक्षात आले. त्याच्या मनात एक बदल सुचला होता, पण सर्वांना ठाऊक असलेल्या खेळात बदल सुचवणे योग्य ठरेल का, याबद्दल तो साशंक होता.",
+      journey: [
+        "एका सत्रानंतर त्याने संकोचतच आपली कल्पना वर्ग प्रमुखांना सांगितली: नेहमीच्या कृतींबरोबर लक्षात ठेवायची एक नवी कृती जोडायची, म्हणजे सगळ्यांना आणखी लक्षपूर्वक ऐकावे लागेल. वर्ग प्रमुखांनी ती शांतपणे ऐकून घेतली आणि दुसऱ्याच दिवशी खेळून पाहूया, असे सुचवले.",
+        "नवा प्रकार खेळताना कृतींमध्ये गल्लत झाल्याने भरपूर हशा पिकला. काही फेऱ्यांनंतर खेळ न्याय्य होण्यासाठी नियमात एक छोटासा बदल हवा, हे त्याच्या लक्षात आले आणि तो बदल त्यानेच सुचवला. खेळ अधिक आव्हानात्मक आणि अधिक मजेदार झाला.",
+        "एकाग्रता वाढवणे हा खेळाचा मूळ हेतू अजूनही कायम आहे, असे वर्ग प्रमुखांनी नंतर गटाला समजावून सांगितले. नव्या नियमांनी त्या हेतूला फक्त नवी ऊर्जा दिली होती."
+      ],
+      change: [
+        "कल्पना निर्भयपणे पडताळून पाहता येतात, सुधारता येतात आणि इतरांपर्यंत पोहोचवता येतात, हे तो शिकला. हेच काम थोडे वेगळ्या पद्धतीने कसे करता येईल, या खेळकर प्रश्नाने तो रोजच्या कामांकडे पाहू लागला. पुढील सत्रांमध्ये आपल्या कल्पना मांडण्यासाठी त्याच्या वर्गमित्रांनाही हुरूप आला."
+      ],
+      lessons: [
+        "सर्जनशील कल्पनांची सुरुवात अनेकदा एका साध्या प्रश्नातून होते.",
+        "कल्पना करून पाहणे आणि सुधारणे हा नवनिर्मितीचाच भाग आहे.",
+        "चांगला बदल मूळ हेतू नजरेआड होऊ देत नाही.",
+        "आदराने मांडलेली कल्पना इतरांसाठीही वाट मोकळी करते."
+      ],
+      conclusion: "या कल्पित प्रसंगात एक ओळखीचा खेळ सर्जनशीलतेची छोटीशी प्रयोगशाळा बनतो. परंपरा आणि नव्या कल्पना हातात हात घालून चालू शकतात, हे कोवळ्या मनांना दाखवत अमृत वर्ग अशा विचारपूर्वक सूचनांचे स्वागत करतो."
+    }
+  },
+  {
+    slug: "keeping-our-ground-clean",
+    category: "discipline",
+    en: {
+      title: "The Ground We Share",
+      short: "Students begin taking responsibility for leaving the session ground clean, and learn what it means to care for a shared space.",
+      intro: "This sample story imagines a group of Amrut Varg participants who notice that the ground where they meet is often left littered. It follows how one student's small action grows into a shared habit of care.",
+      challenge: "The open ground used for the session was also used by many others through the day. Wrappers, bottles and scraps of paper were often scattered around, and the group had simply learned to ignore them. No one felt it was their job to clean up a place that belonged to everyone.",
+      journey: [
+        "One day, before the field games began, a student quietly picked up a few wrappers from the spot where the circle would form. A couple of friends noticed and joined in. The Varg leader observed this and, during Personality Development, spoke about how caring for shared spaces is a quiet form of patriotism.",
+        "The group decided that each day, after the शांती मंत्र, everyone would spend a few minutes leaving the ground cleaner than they found it. Using the same spirit as the command drill, they divided the area into sections so the work was quick and orderly.",
+        "Some days it felt like a chore, especially when the ground was very untidy. But the group kept at it, and gradually there was less litter to collect."
+      ],
+      change: [
+        "The students began to see the ground not as someone else's responsibility but as their own. The habit spread beyond the session, with several of them becoming more careful about litter at school and in their neighbourhoods.",
+        "The student who first bent down to pick up a wrapper learned that a small example can quietly inspire many others."
+      ],
+      lessons: [
+        "Shared spaces need shared care.",
+        "Leading by example often speaks louder than words.",
+        "Dividing work fairly makes a big task manageable.",
+        "Discipline includes looking after our surroundings."
+      ],
+      conclusion: "In this imagined scenario, a group turns a neglected ground into a place they are proud of. Amrut Varg encourages such ownership, linking personal discipline with care for the community."
+    },
+    mr: {
+      title: "आपलं मैदान, आपली जबाबदारी",
+      short: "सत्राचे मैदान स्वच्छ ठेवण्याची जबाबदारी विद्यार्थी स्वतःहून घेऊ लागतात आणि सार्वजनिक जागेची काळजी घेणे म्हणजे काय, ते शिकतात.",
+      intro: "ही नमुना कथा आपण जिथे जमतो ते मैदान अनेकदा कचऱ्याने भरलेले असते, हे लक्षात आलेल्या अमृत वर्गातील सहभागींच्या एका गटाची कल्पना करते. एका विद्यार्थ्याची छोटीशी कृती सर्वांच्या काळजीच्या सवयीत कशी बदलते, याचा मागोवा ही कथा घेते.",
+      challenge: "सत्रासाठी वापरले जाणारे मोकळे मैदान दिवसभर इतरही अनेक जण वापरायचे. वेष्टने, बाटल्या आणि कागदाचे कपटे इकडे-तिकडे पडलेले असायचे, आणि त्यांच्याकडे दुर्लक्ष करण्याची गटाला सवय झाली होती. सर्वांच्या मालकीची जागा स्वच्छ करणे हे आपले काम आहे, असे कोणालाच वाटत नव्हते.",
+      journey: [
+        "एके दिवशी मैदानी खेळ सुरू होण्यापूर्वी एका विद्यार्थ्याने वर्तुळ जिथे होणार होते तिथली काही वेष्टने शांतपणे उचलली. दोन-तीन मित्रांचे लक्ष गेले आणि तेही त्याच्या मदतीला आले. वर्ग प्रमुखांनी हे पाहिले आणि व्यक्तिमत्त्व विकासाच्या वेळी सार्वजनिक जागांची काळजी घेणे हा देशप्रेमाचाच एक शांत आविष्कार असतो, याविषयी ते बोलले.",
+        "रोज शांती मंत्रानंतर सगळ्यांनी काही मिनिटे देऊन मैदान आधीपेक्षा अधिक स्वच्छ करून जायचे, असे गटाने ठरवले. आज्ञा अभ्यासातील शिस्तीच्याच भावनेने त्यांनी मैदानाचे भाग वाटून घेतले, त्यामुळे काम झटपट आणि व्यवस्थित होऊ लागले.",
+        "मैदान फारच अस्वच्छ असायचे तेव्हा हे काम कंटाळवाणे वाटायचे. पण गटाने चिकाटी सोडली नाही, आणि हळूहळू गोळा करण्यासारखा कचराच कमी होऊ लागला."
+      ],
+      change: [
+        "मैदान ही दुसऱ्या कोणाची नव्हे, तर आपली स्वतःची जबाबदारी आहे, असे विद्यार्थ्यांना वाटू लागले. ही सवय सत्रापुरती मर्यादित राहिली नाही; त्यांच्यापैकी अनेक जण शाळेत आणि आपल्या परिसरातही कचऱ्याबाबत अधिक दक्ष झाले.",
+        "पहिल्यांदा वाकून वेष्टन उचलणाऱ्या विद्यार्थ्याला समजले की एखादे छोटे उदाहरणही अनेकांना शांतपणे प्रेरणा देऊ शकते."
+      ],
+      lessons: [
+        "सार्वजनिक जागेची काळजीही सर्वांनी मिळून घ्यायला हवी.",
+        "कृतीतून घालून दिलेला आदर्श शब्दांपेक्षा अधिक बोलका असतो.",
+        "कामाची योग्य वाटणी केली की मोठे कामही सोपे होते.",
+        "आपल्या सभोवतालाची काळजी घेणे हाही शिस्तीचाच भाग आहे."
+      ],
+      conclusion: "या कल्पित प्रसंगात दुर्लक्षित मैदानाला गट अभिमान वाटावा अशा जागेत बदलतो. वैयक्तिक शिस्तीला समाजाविषयीच्या काळजीशी जोडत अमृत वर्ग अशा आपलेपणाच्या भावनेला प्रोत्साहन देतो."
+    }
+  },
+  {
+    slug: "curiosity-about-our-heritage",
+    category: "learning",
+    en: {
+      title: "From Story Time to the Library",
+      short: "Inspiring stories heard in sessions spark a student's curiosity about history and culture, leading to regular visits to the library.",
+      intro: "This sample story imagines a student who had never thought of history as anything more than a school subject. It shows how stories shared during Amrut Varg can turn passive listening into active curiosity.",
+      challenge: "History lessons at school felt like lists of facts to memorise, and the student found them dull. Reading outside the textbook was not part of the daily routine. The idea that the past could be exciting or connected to one's own life had never really occurred to him.",
+      journey: [
+        "During Personality Development, the Varg leader often shared stories of courage, sacrifice and wisdom from India's past. One story about a community that came together to protect its land stayed in the student's mind for days. He found himself wondering what happened next and why people made the choices they did.",
+        "He asked the Varg leader where he could learn more, and was encouraged to visit the school or local library. The first visit felt unfamiliar, but a book with pictures and simple language drew him in. Soon he was returning to borrow more.",
+        "He began sharing what he read with friends during breaks, and sometimes asked questions in the session that led to lively discussions. The national slogans sung in the Varg started to carry deeper meaning for him."
+      ],
+      change: [
+        "Curiosity slowly turned into a reading habit. History at school began to feel less like memorising and more like discovering. The student also developed a growing respect for the many traditions and cultures that make up the country."
+      ],
+      lessons: [
+        "A good story can open the door to a lifetime of learning.",
+        "Asking questions is the beginning of understanding.",
+        "Libraries are places of discovery, not just study.",
+        "Knowing our heritage helps us value it."
+      ],
+      conclusion: "In this imagined journey, a few inspiring stories lead a student to the library and to a new love of learning. Amrut Varg aims to spark such curiosity, helping young people connect with their heritage in a meaningful way."
+    },
+    mr: {
+      title: "गोष्टींकडून ग्रंथालयाकडे",
+      short: "सत्रांत ऐकलेल्या प्रेरक गोष्टींमुळे एका विद्यार्थिनीच्या मनात इतिहास आणि संस्कृतीविषयी कुतूहल जागे होते आणि ती नियमित ग्रंथालयात जाऊ लागते.",
+      intro: "ही नमुना कथा इतिहास म्हणजे केवळ शाळेतला एक विषय, यापलीकडे कधीही विचार न केलेल्या एका विद्यार्थिनीची कल्पना करते. अमृत वर्गात सांगितल्या जाणाऱ्या गोष्टी केवळ ऐकण्याला सक्रिय कुतूहलात कसे बदलू शकतात, हे यातून दिसते.",
+      challenge: "शाळेतील इतिहासाचे धडे तिला पाठ करायच्या माहितीच्या याद्यांसारखे वाटायचे आणि ते तिला नीरस वाटायचे. पाठ्यपुस्तकाबाहेरचे वाचन तिच्या दिनक्रमात नव्हतेच. भूतकाळ रोमांचक असू शकतो किंवा आपल्या आयुष्याशी जोडलेला असू शकतो, हा विचार तिच्या मनात कधी आलाच नव्हता.",
+      journey: [
+        "व्यक्तिमत्त्व विकासाच्या वेळी वर्ग प्रमुख भारताच्या भूतकाळातील धैर्य, त्याग आणि शहाणपणाच्या गोष्टी नेहमी सांगायचे. आपल्या भूमीच्या रक्षणासाठी एकत्र आलेल्या एका समाजाची गोष्ट कित्येक दिवस तिच्या मनात घोळत राहिली. पुढे काय घडले असेल आणि त्या लोकांनी तसे निर्णय का घेतले असतील, असे प्रश्न तिला पडू लागले.",
+        "याविषयी अधिक कुठे वाचायला मिळेल, असे तिने वर्ग प्रमुखांना विचारले, तेव्हा त्यांनी तिला शाळेच्या किंवा जवळच्या ग्रंथालयात जाण्याचा सल्ला दिला. पहिल्या भेटीत सारे अनोळखी वाटले, पण चित्रे आणि सोपी भाषा असलेल्या एका पुस्तकाने तिला खिळवून ठेवले. लवकरच ती आणखी पुस्तके घेण्यासाठी पुन्हा पुन्हा जाऊ लागली.",
+        "सुटीच्या वेळी ती वाचलेल्या गोष्टी मैत्रिणींना सांगू लागली, आणि कधी कधी सत्रात असे प्रश्न विचारू लागली की त्यातून रंगतदार चर्चा घडायची. वर्गात म्हटल्या जाणाऱ्या राष्ट्रीय घोषणांना तिच्यासाठी आता अधिक खोल अर्थ प्राप्त होऊ लागला."
+      ],
+      change: [
+        "कुतूहलाचे रूपांतर हळूहळू वाचनाच्या सवयीत झाले. शाळेतील इतिहास आता पाठांतरापेक्षा शोधासारखा वाटू लागला. देश घडवणाऱ्या अनेक परंपरा आणि संस्कृतींविषयी तिच्या मनात आदरही वाढत गेला."
+      ],
+      lessons: [
+        "एक चांगली गोष्ट आयुष्यभराच्या शिकण्याचे दार उघडू शकते.",
+        "प्रश्न विचारणे ही समजून घेण्याची सुरुवात आहे.",
+        "ग्रंथालय हे फक्त अभ्यासाचे नव्हे, तर शोधाचे ठिकाण आहे.",
+        "आपला वारसा जाणून घेतला की त्याचे मोल कळते."
+      ],
+      conclusion: "या कल्पित प्रवासात काही प्रेरक गोष्टी एका विद्यार्थिनीला ग्रंथालयापर्यंत आणि शिकण्याच्या नव्या आवडीपर्यंत घेऊन जातात. मुलांना आपल्या वारशाशी अर्थपूर्णपणे जोडत असे कुतूहल जागवणे, हे अमृत वर्गाचे उद्दिष्ट आहे."
+    }
+  },
+  {
+    slug: "every-drop-counts",
+    category: "social",
+    en: {
+      title: "Every Drop Counts",
+      short: "A discussion on saving water inspires a girl to change small habits at home and gently remind her family to do the same.",
+      intro: "This sample story imagines a girl who had always taken running water for granted. It explores how a simple conversation in Amrut Varg might lead her to care for every drop.",
+      challenge: "At home, the tap often ran while she brushed her teeth, and buckets of water were used to wash the courtyard every day. She had never wondered where the water came from or what would happen if it ran short.",
+      journey: [
+        "One evening, during Personality Development, the Varg leader asked the circle to imagine a day without water. Students spoke about wells drying in summer and families walking long distances, and the room grew quiet as the idea sank in.",
+        "The class then sang a song about rivers and listed small ways to save water, such as using a mug instead of a running tap and reusing water from washing vegetables for plants. Each student chose one habit to try for the coming week.",
+        "In later sessions, the circle began with a short sharing of what each person had tried. Hearing others’ efforts encouraged the girl to keep going even when she forgot at times."
+      ],
+      change: [
+        "Slowly, she began turning off the tap while brushing and collecting rinse water for the tulsi plant and the garden. Instead of scolding, she cheerfully reminded her younger brother and, in time, her parents started following some of these habits too.",
+        "She grew more aware of the resources around her, from electricity to food. Her gentle way of persuading others became a quiet strength she carried into other situations."
+      ],
+      lessons: [
+        "Small habits, repeated daily, make a real difference.",
+        "Change at home begins with our own example.",
+        "Gentle reminders work better than harsh words.",
+        "Caring for nature is caring for our future."
+      ],
+      conclusion: "This illustrative scenario shows how awareness can grow into action when it is shared and practised together. A student who values water today may become a thoughtful guardian of resources tomorrow."
+    },
+    mr: {
+      title: "थेंबाथेंबाचे मोल",
+      short: "पाणी वाचवण्यावरील चर्चेमुळे एक विद्यार्थिनी घरातील सवयी बदलते आणि कुटुंबालाही प्रेमाने आठवण करून देते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थिनीची कल्पना करते, जिच्यासाठी नळाला येणारे पाणी ही अगदी गृहीत धरलेली गोष्ट होती. अमृत वर्गातील एका साध्या चर्चेमुळे तिला थेंबाथेंबाची काळजी कशी वाटू लागते, हे या कथेत पाहूया.",
+      challenge: "दात घासताना नळ तसाच चालू राहायचा आणि अंगण धुण्यासाठी रोज बादल्याच्या बादल्या पाणी वापरले जायचे. हे पाणी कुठून येते किंवा ते कमी पडले तर काय होईल, याचा तिने कधी विचारच केला नव्हता.",
+      journey: [
+        "एका संध्याकाळी व्यक्तिमत्त्व विकासाच्या वेळी वर्ग प्रमुखांनी सगळ्यांना पाण्याशिवायच्या एका दिवसाची कल्पना करायला सांगितली. उन्हाळ्यात आटणाऱ्या विहिरी आणि पाण्यासाठी दूरवर पायपीट करणारी कुटुंबे यांबद्दल मुले बोलू लागली, तेव्हा सगळे अंतर्मुख झाले.",
+        "त्यानंतर नद्यांवरील एक गीत गायले गेले आणि पाणी वाचवण्याचे छोटे उपाय सुचवले गेले, जसे की वाहत्या नळाऐवजी मग वापरणे, भाज्या धुतलेले पाणी झाडांना घालणे. प्रत्येकाने पुढच्या आठवड्यात करून पाहण्यासाठी एक सवय निवडली.",
+        "पुढच्या वर्गांमध्ये मंडल तयार झाल्यावर प्रत्येकाने काय करून पाहिले, ते थोडक्यात सांगितले जाऊ लागले. इतरांचे प्रयत्न ऐकून, कधी विसरायला झाले तरी पुन्हा सुरुवात करण्याचा तिला हुरूप मिळाला."
+      ],
+      change: [
+        "हळूहळू दात घासताना ती नळ बंद करू लागली आणि धुतलेले पाणी तुळशीला व बागेला घालू लागली. रागावण्याऐवजी ती धाकट्या भावाला हसत आठवण करून देई आणि कालांतराने आई-वडिलांनीही यातील काही सवयी अंगीकारल्या.",
+        "वीज असो वा अन्न, आजूबाजूच्या साधनसंपत्तीबद्दल ती अधिक जागरूक झाली. इतरांना प्रेमाने समजावण्याची तिची पद्धत तिच्यासाठी एक शांत ताकद बनली."
+      ],
+      lessons: [
+        "रोज जपलेल्या छोट्या सवयी मोठा फरक घडवतात.",
+        "घरातील बदलाची सुरुवात स्वतःच्या उदाहरणाने होते.",
+        "कठोर शब्दांपेक्षा प्रेमळ आठवण अधिक परिणामकारक ठरते.",
+        "निसर्गाची काळजी म्हणजे आपल्या भविष्याची काळजी."
+      ],
+      conclusion: "जाणीव जेव्हा एकत्र वाटली जाते आणि आचरणात आणली जाते, तेव्हा ती कृतीत कशी उतरते, हे ही कथा दाखवते. आज पाण्याचे मोल जाणणारी विद्यार्थिनी उद्या साधनसंपत्तीची जबाबदार रक्षक बनू शकते."
+    }
+  },
+  {
+    slug: "time-for-our-elders",
+    category: "community",
+    en: {
+      title: "Time for Our Elders",
+      short: "A boy begins spending time with elderly neighbours, reading to them and running small errands, and finds warmth in return.",
+      intro: "This sample story imagines a boy who rarely noticed the elderly people living around him. It considers how values discussed in Amrut Varg might lead him to offer them his time and care.",
+      challenge: "In his building lived an elderly couple whose children worked far away, and they often sat alone on their balcony. The boy greeted them occasionally but was always in a hurry and never stopped to talk.",
+      journey: [
+        "During Personality Development, the circle discussed the respect our culture gives to elders and how loneliness can affect them. The Varg leader asked everyone to think of one older person in their life who might enjoy some company.",
+        "Over the next few weeks, the opening prayer “ॐ सहनाववतु” began to mean more to him, as he reflected on its spirit of growing together. He decided to visit the elderly couple and offered to read the newspaper aloud, since the grandmother’s eyesight was weak.",
+        "The patience he practised in the seated games, waiting for his turn and listening closely, helped him during these visits. He learnt to slow down, listen to their stories and ask what small help they needed."
+      ],
+      change: [
+        "Gradually, his visits became a regular part of his evenings, and he began fetching medicines and vegetables for them when needed. The couple, in turn, shared old songs and stories, and he found himself looking forward to their company.",
+        "He became more patient and attentive at home too, spending more time with his own grandparents. He realised that giving time is one of the most valuable gifts a person can offer."
+      ],
+      lessons: [
+        "Elders hold a treasure of experience worth listening to.",
+        "A little time can ease someone’s loneliness.",
+        "Patience and listening are acts of care.",
+        "Service often brings as much joy to the giver as to the receiver."
+      ],
+      conclusion: "This imagined story shows how values spoken in a session can come alive in a neighbour’s home. Students who care for elders help keep the bonds of community strong."
+    },
+    mr: {
+      title: "ज्येष्ठांसाठी थोडा वेळ",
+      short: "एक विद्यार्थी शेजारच्या ज्येष्ठ नागरिकांसोबत वेळ घालवू लागतो, त्यांना वाचून दाखवतो आणि छोटी कामे करतो.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, ज्याचे आपल्या आजूबाजूच्या वृद्ध माणसांकडे फारसे लक्षच जात नसे. अमृत वर्गात चर्चिलेले संस्कार त्याला त्यांच्यासाठी वेळ आणि माया देण्यापर्यंत कसे नेऊ शकतात, हे इथे पाहूया.",
+      challenge: "त्याच्या इमारतीत एक वृद्ध जोडपे राहत होते, ज्यांची मुले कामानिमित्त दूर होती आणि ते बहुधा बाल्कनीत एकटेच बसलेले असत. तो कधीतरी त्यांना नमस्कार करायचा, पण नेहमी घाईत असल्याने थांबून कधी बोलला नव्हता.",
+      journey: [
+        "व्यक्तिमत्त्व विकासाच्या वेळी आपल्या संस्कृतीत वडीलधाऱ्यांना असलेला मान आणि एकटेपणाचा त्यांच्यावर होणारा परिणाम यावर चर्चा झाली. आपल्या आयुष्यातील अशा एका ज्येष्ठ व्यक्तीचा विचार करा, जिला सोबत आवडेल, असे वर्ग प्रमुखांनी सांगितले.",
+        "पुढच्या काही आठवड्यांत ‘ॐ सहनाववतु’ ही प्रार्थना त्याला अधिक अर्थपूर्ण वाटू लागली, कारण एकत्र वाढण्याचा तिचा भाव तो मनात घोळवू लागला. त्याने त्या जोडप्याकडे जायचे ठरवले आणि आजींची नजर कमजोर असल्याने त्यांना वर्तमानपत्र वाचून दाखवण्याची तयारी दाखवली.",
+        "बैठ्या खेळांमध्ये आपल्या पाळीची वाट पाहताना आणि लक्षपूर्वक ऐकताना जोपासलेला संयम त्याला या भेटींमध्ये उपयोगी पडला. थांबून त्यांच्या आठवणी ऐकणे आणि त्यांना कोणती छोटी मदत हवी आहे, हे विचारणे तो शिकला."
+      ],
+      change: [
+        "हळूहळू या भेटी त्याच्या संध्याकाळचा नियमित भाग बनल्या आणि गरजेनुसार तो त्यांच्यासाठी औषधे व भाजी आणू लागला. त्या बदल्यात आजी-आजोबा त्याला जुनी गाणी आणि गोष्टी सांगत आणि त्यांच्या सहवासाची तो आतुरतेने वाट पाहू लागला.",
+        "घरीही तो अधिक संयमी आणि लक्ष देणारा झाला आणि स्वतःच्या आजी-आजोबांसोबत जास्त वेळ घालवू लागला. आपला वेळ देणे ही माणूस देऊ शकणारी सर्वात मौल्यवान भेट आहे, हे त्याला उमगले."
+      ],
+      lessons: [
+        "ज्येष्ठांकडे ऐकण्यासारखा अनुभवांचा खजिना असतो.",
+        "थोडासा वेळ एखाद्याचे एकटेपण कमी करू शकतो.",
+        "संयम आणि ऐकून घेणे हीसुद्धा काळजीच आहे.",
+        "सेवा घेणाऱ्याइतकाच देणाऱ्यालाही आनंद देते."
+      ],
+      conclusion: "वर्गात बोललेले संस्कार शेजाऱ्याच्या घरात कसे जिवंत होतात, हे या काल्पनिक कथेतून दिसते. ज्येष्ठांची काळजी घेणारे विद्यार्थी समाजातील नात्यांची वीण घट्ट ठेवतात."
+    }
+  },
+  {
+    slug: "learning-to-lose-gracefully",
+    category: "challenges",
+    en: {
+      title: "The Grace to Lose",
+      short: "A boy who could not bear losing in field games slowly learns sportsmanship and discovers that defeat can be a teacher.",
+      intro: "This sample story imagines a boy whose love of winning often turned into anger when things did not go his way. It looks at how the field games of Amrut Varg might help him learn the deeper meaning of play.",
+      challenge: "Whenever his team lost, he blamed teammates, argued with the Varg leader and sometimes refused to shake hands. His friends began to avoid being on his team, which only made him more frustrated.",
+      journey: [
+        "After one heated game, the Varg leader did not scold him but asked the whole group to sit in a circle and talk about what makes a game enjoyable. Classmates spoke honestly, and the boy heard for the first time how his reactions made others feel.",
+        "In Personality Development, the group heard the story of an athlete who stopped to help a fallen rival, and sang a song about playing with a true heart. The Varg leader asked everyone to name one thing they could learn from their last defeat.",
+        "In the following games, the boy was given the role of team captain, which meant encouraging others rather than blaming them. Thinking about strategy and his teammates’ strengths helped him focus less on the scoreline and more on improving together."
+      ],
+      change: [
+        "Gradually, he began congratulating the winning team and discussing with his own team what they could do differently next time. His anger did not vanish overnight, but he learnt to pause and breathe before reacting.",
+        "His friends returned to his side, and he found that games became far more enjoyable once winning was no longer everything. The calm he built on the field also helped him handle disappointments in studies and at home."
+      ],
+      lessons: [
+        "Every defeat carries a lesson for those willing to learn.",
+        "True sportsmanship respects both teammates and rivals.",
+        "Pausing before reacting prevents hurtful words.",
+        "Playing well together matters more than the result."
+      ],
+      conclusion: "This imagined story shows how the field can teach lessons that go far beyond the game. A student who learns to lose with grace is better prepared to face life’s ups and downs."
+    },
+    mr: {
+      title: "हार पचवण्याचे बळ",
+      short: "मैदानी खेळात हार सहन न होणारा एक विद्यार्थी हळूहळू खिलाडूवृत्ती शिकतो आणि पराभवातूनही शिकायला लागतो.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, ज्याच्या जिंकण्याच्या हव्यासाचे मनाविरुद्ध घडले की रागात रूपांतर होत असे. अमृत वर्गातील मैदानी खेळ त्याला खेळाचा खरा अर्थ कसा समजावू शकतात, याचा वेध इथे घेतला आहे.",
+      challenge: "त्याचा संघ हरला की तो सहकाऱ्यांना दोष द्यायचा, वर्ग प्रमुखांशी वाद घालायचा आणि कधी कधी हस्तांदोलन करायलाही नकार द्यायचा. त्यामुळे मित्र त्याच्या संघात यायचे टाळू लागले आणि त्याची चिडचिड आणखी वाढली.",
+      journey: [
+        "एका चुरशीच्या खेळानंतर वर्ग प्रमुखांनी त्याला न रागावता सगळ्यांना मंडलात बसवले आणि खेळ आनंददायी कशामुळे होतो, यावर बोलायला सांगितले. मित्रांनी प्रामाणिकपणे मने मोकळी केली आणि आपल्या वागण्याचा इतरांना कसा त्रास होतो, हे त्याने पहिल्यांदाच ऐकले.",
+        "व्यक्तिमत्त्व विकासात, पडलेल्या प्रतिस्पर्ध्याला मदत करण्यासाठी थांबलेल्या एका धावपटूची गोष्ट सर्वांनी ऐकली आणि खऱ्या मनाने खेळण्याबद्दलचे एक गीत गायले. मागच्या पराभवातून आपण काय शिकू शकतो, हे प्रत्येकाने सांगावे, असे वर्ग प्रमुखांनी सुचवले.",
+        "पुढच्या खेळांमध्ये त्याला संघनायकाची जबाबदारी देण्यात आली, ज्यात इतरांना दोष देण्याऐवजी प्रोत्साहन देणे अपेक्षित होते. डावपेच आणि सहकाऱ्यांच्या क्षमतांचा विचार करताना गुणफलकापेक्षा एकत्र सुधारणा करण्याकडे त्याचे लक्ष वळू लागले."
+      ],
+      change: [
+        "हळूहळू तो विजेत्या संघाचे अभिनंदन करू लागला आणि पुढच्या वेळी काय वेगळे करता येईल, यावर आपल्या संघाशी चर्चा करू लागला. त्याचा राग एका रात्रीत नाहीसा झाला नाही, पण प्रतिक्रिया देण्याआधी थांबून दीर्घ श्वास घ्यायला तो शिकला.",
+        "मित्र पुन्हा त्याच्या सोबत आले आणि जिंकणे हेच सर्वस्व न राहिल्यावर खेळ अधिक आनंददायी झाले, हे त्याला जाणवले. मैदानावर कमावलेला हा शांतपणा अभ्यासातील आणि घरातील निराशा हाताळतानाही त्याच्या उपयोगी पडला."
+      ],
+      lessons: [
+        "शिकण्याची तयारी असेल तर प्रत्येक पराभव काहीतरी शिकवतो.",
+        "खरी खिलाडूवृत्ती सहकारी आणि प्रतिस्पर्धी दोघांचा आदर करते.",
+        "प्रतिक्रिया देण्याआधी थांबल्याने दुखावणारे शब्द टळतात.",
+        "निकालापेक्षा एकत्र चांगले खेळणे अधिक महत्त्वाचे आहे."
+      ],
+      conclusion: "मैदान खेळापलीकडचे धडेही कसे शिकवते, हे या काल्पनिक कथेतून दिसते. सन्मानाने हार स्वीकारायला शिकलेला विद्यार्थी आयुष्यातील चढउतारांना सामोरे जायला अधिक सज्ज होतो."
+    }
+  },
+  {
+    slug: "from-screen-time-to-ground-time",
+    category: "habits",
+    en: {
+      title: "From Screen to Playground",
+      short: "A boy glued to his phone rediscovers the joy of outdoor play and gradually learns to keep his screen time in balance.",
+      intro: "This sample story imagines a boy who spent most of his free hours scrolling and gaming on a phone. It considers how the energy and friendship of Amrut Varg might draw him back outdoors.",
+      challenge: "He often stayed up late on his phone, felt tired and restless during the day and rarely went out to play. When asked to join the Varg, he went reluctantly and kept checking the time.",
+      journey: [
+        "The seated game “चार व सात” caught his attention because it demanded quick thinking, much like his favourite games, but with real people laughing around him. Without realising it, he stopped thinking about his phone for the whole session.",
+        "Field games soon became his favourite part, as he discovered he was quick and good at planning moves. The thrill of running, dodging and celebrating with teammates felt different from anything on a screen.",
+        "During Personality Development, the Varg leader led a calm discussion on using technology wisely, without blaming anyone. The boy agreed to try a simple rule of keeping the phone away for an hour before bed and during meals."
+      ],
+      change: [
+        "Gradually, he began sleeping better and feeling more energetic in the mornings. He started inviting friends from the neighbourhood to play outdoors in the evenings, and his phone became one part of his day rather than all of it.",
+        "He did not give up screens entirely, but he learnt to choose when to use them. The sense of balance he found made him calmer and more connected to the people around him."
+      ],
+      lessons: [
+        "Real play builds friendships and fitness together.",
+        "Technology is useful when we control it, not the other way round.",
+        "Simple screen-free rules can improve sleep and mood.",
+        "Balance matters more than giving things up entirely."
+      ],
+      conclusion: "This imagined story shows how the joy of the playground can gently loosen the hold of a screen. With balance, young people can enjoy technology while staying active and connected."
+    },
+    mr: {
+      title: "पडद्याकडून मैदानाकडे",
+      short: "मोबाइलमध्ये गुंतलेल्या एका विद्यार्थ्याला मैदानी खेळांचा आनंद पुन्हा गवसतो आणि तो स्क्रीनचा वापर संतुलित करायला शिकतो.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थ्याची कल्पना करते, ज्याचा मोकळा वेळ बहुतेक फोनवर खेळण्यात आणि बघत राहण्यात जायचा. अमृत वर्गातील उत्साह आणि मैत्री त्याला पुन्हा घराबाहेर कसे आणू शकतात, याचा विचार ही कथा करते.",
+      challenge: "तो रात्री उशिरापर्यंत फोन पाहत बसायचा, दिवसभर थकलेला आणि अस्वस्थ असायचा आणि खेळायला बाहेर क्वचितच जायचा. वर्गात यायला सांगितल्यावर तो नाखुशीनेच आला आणि सारखा वेळ पाहत राहिला.",
+      journey: [
+        "‘चार व सात’ या बैठ्या खेळाने त्याचे लक्ष वेधले, कारण त्याच्या आवडत्या खेळांप्रमाणे त्यातही चटकन विचार करावा लागतो, पण इथे आजूबाजूला खरीखुरी हसणारी माणसे होती. नकळत संपूर्ण वर्गभर त्याला फोनची आठवणही आली नाही.",
+        "लवकरच मैदानी खेळ हा त्याचा सर्वात आवडता भाग बनला, कारण आपण चपळ आहोत आणि चाली आखण्यात तरबेज आहोत, हे त्याला कळले. धावणे, हुलकावणी देणे आणि संघासोबत आनंद साजरा करणे, हा थरार पडद्यावरच्या कशापेक्षाही वेगळा होता.",
+        "व्यक्तिमत्त्व विकासात वर्ग प्रमुखांनी कोणालाही दोष न देता तंत्रज्ञानाच्या शहाणपणाने वापराबद्दल शांतपणे चर्चा घडवून आणली. झोपण्यापूर्वी काही वेळ आणि जेवताना फोन दूर ठेवण्याचा साधा नियम पाळून पाहण्याचे त्याने मान्य केले."
+      ],
+      change: [
+        "हळूहळू त्याला शांत झोप लागू लागली आणि सकाळी तो अधिक उत्साही वाटू लागला. संध्याकाळी तो परिसरातील मित्रांना बाहेर खेळायला बोलावू लागला आणि फोन हा त्याच्या दिवसाचा सर्वस्व न राहता एक भाग बनला.",
+        "त्याने स्क्रीन पूर्णपणे सोडली नाही, पण ती कधी वापरायची हे निवडायला तो शिकला. या संतुलनामुळे तो अधिक शांत झाला आणि आजूबाजूच्या माणसांशी त्याचे नाते घट्ट झाले."
+      ],
+      lessons: [
+        "खरे खेळ मैत्री आणि तंदुरुस्ती दोन्ही वाढवतात.",
+        "तंत्रज्ञान आपल्या ताब्यात असेल तरच ते उपयोगी ठरते.",
+        "स्क्रीनपासून दूर राहण्याचे साधे नियम झोप आणि मनःस्थिती सुधारतात.",
+        "पूर्ण त्याग करण्यापेक्षा संतुलन अधिक महत्त्वाचे आहे."
+      ],
+      conclusion: "मैदानाचा आनंद पडद्याची पकड हळुवारपणे कशी सैल करू शकतो, हे या काल्पनिक कथेतून दिसते. संतुलन साधले की तरुण तंत्रज्ञानाचा आनंद घेत असतानाच सक्रिय आणि माणसांशी जोडलेले राहू शकतात."
+    }
+  },
+  {
+    slug: "celebrating-together",
+    category: "group",
+    en: {
+      title: "A Celebration Everyone Built",
+      short: "Students plan a simple national day celebration within their Varg, with every member given a role, and discover the joy of shared effort.",
+      intro: "This sample story imagines a Varg preparing to mark an upcoming national day in its own simple way. It explores how giving every student a role might turn a small celebration into a lesson in planning and unity.",
+      challenge: "At first, a few confident students wanted to take charge of everything, while the quieter ones assumed they had nothing to offer. The early discussions were noisy, and it seemed the plan might never come together.",
+      journey: [
+        "The Varg leader suggested listing every task needed, from decorating the ground and preparing a song to telling a short story about freedom fighters. Each student then chose or was gently guided towards a task that matched their interest.",
+        "A shy girl who loved drawing designed a simple rangoli, while a boy who rarely spoke volunteered to read out a national slogan. Small teams practised in the minutes after the regular session, helping each other with lines and preparations.",
+        "On the day, the session began as always with forming the circle and the prayer, followed by the students’ programme of songs, stories and slogans in the spirit of “सशक्त युवक – समर्थ भारत”. The celebration closed with the शांती मंत्र, and everyone helped clean up together."
+      ],
+      change: [
+        "The quieter students discovered abilities they had not known they had, and the confident ones learnt to share responsibility and appreciate others’ ideas. The whole group felt a deep sense of ownership over something they had built together.",
+        "In later activities, students were more willing to step forward, and planning in groups became smoother and more respectful."
+      ],
+      lessons: [
+        "Every person has something valuable to contribute.",
+        "Good planning turns many small tasks into one shared success.",
+        "Leadership includes making space for others to shine.",
+        "Celebrating together strengthens love for the nation."
+      ],
+      conclusion: "This imagined story shows how a modest celebration can become a powerful lesson in teamwork and patriotism. When every member has a role, the joy belongs to everyone."
+    },
+    mr: {
+      title: "सर्वांनी मिळून साजरा केलेला दिवस",
+      short: "प्रत्येकाला जबाबदारी देऊन विद्यार्थी वर्गात राष्ट्रीय दिनाचा साधा सोहळा आखतात आणि एकत्र प्रयत्नांचा आनंद अनुभवतात.",
+      intro: "ही नमुना कथा जवळ आलेला राष्ट्रीय दिन आपल्या साध्या पद्धतीने साजरा करण्याची तयारी करणाऱ्या एका वर्गाची कल्पना करते. प्रत्येक विद्यार्थ्याला भूमिका दिल्यास एक छोटासा सोहळाही नियोजन आणि एकतेचा धडा कसा बनू शकतो, याचा शोध ही कथा घेते.",
+      challenge: "सुरुवातीला काही आत्मविश्वासू मुलांना सगळेच काम आपल्या हातात घ्यायचे होते, तर शांत मुलांना आपण काही देऊ शकत नाही, असे वाटत होते. पहिल्या चर्चा गोंधळाच्या झाल्या आणि नियोजन कधी पूर्ण होईल की नाही, अशी शंका वाटू लागली.",
+      journey: [
+        "मैदान सजवण्यापासून गीताची तयारी आणि स्वातंत्र्यसैनिकांची छोटीशी गोष्ट सांगण्यापर्यंत लागणाऱ्या सगळ्या कामांची यादी करण्याचे वर्ग प्रमुखांनी सुचवले. त्यानंतर प्रत्येकाने आपल्या आवडीचे काम निवडले किंवा त्यांना प्रेमाने तशा कामाकडे वळवले गेले.",
+        "चित्रकलेची आवड असलेल्या एका लाजऱ्या विद्यार्थिनीने साधी रांगोळी आखली, तर फारसा न बोलणाऱ्या एका विद्यार्थ्याने राष्ट्रीय घोषवाक्य म्हणण्याची तयारी दाखवली. नियमित वर्ग संपल्यावर काही मिनिटे छोटे गट सराव करत आणि एकमेकांना तयारीत मदत करत.",
+        "त्या दिवशी नेहमीप्रमाणे मंडल आणि प्रार्थनेने सुरुवात झाली आणि त्यानंतर ‘सशक्त युवक – समर्थ भारत’ या भावनेतून मुलांनी गीते, गोष्टी आणि घोषवाक्यांचा कार्यक्रम सादर केला. शांती मंत्राने सोहळ्याची सांगता झाली आणि सगळ्यांनी मिळून आवराआवर केली."
+      ],
+      change: [
+        "शांत मुलांना आपल्यातील अनोळखी क्षमता गवसल्या, तर आत्मविश्वासू मुले जबाबदारी वाटून घ्यायला आणि इतरांच्या कल्पनांची कदर करायला शिकली. आपण मिळून काहीतरी उभे केले, या भावनेने संपूर्ण गटाला मनापासून आपलेपणा वाटला.",
+        "पुढील उपक्रमांमध्ये विद्यार्थी पुढे यायला अधिक तयार झाले आणि गटातील नियोजन अधिक सुरळीत व आदरपूर्वक होऊ लागले."
+      ],
+      lessons: [
+        "प्रत्येकाकडे देण्यासारखे काहीतरी मौल्यवान असते.",
+        "उत्तम नियोजन अनेक छोट्या कामांना एका सामूहिक यशात बदलते.",
+        "इतरांना चमकण्याची संधी देणे हेही नेतृत्वच आहे.",
+        "एकत्र साजरा केलेला उत्सव देशप्रेम दृढ करतो."
+      ],
+      conclusion: "एक साधासा सोहळाही संघभावना आणि देशभक्तीचा प्रभावी धडा कसा ठरू शकतो, हे या काल्पनिक कथेतून दिसते. प्रत्येकाला भूमिका मिळाली की आनंदही सर्वांचा होतो."
+    }
+  },
+  {
+    slug: "managing-anger-calmly",
+    category: "personality",
+    en: {
+      title: "Learning to Pause Before Reacting",
+      short: "A student who loses her temper during games learns to pause, breathe and respond calmly instead.",
+      intro: "This sample story imagines a student whose strong competitive spirit often turned into sudden anger. It considers how the structure of Amrut Varg might help her find a calmer way to respond.",
+      challenge: "During field games, a disputed point or a teammate's mistake would make her shout or walk away in frustration. Afterwards she usually felt sorry, but in the moment she could not seem to stop herself.",
+      journey: [
+        "The Varg leader noticed this and, without scolding, suggested a simple technique: when anger rises, stop, take three slow breaths, and only then speak. The rhythmic breathing of शरीर शिथिलीकरण and सूर्यनमस्कार gave her a natural way to practise that calm every day.",
+        "The discipline of आज्ञा अभ्यास also helped. Holding still at “निश्चलो भव”, even when restless, taught her that she could control her body — and slowly, her reactions too.",
+        "In the field games, she began to pause before arguing, and sometimes chose to let a small point go. When she slipped, the leader encouraged her to apologise and try again the next day."
+      ],
+      change: [
+        "Gradually her outbursts became less frequent and less intense. Teammates began to trust her more, and she discovered that she could still play with full energy without losing her temper.",
+        "The same pause began to help her at home during disagreements with her siblings, where a calm reply often ended a quarrel before it began."
+      ],
+      lessons: [
+        "A few slow breaths can stop anger from taking over.",
+        "Self-control can be practised like any other skill.",
+        "Apologising after a mistake shows strength, not weakness.",
+        "Calm responses build trust within a team."
+      ],
+      conclusion: "This story imagines how daily discipline and patient guidance can help a young person master strong emotions. Learning to pause is a gift that lasts well beyond the playground."
+    },
+    mr: {
+      title: "प्रतिक्रिया देण्यापूर्वी थांबायला शिकताना",
+      short: "खेळताना पटकन चिडणारी एक विद्यार्थिनी थांबून, दीर्घ श्वास घेऊन शांतपणे उत्तर द्यायला शिकते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थिनीची कल्पना करते, जिची जिंकण्याची तीव्र इच्छा अनेकदा अचानक रागात बदलत असे. अमृत वर्गाची शिस्तबद्ध रचना तिला अधिक शांतपणे प्रतिसाद द्यायला कशी मदत करू शकते, याचा विचार या कथेत केला आहे.",
+      challenge: "मैदानी खेळांत एखाद्या गुणावरून वाद झाला किंवा संघातील कोणाकडून चूक झाली, की ती ओरडत असे किंवा वैतागून खेळ सोडून निघून जात असे. नंतर तिला पश्चात्ताप होई, पण त्या क्षणी स्वतःला आवरणे तिला जमत नसे.",
+      journey: [
+        "वर्ग प्रमुखांनी हे पाहिले आणि न रागावता एक सोपी युक्ती सुचवली: राग आला की थांबायचे, तीन वेळा सावकाश श्वास घ्यायचा आणि मगच बोलायचे. शरीर शिथिलीकरण आणि सूर्यनमस्कार करताना घेतल्या जाणाऱ्या लयबद्ध श्वासामुळे तिला रोज शांत श्वसनाचा सहज सराव मिळू लागला.",
+        "आज्ञा अभ्यासातील शिस्तीचाही तिला उपयोग झाला. मन चुळबुळत असतानाही “निश्चलो भव” या आज्ञेवर स्थिर उभे राहताना, आपण शरीरावर — आणि हळूहळू आपल्या प्रतिक्रियांवरही — नियंत्रण ठेवू शकतो, हे तिला कळले.",
+        "मैदानी खेळांत ती वाद घालण्यापूर्वी थांबू लागली आणि कधी कधी छोटासा मुद्दा सोडूनही देऊ लागली. तिच्याकडून चूक झालीच, तर दिलगिरी व्यक्त करून दुसऱ्या दिवशी पुन्हा प्रयत्न करण्यासाठी वर्ग प्रमुख तिला प्रोत्साहन देत."
+      ],
+      change: [
+        "हळूहळू तिचा संताप कमी वेळा आणि कमी तीव्रतेने उफाळू लागला. संघातील सहकाऱ्यांचा तिच्यावरील विश्वास वाढला, आणि राग न गमावताही पूर्ण उत्साहाने खेळता येते, हे तिला सापडले.",
+        "हीच थांबण्याची सवय घरी भावंडांशी मतभेद होताना उपयोगी पडू लागली; शांत उत्तरामुळे अनेकदा भांडण सुरू होण्यापूर्वीच मिटत असे."
+      ],
+      lessons: [
+        "काही सावकाश श्वास रागाला आपल्यावर स्वार होऊ देत नाहीत.",
+        "आत्मसंयम इतर कौशल्यांप्रमाणेच सरावाने वाढतो.",
+        "चुकीनंतर दिलगिरी व्यक्त करणे हे दुबळेपणाचे नव्हे, तर सामर्थ्याचे लक्षण आहे.",
+        "शांत प्रतिसादामुळे संघात विश्वास निर्माण होतो."
+      ],
+      conclusion: "रोजची शिस्त आणि संयमी मार्गदर्शन तरुण मनाला तीव्र भावनांवर ताबा मिळवायला कसे शिकवू शकते, याची कल्पना ही कथा मांडते. थांबायला शिकणे ही अशी देणगी आहे, जी मैदानाच्या पलीकडेही आयुष्यभर साथ देते."
+    }
+  },
+  {
+    slug: "the-art-of-asking-questions",
+    category: "communication",
+    en: {
+      title: "The Courage to Ask Questions",
+      short: "A student who never asked questions discovers that polite curiosity helps her and everyone around her learn.",
+      intro: "This sample story imagines a student who stayed silent whenever she did not understand something. It explores how the open, encouraging atmosphere of Amrut Varg might awaken her curiosity.",
+      challenge: "She believed that asking a question would make her look foolish, so she pretended to understand and later struggled alone. Her doubts piled up quietly in many subjects.",
+      journey: [
+        "One day, after the Varg leader explained the rules of a new field game, she was confused but stayed silent. Her team made the same mistake again and again until another student asked a simple question, and everything became clear — for her too.",
+        "In the Personality Development session, the leader told a story about a great scientist whose discoveries began with simple questions about everyday things. The leader then encouraged everyone to ask at least one question about each story.",
+        "She began with small, polite questions, starting with “May I ask…” and thanking the leader for each answer. She noticed that her questions often helped classmates who had the same doubt but were too shy to speak."
+      ],
+      change: [
+        "Gradually she began asking questions in her regular lessons too, and her understanding of subjects improved. Teachers appreciated her curiosity, and she felt more involved in her own learning.",
+        "She learned that a question is nothing to be ashamed of, but the mark of a mind eager to grow."
+      ],
+      lessons: [
+        "Every question asked can help many people learn.",
+        "Curiosity is the starting point of discovery.",
+        "Asking politely makes others happy to answer.",
+        "Pretending to understand only delays learning."
+      ],
+      conclusion: "This story pictures how a student might move from silent confusion to confident curiosity. Amrut Varg encourages young minds to ask, explore and learn together."
+    },
+    mr: {
+      title: "प्रश्न विचारण्याचे धाडस",
+      short: "कधीही प्रश्न न विचारणारी एक विद्यार्थिनी नम्रपणे विचारलेल्या प्रश्नांमुळे सर्वांचेच शिकणे सोपे होते, हे अनुभवते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थिनीची कल्पना करते, जी एखादी गोष्ट समजली नाही तरी गप्प बसून राहत असे. अमृत वर्गातील मोकळे आणि प्रोत्साहन देणारे वातावरण तिच्यातील जिज्ञासा कशी जागी करू शकते, याचा वेध ही कथा घेते.",
+      challenge: "प्रश्न विचारला तर आपण मूर्ख ठरू, असे तिला वाटे; त्यामुळे समजल्याचे नाटक करून नंतर ती एकटीच धडपडत असे. अनेक विषयांतील तिच्या शंका मनात साचत गेल्या होत्या.",
+      journey: [
+        "एके दिवशी वर्ग प्रमुखांनी एका नव्या मैदानी खेळाचे नियम सांगितले, तेव्हा तिचा गोंधळ उडाला, पण ती गप्पच राहिली. तिचा संघ तीच चूक पुन्हा पुन्हा करत राहिला; शेवटी दुसऱ्या एका विद्यार्थ्याने साधा प्रश्न विचारला आणि सगळे स्पष्ट झाले — तिच्यासाठीसुद्धा.",
+        "व्यक्तिमत्त्व विकास सत्रात वर्ग प्रमुखांनी एका थोर वैज्ञानिकाची गोष्ट सांगितली, ज्याचे शोध रोजच्या साध्या गोष्टींबद्दलच्या प्रश्नांतून सुरू झाले होते. त्यानंतर प्रत्येक गोष्टीवर किमान एक प्रश्न विचारावा, असे प्रोत्साहन त्यांनी सर्वांना दिले.",
+        "तिने “मी एक विचारू का…” अशा नम्र सुरुवातीने छोटे छोटे प्रश्न विचारायला सुरुवात केली आणि उत्तर मिळाल्यावर आवर्जून आभार मानले. तीच शंका मनात असूनही संकोचामुळे गप्प बसलेल्या मित्र-मैत्रिणींनाही आपल्या प्रश्नांमुळे मदत होते, हे तिच्या लक्षात आले."
+      ],
+      change: [
+        "हळूहळू ती शाळेतील नेहमीच्या तासांमध्येही प्रश्न विचारू लागली आणि विषय तिला अधिक चांगले समजू लागले. शिक्षकांनी तिच्या जिज्ञासेचे कौतुक केले आणि आपल्या शिक्षणात आपण स्वतः सक्रिय आहोत, असे तिला वाटू लागले.",
+        "प्रश्न विचारणे म्हणजे कमीपणा नसून, अधिक जाणून घेण्याची ओढ असलेल्या मनाची खूण आहे, हे तिने जाणले."
+      ],
+      lessons: [
+        "एक प्रश्न अनेकांच्या शिकण्याला हातभार लावू शकतो.",
+        "जिज्ञासा हा प्रत्येक शोधाचा आरंभबिंदू आहे.",
+        "नम्रपणे विचारले की उत्तर देणाऱ्यालाही आनंद होतो.",
+        "समजल्याचे नाटक केल्याने शिकणे फक्त लांबणीवर पडते."
+      ],
+      conclusion: "गोंधळलेल्या मौनापासून आत्मविश्वासपूर्ण जिज्ञासेपर्यंतचा एका विद्यार्थिनीचा प्रवास ही कथा रेखाटते. अमृत वर्ग तरुण मनांना एकत्रितपणे प्रश्न विचारायला, शोध घ्यायला आणि शिकायला प्रोत्साहन देतो."
+    }
+  },
+  {
+    slug: "small-group-big-responsibility",
+    category: "leadership",
+    en: {
+      title: "In Charge of the Circle",
+      short: "Given charge of arranging the circle and keeping time, a student learns how planning and accountability hold a group together.",
+      intro: "This sample story imagines a student who is asked to take charge of a small group within the Varg. The tasks seem modest, but they open a window into what it means to be responsible for others.",
+      challenge: "The student was usually easy-going and rarely thought ahead. On the first day of the new duty, the circle formed unevenly, a few group members wandered off, and the group was not ready when मंडलं कुरु was called. The student felt embarrassed and unsure of how to fix things.",
+      journey: [
+        "The Varg leader suggested a simple plan: arrive a few minutes early, check the space, and remind the group quietly before the session begins. The student started noting small things, such as where the circle should form and who needed a gentle reminder to join.",
+        "Keeping time for the seated games and the transition to field games became the next task. The student learned to watch the clock without rushing anyone, and to signal clearly when it was time to move. When something went wrong, the student began to own it and think about how to do better the next day."
+      ],
+      change: [
+        "Over time, the group came to rely on the student, and the student came to enjoy that trust. The habit of thinking a step ahead slowly spread to school bags packed the night before and homework planned in advance. Responsibility, which once felt heavy, began to feel steady and familiar."
+      ],
+      lessons: [
+        "Small duties, done well, build the habit of responsibility.",
+        "A little planning prevents a lot of confusion.",
+        "Owning a mistake is the first step to fixing it.",
+        "Trust from others grows from being dependable."
+      ],
+      conclusion: "This imagined student learns that leading even a small group means preparing, keeping time and standing by one's choices. Amrut Varg gives such everyday responsibilities to young people so that accountability becomes second nature."
+    },
+    mr: {
+      title: "वर्तुळाची जबाबदारी",
+      short: "वर्तुळाची मांडणी आणि वेळेचे भान ठेवण्याची जबाबदारी मिळालेल्या विद्यार्थिनीला नियोजन आणि उत्तरदायित्वाचे महत्त्व कळते.",
+      intro: "ही नमुना कथा वर्गातील एका छोट्या गटाची जबाबदारी सोपवलेल्या विद्यार्थिनीची कल्पना करते. ही कामे वरवर लहान वाटतात, पण इतरांची जबाबदारी घेणे म्हणजे काय, याची झलक ती तिला दाखवतात.",
+      challenge: "ही विद्यार्थिनी स्वभावाने निवांत होती आणि पुढचा विचार क्वचितच करायची. नव्या जबाबदारीच्या पहिल्याच दिवशी वर्तुळ वेडेवाकडे झाले, गटातील काही जण इकडे-तिकडे गेले आणि मंडलं कुरु ची आज्ञा झाली तेव्हा गट तयारच नव्हता. तिला ओशाळल्यासारखे झाले आणि हे कसे सुधारावे ते कळेना.",
+      journey: [
+        "वर्ग प्रमुखांनी तिला एक सोपी योजना सुचवली: काही मिनिटे आधी यायचे, जागा पाहून घ्यायची आणि सत्र सुरू होण्यापूर्वी गटाला शांतपणे आठवण करून द्यायची. वर्तुळ कुठे करायचे, कोणाला सौम्य आठवण करून द्यायची, अशा छोट्या गोष्टी ती टिपू लागली.",
+        "बैठ्या खेळांची वेळ सांभाळणे आणि मैदानी खेळांकडे वळण्याची सूचना देणे ही तिची पुढची जबाबदारी ठरली. कोणालाही घाई न करता घड्याळाकडे लक्ष ठेवणे आणि पुढे जाण्याची वेळ झाली की स्पष्ट खूण करणे, हे ती शिकली. काही चुकले तर ती ते स्वीकारू लागली आणि दुसऱ्या दिवशी अधिक चांगले कसे करता येईल याचा विचार करू लागली."
+      ],
+      change: [
+        "कालांतराने गट तिच्यावर विसंबून राहू लागला आणि त्या विश्वासाचा तिलाही आनंद वाटू लागला. एक पाऊल पुढचा विचार करण्याची सवय हळूहळू आदल्या रात्रीच भरलेल्या दप्तरापर्यंत आणि आधीच आखलेल्या गृहपाठापर्यंत पोहोचली. एकेकाळी जड वाटणारी जबाबदारी आता सहज आणि ओळखीची वाटू लागली."
+      ],
+      lessons: [
+        "लहान कामे नीट केली की जबाबदारीची सवय लागते.",
+        "थोडेसे नियोजन मोठा गोंधळ टाळते.",
+        "चूक मान्य करणे ही ती सुधारण्याची पहिली पायरी आहे.",
+        "विश्वासार्ह राहिल्यानेच इतरांचा विश्वास मिळतो."
+      ],
+      conclusion: "लहान गटाचे नेतृत्व करतानाही तयारी करणे, वेळ पाळणे आणि आपल्या निर्णयांची जबाबदारी घेणे आवश्यक असते, हे या कल्पित विद्यार्थिनीला उमगते. उत्तरदायित्व हा स्वभावाचा भाग व्हावा म्हणून अमृत वर्ग मुलांना अशा रोजच्या जबाबदाऱ्या देतो."
+    }
+  },
+  {
+    slug: "drawing-the-stories",
+    category: "creativity",
+    en: {
+      title: "Pictures From the Story Circle",
+      short: "A student who loves to draw begins illustrating the inspiring stories heard in sessions and discovers a talent worth nurturing.",
+      intro: "This sample story imagines a quiet student who rarely speaks in the group but fills notebook margins with drawings. It explores how the stories shared in Amrut Varg can give such a student a new way to express herself.",
+      challenge: "During Personality Development, the student listened closely to every story but never shared her thoughts aloud. She felt her ideas were not as important as those of more talkative classmates. Drawing was her private hobby, something she did not think anyone else would value.",
+      journey: [
+        "One evening, after hearing a story about courage and kindness, the student went home and drew the scene that had moved her most. She brought the drawing to the next session, half hoping no one would notice it. The Varg leader did notice, and asked whether she would like to show it to the group.",
+        "Encouraged, she began drawing a scene from each new story. Her friends started looking forward to her pictures and asking questions about the details she had chosen. Through these conversations, she found herself explaining what each story meant to her.",
+        "The Varg leader suggested she try adding a short line beneath each drawing to capture the story's message. This small step helped her connect her art with words and ideas."
+      ],
+      change: [
+        "Drawing became a bridge between the student and the group. She grew more comfortable speaking about her work, and her confidence carried into other parts of the session too.",
+        "She also began to see her talent as something that could inspire others, not just a private pastime."
+      ],
+      lessons: [
+        "Every talent deserves room to grow.",
+        "There is more than one way to share an idea.",
+        "Encouragement at the right moment can unlock confidence.",
+        "Art can help us understand and remember what we learn."
+      ],
+      conclusion: "In this imagined story, a quiet student finds her voice through pictures. Amrut Varg values such diverse forms of expression, helping each young person discover what makes them unique."
+    },
+    mr: {
+      title: "गोष्टींना चित्रांचे रूप",
+      short: "चित्रकलेची आवड असलेला एक विद्यार्थी सत्रांत ऐकलेल्या प्रेरक गोष्टी चित्रांतून रेखाटू लागतो आणि त्याला आपली दडलेली प्रतिभा सापडते.",
+      intro: "ही नमुना कथा गटात क्वचितच बोलणाऱ्या, पण वहीच्या समासांत चित्रे काढत राहणाऱ्या एका अबोल विद्यार्थ्याची कल्पना करते. अमृत वर्गात सांगितल्या जाणाऱ्या गोष्टी अशा विद्यार्थ्याला व्यक्त होण्याचा नवा मार्ग कसा देऊ शकतात, याचा वेध ही कथा घेते.",
+      challenge: "व्यक्तिमत्त्व विकासाच्या वेळी तो प्रत्येक गोष्ट मन लावून ऐकायचा, पण आपले विचार कधीच मोठ्याने मांडायचा नाही. बोलक्या वर्गमित्रांच्या तुलनेत आपल्या कल्पना फारशा महत्त्वाच्या नाहीत, असे त्याला वाटायचे. चित्र काढणे हा त्याचा खासगी छंद होता आणि त्याची कोणाला कदर वाटेल असे त्याला कधी वाटलेच नव्हते.",
+      journey: [
+        "एका संध्याकाळी धैर्य आणि दयाळूपणाची गोष्ट ऐकून घरी गेल्यावर त्याने मनाला सर्वाधिक भिडलेला प्रसंग चित्रात उतरवला. ते चित्र कोणाच्या नजरेस पडू नये असे अर्धवट वाटत असतानाच तो पुढच्या सत्राला ते घेऊन आला. वर्ग प्रमुखांचे लक्ष मात्र त्याकडे गेलेच, आणि त्यांनी ते गटाला दाखवशील का, असे विचारले.",
+        "या प्रोत्साहनाने तो प्रत्येक नव्या गोष्टीतील एक प्रसंग रेखाटू लागला. मित्र त्याच्या चित्रांची वाट पाहू लागले आणि त्याने निवडलेल्या बारकाव्यांबद्दल प्रश्न विचारू लागले. या गप्पांतून प्रत्येक गोष्ट आपल्याला काय सांगते, हे तो नकळत समजावून सांगू लागला.",
+        "प्रत्येक चित्राखाली गोष्टीचा संदेश सांगणारी एक छोटी ओळ लिहून पाहा, असे वर्ग प्रमुखांनी सुचवले. या छोट्याशा पावलामुळे त्याला आपली कला शब्दांशी आणि विचारांशी जोडता आली."
+      ],
+      change: [
+        "चित्रकला हा त्याच्यात आणि गटात सांधणारा पूल ठरला. आपल्या चित्रांविषयी बोलताना तो अधिक मोकळा होऊ लागला आणि हा आत्मविश्वास सत्राच्या इतर भागांतही दिसू लागला.",
+        "आपली प्रतिभा केवळ खासगी विरंगुळा नसून इतरांनाही प्रेरणा देऊ शकते, हेही त्याला जाणवू लागले."
+      ],
+      lessons: [
+        "प्रत्येक प्रतिभेला फुलण्यासाठी अवकाश मिळायला हवा.",
+        "विचार मांडण्याचा एकच मार्ग नसतो.",
+        "योग्य क्षणी मिळालेले प्रोत्साहन आत्मविश्वास जागवते.",
+        "कलेमुळे शिकलेले अधिक चांगले समजते आणि लक्षात राहते."
+      ],
+      conclusion: "या कल्पित कथेत एका अबोल विद्यार्थ्याला चित्रांतून आपला आवाज गवसतो. प्रत्येक मुलाला आपले वेगळेपण शोधायला मदत करत अमृत वर्ग अभिव्यक्तीच्या अशा विविध रूपांचा आदर करतो."
+    }
+  },
+  {
+    slug: "focus-that-follows-to-school",
+    category: "learning",
+    en: {
+      title: "Focus That Comes Home",
+      short: "Concentration built through the command drill and seated games gradually carries over into a calmer, steadier study routine at home.",
+      intro: "This sample story imagines a student who found it hard to sit still and focus on homework. It explores how the attention skills practised in Amrut Varg can quietly find their way into everyday study habits.",
+      challenge: "At home, the student would open a book and within minutes drift off to other things. Homework took far longer than it needed to, and evenings often ended in frustration. He wanted to do better but did not know where to begin.",
+      journey: [
+        "In आज्ञा अभ्यास, the student had to listen carefully and respond instantly to commands like निश्चलो भव and गणनम् कुरु. At first he made mistakes, but with daily practice he noticed he was reacting more quickly and staying alert for longer.",
+        "Seated games such as \"चार व सात\" demanded the same kind of attention. Missing a single call meant being out, so the student learned to keep his mind on the task. He began to enjoy the feeling of being fully present.",
+        "Remembering how calm he felt during the drill, he tried a similar approach at home: clearing his desk, sitting upright and setting himself a short, focused stretch of study before a small break."
+      ],
+      change: [
+        "Gradually, study time became less of a struggle. He still had distracted days, but he now had a way to bring his attention back. Homework took less time, and he felt more confident in class because he understood more of what was being taught."
+      ],
+      lessons: [
+        "Concentration is a skill that grows with practice.",
+        "Habits built in one place can help in another.",
+        "Short, focused effort works better than long, distracted hours.",
+        "A calm, ready posture helps a calm, ready mind."
+      ],
+      conclusion: "In this imagined story, the focus practised on the Varg ground slowly becomes part of a student's study routine. Amrut Varg's daily activities aim to build such transferable skills that support young people in every part of life."
+    },
+    mr: {
+      title: "मैदानातली एकाग्रता अभ्यासात",
+      short: "आज्ञा अभ्यास आणि बैठ्या खेळांतून वाढलेली एकाग्रता हळूहळू घरच्या अभ्यासाच्या अधिक शांत आणि स्थिर दिनक्रमात उतरते.",
+      intro: "ही नमुना कथा एका जागी स्थिर बसणे आणि गृहपाठावर लक्ष केंद्रित करणे अवघड जाणाऱ्या एका विद्यार्थ्याची कल्पना करते. अमृत वर्गात सरावलेली एकाग्रता रोजच्या अभ्यासाच्या सवयींमध्ये नकळत कशी उतरू शकते, याचा वेध ही कथा घेते.",
+      challenge: "घरी पुस्तक उघडल्यानंतर काही मिनिटांतच त्याचे लक्ष इतर गोष्टींकडे भरकटायचे. गृहपाठाला गरजेपेक्षा कितीतरी अधिक वेळ लागायचा आणि अनेकदा संध्याकाळ चिडचिडीत संपायची. त्याला सुधारायचे होते, पण सुरुवात कुठून करावी ते कळत नव्हते.",
+      journey: [
+        "आज्ञा अभ्यासात त्याला निश्चलो भव, गणनम् कुरु अशा आज्ञा लक्षपूर्वक ऐकून त्यांना तत्काळ प्रतिसाद द्यावा लागायचा. सुरुवातीला त्याच्या चुका व्हायच्या, पण रोजच्या सरावाने आपण अधिक चटकन प्रतिसाद देतो आणि अधिक वेळ सावध राहतो, हे त्याच्या लक्षात आले.",
+        "“चार व सात” सारख्या बैठ्या खेळांतही तसेच लक्ष द्यावे लागायचे. एक जरी सूचना चुकली तरी खेळातून बाद व्हावे लागायचे, म्हणून मन कामावर खिळवून ठेवायला तो शिकला. पूर्णपणे त्या क्षणात असण्याची भावना त्याला आवडू लागली.",
+        "आज्ञा अभ्यासाच्या वेळी वाटणारी शांतता आठवून त्याने घरीही तसाच प्रयत्न केला: टेबल आवरायचे, ताठ बसायचे आणि छोट्या विश्रांतीपूर्वी थोडा वेळ एकाग्रतेने अभ्यास करायचा."
+      ],
+      change: [
+        "हळूहळू अभ्यासाची वेळ कमी कष्टाची वाटू लागली. लक्ष विचलित होणारे दिवस अजूनही यायचे, पण आता ते पुन्हा केंद्रित करण्याचा मार्ग त्याच्याकडे होता. गृहपाठ लवकर होऊ लागला, आणि शिकवलेले अधिक समजू लागल्याने वर्गातही त्याचा आत्मविश्वास वाढला."
+      ],
+      lessons: [
+        "एकाग्रता हे सरावाने वाढणारे कौशल्य आहे.",
+        "एका ठिकाणी लागलेल्या सवयी दुसरीकडेही उपयोगी पडतात.",
+        "विखुरलेल्या दीर्घ वेळेपेक्षा थोडा पण एकाग्र प्रयत्न अधिक फलदायी ठरतो.",
+        "शांत, सज्ज देहबोली मनालाही शांत आणि सज्ज ठेवते."
+      ],
+      conclusion: "या कल्पित कथेत वर्गाच्या मैदानावर सरावलेली एकाग्रता हळूहळू एका विद्यार्थ्याच्या अभ्यासाच्या दिनक्रमाचा भाग बनते. आयुष्याच्या प्रत्येक क्षेत्रात मुलांना साथ देणारी अशी उपयोगी कौशल्ये घडवणे, हे अमृत वर्गाच्या रोजच्या उपक्रमांचे उद्दिष्ट आहे."
+    }
+  },
+  {
+    slug: "friendship-across-differences",
+    category: "social",
+    en: {
+      title: "A Friend Beyond Differences",
+      short: "A girl learns to welcome a classmate who speaks a different language, discovering that friendship needs no common tongue to begin.",
+      intro: "This sample story imagines a girl who stayed within her familiar group of friends. It looks at how the shared rhythm of Amrut Varg could help her reach out to someone who seemed very different.",
+      challenge: "A new classmate had moved from another state and spoke little Marathi, so she usually stood alone at the edge of the group. The girl noticed her but felt awkward and unsure how to talk to her.",
+      journey: [
+        "In the seated games, the Varg leader paired students randomly, and the girl found herself with the newcomer for “आकाश–धरती–पाताळ”. They laughed together at their mistakes, and the girl realised that a game could speak where words could not.",
+        "During the command drill, the Sanskrit commands were new to everyone, so all students were learning together on equal ground. The girl quietly showed her partner when to turn and when to sit, and was surprised at how quickly she followed.",
+        "In Personality Development, the Varg leader invited the newcomer to teach the circle a short song from her home region. As everyone tried to sing along, the girl saw her classmate’s face light up with confidence for the first time."
+      ],
+      change: [
+        "Over the weeks, the two girls began walking home together, teaching each other words from their languages. The girl started noticing other students who sat alone and making space for them as well.",
+        "She discovered that differences in language, food and customs made friendships richer rather than harder. Her circle of friends widened, and so did her understanding of the country."
+      ],
+      lessons: [
+        "Kindness is understood in every language.",
+        "Shared activities can build bridges between people.",
+        "Including others makes the whole group stronger.",
+        "Diversity is something to celebrate, not fear."
+      ],
+      conclusion: "This imagined story shows how a circle that welcomes everyone can turn strangers into friends. In learning to include, students live the spirit of one united India."
+    },
+    mr: {
+      title: "भिन्नतेपलीकडची मैत्री",
+      short: "वेगळी भाषा बोलणाऱ्या वर्गमैत्रिणीला आपलेसे करताना एका विद्यार्थिनीला कळते की मैत्रीसाठी समान भाषेची गरज नसते.",
+      intro: "ही नमुना कथा अशा एका विद्यार्थिनीची कल्पना करते, जी आपल्या ओळखीच्या मैत्रिणींच्या घोळक्यातच रमायची. अमृत वर्गाच्या एकत्र लयीमुळे ती अगदी वेगळ्या वाटणाऱ्या व्यक्तीपर्यंत कशी पोहोचू शकते, याचा वेध इथे घेतला आहे.",
+      challenge: "दुसऱ्या राज्यातून आलेल्या एका नव्या वर्गमैत्रिणीला मराठी फारसे येत नव्हते, त्यामुळे ती बहुतेक वेळा घोळक्याच्या कडेला एकटीच उभी असायची. आपल्या कथेतील विद्यार्थिनीला हे दिसत होते, पण तिच्याशी कसे बोलावे हे न कळल्याने ती संकोचत असे.",
+      journey: [
+        "बैठ्या खेळांमध्ये वर्ग प्रमुखांनी जोड्या अचानक लावल्या आणि ‘आकाश–धरती–पाताळ’ खेळात ती नव्या मैत्रिणीची जोडीदार झाली. चुका झाल्यावर दोघी मनमोकळेपणाने हसल्या आणि जिथे शब्द अपुरे पडतात तिथे खेळ बोलतो, हे तिला उमगले.",
+        "आज्ञा अभ्यासातील संस्कृत आज्ञा सगळ्यांसाठीच नव्या होत्या, त्यामुळे सर्वजण बरोबरीने शिकत होते. कधी वळायचे आणि कधी बसायचे, हे तिने हळूच जोडीदाराला दाखवले आणि ती किती पटकन शिकते, याचे तिला आश्चर्य वाटले.",
+        "व्यक्तिमत्त्व विकासात वर्ग प्रमुखांनी नव्या मैत्रिणीला तिच्या प्रदेशातील एक छोटेसे गीत शिकवायला सांगितले. सगळे ते गुणगुणण्याचा प्रयत्न करत असताना तिच्या चेहऱ्यावर पहिल्यांदाच आत्मविश्वास फुललेला दिसला."
+      ],
+      change: [
+        "काही आठवड्यांतच दोघी एकत्र घरी जाऊ लागल्या आणि एकमेकींना आपापल्या भाषेतील शब्द शिकवू लागल्या. एकटे बसणाऱ्या इतर मुलांकडेही ती आता लक्ष देऊ लागली आणि त्यांना आपल्यात सामावून घेऊ लागली.",
+        "भाषा, खाणेपिणे आणि रीतिरिवाज यांतील फरक मैत्री कठीण करत नाहीत, तर ती अधिक समृद्ध करतात, हे तिला उमगले. तिचे मित्रवर्तुळ विस्तारले आणि देशाबद्दलची तिची समजही."
+      ],
+      lessons: [
+        "दयाळूपणा प्रत्येक भाषेत समजतो.",
+        "एकत्र केलेल्या कृतींमुळे माणसांमध्ये पूल बांधले जातात.",
+        "इतरांना सामावून घेतल्याने संपूर्ण गट बळकट होतो.",
+        "विविधता भीतीची नव्हे, तर आनंदाची गोष्ट आहे."
+      ],
+      conclusion: "सर्वांचे स्वागत करणारे मंडल अनोळखी व्यक्तींनाही मित्र कसे बनवते, हे या काल्पनिक कथेतून दिसते. इतरांना आपलेसे करायला शिकताना विद्यार्थी एकसंध भारताची भावना प्रत्यक्ष जगतात."
+    }
+  },
+  {
+    slug: "mentoring-a-newcomer",
+    category: "leadership",
+    en: {
+      title: "A Friend for the New Arrival",
+      short: "An experienced participant helps a nervous new student find their feet, and discovers the joy of guiding someone else.",
+      intro: "This sample story imagines a student who has been part of Amrut Varg for a while and notices a newcomer struggling to fit in. It looks at how helping someone else can become a quiet lesson in leadership.",
+      challenge: "The new student did not know the Sanskrit commands, missed the order of activities and stood apart during games. Feeling out of place, the newcomer seemed close to giving up on the sessions. The experienced student remembered feeling just as lost in the beginning.",
+      journey: [
+        "Before the session, the experienced student began explaining the flow: the circle, the prayer, सूर्यनमस्कार, the seated games and so on. During आज्ञा अभ्यास, standing beside the newcomer helped too, since a glance was enough to show when to sit at असिनो भव or rise at उत्तिष्ठो भव.",
+        "In field games, the experienced student made sure the newcomer was on the same side and passed the chance to play early. Little by little, the newcomer stopped watching from the edges and began joining in with a smile.",
+        "Explaining things aloud also helped the experienced student understand them better. Questions about why the circle matters or what the prayer means led to new reflections on familiar routines."
+      ],
+      change: [
+        "The newcomer slowly became a regular, comfortable member of the group. The experienced student, meanwhile, grew more patient, more observant and more aware of how others feel. Guiding someone else turned out to be one of the most rewarding parts of the Varg."
+      ],
+      lessons: [
+        "Remembering our own beginnings helps us support others.",
+        "A small gesture of welcome can change someone's experience.",
+        "Teaching something deepens our own understanding.",
+        "Leadership often begins with simply noticing who needs help."
+      ],
+      conclusion: "In this imagined story, a single act of friendship helps a newcomer belong. Amrut Varg encourages such peer support, where every participant can become a guide for the next."
+    },
+    mr: {
+      title: "नव्या मित्राला दिलेला हात",
+      short: "वर्गात रुळलेला एक विद्यार्थी गोंधळलेल्या नव्या साथीदाराला सावरायला मदत करतो आणि मार्गदर्शन करण्यातला आनंद अनुभवतो.",
+      intro: "ही नमुना कथा अमृत वर्गात काही काळापासून येणाऱ्या आणि एका नव्या साथीदाराची घुसमट ओळखणाऱ्या विद्यार्थ्याची कल्पना करते. दुसऱ्याला मदत करणे हाच नेतृत्वाचा एक शांत धडा कसा ठरू शकतो, हे यातून दिसते.",
+      challenge: "नव्या विद्यार्थ्याला संस्कृत आज्ञा माहीत नव्हत्या, उपक्रमांचा क्रम लक्षात राहत नव्हता आणि खेळांमध्ये तो एकटाच वेगळा उभा राहायचा. आपण इथे परके आहोत असे वाटून तो वर्गात येणे सोडून देण्याच्या बेतात होता. सुरुवातीला आपणही असेच भांबावलो होतो, हे जुन्या विद्यार्थ्याला आठवले.",
+      journey: [
+        "सत्र सुरू होण्यापूर्वी जुना विद्यार्थी त्याला संपूर्ण क्रम समजावून सांगू लागला: वर्तुळ, प्रार्थना, सूर्यनमस्कार, बैठे खेळ आणि पुढचे सारे. आज्ञा अभ्यासात तो नव्या मित्राच्या शेजारी उभा राहू लागला, त्यामुळे असिनो भव ला केव्हा बसायचे आणि उत्तिष्ठो भव ला केव्हा उठायचे हे एका नजरेतच कळू लागले.",
+        "मैदानी खेळांत नवा मित्र आपल्याच बाजूला असेल याची तो काळजी घ्यायचा आणि त्याला लवकर खेळण्याची संधी द्यायचा. हळूहळू नवा विद्यार्थी कडेला उभे राहून पाहणे थांबवून हसतमुखाने खेळात सामील होऊ लागला.",
+        "गोष्टी मोठ्याने समजावून सांगितल्यामुळे जुन्या विद्यार्थ्यालाही त्या अधिक नीट उमगल्या. वर्तुळ का महत्त्वाचे, प्रार्थनेचा अर्थ काय, अशा प्रश्नांमुळे रोजच्या सवयीच्या गोष्टींकडे तो नव्याने पाहू लागला."
+      ],
+      change: [
+        "नवा विद्यार्थी हळूहळू गटाचा नियमित आणि मोकळा सदस्य झाला. दुसरीकडे जुना विद्यार्थी अधिक संयमी, अधिक चौकस आणि इतरांच्या भावनांविषयी अधिक जागरूक झाला. दुसऱ्याला वाट दाखवणे हा वर्गातील सर्वात समाधान देणारा अनुभव ठरला."
+      ],
+      lessons: [
+        "आपली सुरुवात आठवली की इतरांना आधार देणे सोपे जाते.",
+        "स्वागताची एक छोटी कृतीही कोणाचा अनुभव बदलू शकते.",
+        "दुसऱ्याला शिकवताना आपली समज अधिक पक्की होते.",
+        "कोणाला मदतीची गरज आहे हे ओळखणे हीच नेतृत्वाची सुरुवात असते."
+      ],
+      conclusion: "या कल्पित कथेत मैत्रीच्या एका कृतीमुळे नवा विद्यार्थी गटाचा भाग होतो. प्रत्येक सहभागी पुढच्यासाठी मार्गदर्शक बनू शकेल, अशा परस्पर आधाराला अमृत वर्ग प्रोत्साहन देतो."
+    }
+  },
+];
+
+const bySlug = new Map(stories.map((s) => [s.slug, s]));
+
+export const getStory = (slug) => bySlug.get(slug);
+
+// Falls back to the first stories if a featured slug is ever missing.
+const featured = FEATURED_SLUGS.map(getStory).filter(Boolean);
+
+export const featuredStories =
+  featured.length === FEATURED_SLUGS.length ? featured : stories.slice(0, FEATURED_SLUGS.length);

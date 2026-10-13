@@ -1,8 +1,11 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '../Icon';
+import { DIRECTORY_PATH } from '../layout/Header';
 import Mandala from '../Mandala';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE } from '../../i18n/translations';
+import { copyText } from '../../services/clipboard';
 
 const INTENTS = [
   { key: 'start', icon: 'flag' },
@@ -11,25 +14,6 @@ const INTENTS = [
   { key: 'official', icon: 'building' },
 ];
 
-
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    // Fallback for browsers without the async clipboard API (or without permission).
-    const area = document.createElement('textarea');
-    area.value = text;
-    area.setAttribute('readonly', '');
-    area.style.position = 'fixed';
-    area.style.opacity = '0';
-    document.body.appendChild(area);
-    area.select();
-    const ok = document.execCommand('copy');
-    area.remove();
-    return ok;
-  }
-}
 
 function ExternalLink({ href, children, className }) {
   const { t } = useLanguage();
@@ -95,15 +79,11 @@ export default function Contact({ onOrganizer, onFindVarg }) {
       <>
         <p className="desk__text">{c.districtDesc}</p>
         <div className="desk__actions">
-          <ExternalLink className="btn btn--primary" href={OFFICIAL_LINKS.coordinators}>
+          <Link className="btn btn--primary" to={DIRECTORY_PATH}>
             {c.districtLink}
-            <Icon name="external" size={16} />
-          </ExternalLink>
+            <Icon name="arrowRight" size={16} />
+          </Link>
         </div>
-        <p className="desk__url">
-          <Icon name="globe" size={14} />
-          {OFFICIAL_LINKS.coordinators.replace(/^https:\/\//, '')}
-        </p>
       </>
     ),
     join: (
@@ -139,23 +119,6 @@ export default function Contact({ onOrganizer, onFindVarg }) {
               </ExternalLink>
             </li>
           ))}
-        <li>
-          <div className="desk__link desk__link--pending">
-            <span className="desk__link-icon">
-              <Icon name="file" size={18} />
-            </span>
-            <span className="desk__link-text">
-              <span className="desk__link-title">
-                {r.guidelinesTitle}
-                <span className="badge badge--muted">
-                  <Icon name="clock" size={12} />
-                  {r.guidelinesStatus}
-                </span>
-              </span>
-              <span className="desk__link-desc">{r.guidelinesDesc}</span>
-            </span>
-          </div>
-        </li>
       </ul>
     ),
   };

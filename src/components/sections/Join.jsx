@@ -2,8 +2,8 @@ import Icon from '../Icon';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { OFFICIAL_LINKS } from '../../i18n/translations';
 
-// The three registration routes: participant (via the class list),
-// organiser and Amrut Varg Leader. The organiser and leader cards carry the
+// The three registration routes: student (via the class list — the student
+// form belongs to a chosen Varg), organiser and Amrut Varg Leader. The organiser and leader cards carry the
 // `organizer` / `leader` anchors used by the navigation.
 const META = {
   participant: { icon: 'graduation', id: 'participant' },
@@ -16,8 +16,8 @@ export default function Join({ onFindVarg, onOrganizer, onLeader }) {
   const j = t.join;
   const actions = { participant: onFindVarg, organizer: onOrganizer, leader: onLeader };
   const labels = {
-    participant: { text: j.paths[0].action, icon: 'search' },
-    organizer: { text: t.common.enrollNow, icon: 'userPlus' },
+    participant: { text: j.paths[0].action, icon: 'graduation' },
+    organizer: { text: j.paths[1].action, icon: 'userPlus' },
     leader: { text: t.leader.registerButton, icon: 'userPlus' },
   };
   const descs = { participant: j.paths[0].desc, organizer: t.organizer.desc, leader: t.leader.desc };
@@ -65,6 +65,12 @@ export default function Join({ onFindVarg, onOrganizer, onLeader }) {
                     ))}
                   </ul>
                 </div>
+              ) : null}
+              {p.note ? (
+                <p className="path__note path__note--light">
+                  <Icon name="info" size={15} />
+                  <span>{p.note}</span>
+                </p>
               ) : null}
               {p.key === 'leader' ? (
                 <p className="path__note">

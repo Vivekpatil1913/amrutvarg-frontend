@@ -80,7 +80,7 @@ export default function Hero({ stats, onNavigate }) {
           </figure>
           <div className="hero__chip" aria-hidden="true">
             <Icon name="sun" size={18} />
-            <span>{t.activities.list[0]}</span>
+            <span>{t.activities.items[0].title}</span>
           </div>
           <div className="hero__ring" aria-hidden="true" />
         </div>

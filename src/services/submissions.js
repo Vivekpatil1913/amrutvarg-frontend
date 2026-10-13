@@ -6,8 +6,9 @@
 // existing integration with the AMRUT VARG service — the same endpoints the
 // live portal posts to — and resolves with { sent: true } only on success.
 
-export const LIVE_SUBMIT = import.meta.env.VITE_ENABLE_LIVE_SUBMIT === 'true';
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://d1n58pfwi63jf3.cloudfront.net';
+import { API_BASE, LIVE_SUBMIT } from './config';
+
+export { LIVE_SUBMIT };
 
 export class SubmitError extends Error {
   constructor(kind, message) {

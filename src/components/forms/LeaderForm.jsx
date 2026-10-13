@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Modal from '../Modal';
 import Icon from '../Icon';
 import {
+  DistrictOptions,
   Field,
   FormStep,
   describe,
@@ -173,7 +174,14 @@ export default function LeaderForm({ open, onClose }) {
               {field('institutionName', 'ld-inst', true, <input {...bind('institutionName', 'ld-inst')} maxLength={500} />)}
               {field('institutionEmail', 'ld-inst-email', false, <input {...bind('institutionEmail', 'ld-inst-email')} type="email" maxLength={255} />)}
               {field('institutionPhone', 'ld-inst-phone', false, <input {...bind('institutionPhone', 'ld-inst-phone')} type="tel" maxLength={20} />)}
-              {field('district', 'ld-district', true, <input {...bind('district', 'ld-district')} maxLength={255} />)}
+              {field(
+                'district',
+                'ld-district',
+                true,
+                <select {...bind('district', 'ld-district')}>
+                  <DistrictOptions />
+                </select>,
+              )}
               {field('division', 'ld-division', true, <input {...bind('division', 'ld-division')} maxLength={255} />)}
               {field('taluka', 'ld-taluka', true, <input {...bind('taluka', 'ld-taluka')} maxLength={255} />)}
               {field('village', 'ld-village', true, <input {...bind('village', 'ld-village')} maxLength={255} />)}

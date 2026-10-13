@@ -19,13 +19,19 @@ const readScale = () => {
   }
 };
 
+// District Coordinators / Managers directory page.
+export const DIRECTORY_PATH = '/district-directory';
+
 export const NAV_ITEMS = [
   { id: 'hero', key: 'home' },
+  { id: 'yashogatha', key: 'yashogatha' },
   { id: 'about', key: 'amrutVarg' },
   { id: 'session', key: 'session' },
   { id: 'vargs', key: 'workingVargs' },
   { id: 'leader', key: 'leader' },
   { id: 'contact', key: 'contact' },
+  // A separate page rather than a home-page section.
+  { id: 'districts', key: 'districts', to: DIRECTORY_PATH },
 ];
 
 // Scrolls to a home-page section, navigating home first when needed.
@@ -87,7 +93,14 @@ export default function Header() {
   // Sliding pill behind the active link, measured so it fits either language.
   const listRef = useRef(null);
   const [pill, setPill] = useState(null);
-  const activeId = pathname === '/' ? active : null;
+  // The story pages belong to the Yashogatha item.
+  // A varg's details link (/vargs/…) is shown over the home page.
+  const onHome = pathname === '/' || pathname.startsWith('/vargs/');
+  const activeId = onHome
+    ? active
+    : pathname.startsWith('/yashogatha')
+      ? 'yashogatha'
+      : NAV_ITEMS.find((item) => item.to && pathname.startsWith(item.to))?.id || null;
   useLayoutEffect(() => {
     const list = listRef.current;
     if (!list) return undefined;
@@ -107,7 +120,7 @@ export default function Header() {
 
   // Highlight the nav item for the section currently in view.
   useEffect(() => {
-    if (pathname !== '/' || !('IntersectionObserver' in window)) return undefined;
+    if (!onHome || !('IntersectionObserver' in window)) return undefined;
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
@@ -119,12 +132,12 @@ export default function Header() {
       if (el) io.observe(el);
     });
     return () => io.disconnect();
-  }, [pathname]);
+  }, [onHome]);
 
   useEffect(() => {
     if (!open) return undefined;
     const onKey = (e) => e.key === 'Escape' && setOpen(false);
-    const onResize = () => window.innerWidth >= 1100 && setOpen(false);
+    const onResize = () => window.innerWidth >= 1200 && setOpen(false);
     document.addEventListener('keydown', onKey);
     window.addEventListener('resize', onResize);
     document.body.classList.add('menu-open');
@@ -193,7 +206,7 @@ export default function Header() {
 
       <header className={`site-header${scrolled ? ' is-scrolled' : ''}${open ? ' is-open' : ''}`}>
         <div className="container site-header__inner">
-          <Link to="/" className="brand" onClick={(e) => pathname === '/' && onNav(e, 'hero')}>
+          <Link to="/" className="brand" onClick={(e) => onHome && onNav(e, 'hero')}>
             <img src={logo} alt={t.a11y.logoAlt} width="383" height="86" className="brand__logo" />
             <span className="brand__divider" aria-hidden="true" />
             <span className="brand__name">{t.hero.title}</span>
@@ -206,17 +219,28 @@ export default function Header() {
                 aria-hidden="true"
                 style={pill ? { transform: `translateX(${pill.x}px)`, width: pill.w } : undefined}
               />
-              {NAV_ITEMS.map(({ id, key }) => (
+              {NAV_ITEMS.map(({ id, key, to }) => (
                 <li key={id}>
-                  <a
-                    href={`#${id}`}
-                    data-nav={id}
-                    className={`nav__link${pathname === '/' && active === id ? ' is-active' : ''}`}
-                    aria-current={pathname === '/' && active === id ? 'true' : undefined}
-                    onClick={(e) => onNav(e, id)}
-                  >
-                    {t.nav[key]}
-                  </a>
+                  {to ? (
+                    <Link
+                      to={to}
+                      data-nav={id}
+                      className={`nav__link${activeId === id ? ' is-active' : ''}`}
+                      aria-current={activeId === id ? 'page' : undefined}
+                    >
+                      {t.nav[key]}
+                    </Link>
+                  ) : (
+                    <a
+                      href={`#${id}`}
+                      data-nav={id}
+                      className={`nav__link${activeId === id ? ' is-active' : ''}`}
+                      aria-current={activeId === id ? 'true' : undefined}
+                      onClick={(e) => onNav(e, id)}
+                    >
+                      {t.nav[key]}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -245,12 +269,19 @@ export default function Header() {
         <div id="mobile-menu" className="mobile-menu" hidden={!open}>
           <nav className="container" aria-label={t.a11y.mainNav}>
             <ul className="mobile-menu__list">
-              {NAV_ITEMS.map(({ id, key }, i) => (
+              {NAV_ITEMS.map(({ id, key, to }, i) => (
                 <li key={id} style={{ '--i': i }}>
-                  <a href={`#${id}`} className="mobile-menu__link" onClick={(e) => onNav(e, id)}>
-                    {t.nav[key]}
-                    <Icon name="arrowRight" size={18} />
-                  </a>
+                  {to ? (
+                    <Link to={to} className="mobile-menu__link" onClick={() => setOpen(false)}>
+                      {t.nav[key]}
+                      <Icon name="arrowRight" size={18} />
+                    </Link>
+                  ) : (
+                    <a href={`#${id}`} className="mobile-menu__link" onClick={(e) => onNav(e, id)}>
+                      {t.nav[key]}
+                      <Icon name="arrowRight" size={18} />
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
