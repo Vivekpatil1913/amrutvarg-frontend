@@ -1,9 +1,10 @@
-import { useId, useMemo, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon';
 import Mandala from '../Mandala';
 import CountUp from '../CountUp';
 import DivisionWheel, { toneColor } from '../DivisionWheel';
+import Pager, { PAGE_SIZE } from '../Pager';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useVargsSourceNote } from '../../data/VargsProvider';
 import { VARG_NAMES_EN, vargPlaceName } from '../../data/vargNamesEn';
@@ -11,7 +12,7 @@ import { vargPath } from '../../data/vargLinks';
 import { DISTRICTS, DIVISION_OF_DISTRICT } from '../../data/districts';
 import { translations } from '../../i18n/translations';
 
-const PAGE = 8;
+const PAGE = PAGE_SIZE;
 const LONG_TEXT = 90;
 
 function Pass({ varg, tone, index, onEnroll }) {
@@ -93,7 +94,8 @@ export default function Vargs({ vargs, onEnroll }) {
   const [query, setQuery] = useState('');
   const [div, setDiv] = useState('');
   const [dist, setDist] = useState('');
-  const [limit, setLimit] = useState(PAGE);
+  const [page, setPage] = useState(0);
+  const resultsRef = useRef(null);
 
   // Divisions in first-seen order, with their listings' districts.
   const divisions = useMemo(() => {
@@ -148,24 +150,36 @@ export default function Vargs({ vargs, onEnroll }) {
     );
   }, [vargs, query, div, dist]);
 
-  const shown = filtered.slice(0, limit);
-  const filterKey = `${div}|${dist}|${query.trim()}`;
+  // Exactly one page of cards at a time. The page is clamped so a shorter
+  // list (new filter, or a refreshed listing) never leaves an empty page.
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE));
+  const current = Math.min(page, pageCount - 1);
+  const start = current * PAGE;
+  const shown = filtered.slice(start, start + PAGE);
+  const filterKey = `${div}|${dist}|${query.trim()}|${current}`;
+
+  const goToPage = (next) => {
+    setPage(next);
+    // Bring the top of the results back into view if it has scrolled away.
+    const top = resultsRef.current?.getBoundingClientRect().top;
+    if (top !== undefined && top < 0) resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   // Picking the selected division again (or the ring's centre) shows all divisions.
   const selectDivision = (name) => {
     setDiv((cur) => (cur === name ? '' : name));
     setDist('');
-    setLimit(PAGE);
+    setPage(0);
   };
   const pickDistrict = (name) => {
     setDist((cur) => (cur === name ? '' : name));
-    setLimit(PAGE);
+    setPage(0);
   };
   const clearAll = () => {
     setQuery('');
     setDiv('');
     setDist('');
-    setLimit(PAGE);
+    setPage(0);
   };
 
   const viewing = [div && v.division(division(div)), dist && district(dist)].filter(Boolean).join(' · ') || v.allDivisions;
@@ -245,7 +259,7 @@ export default function Vargs({ vargs, onEnroll }) {
               </div>
             </aside>
 
-            <div className="results" data-reveal style={{ '--d': 1 }}>
+            <div ref={resultsRef} className="results" data-reveal style={{ '--d': 1 }}>
               <div className="results__bar">
                 <div className="vsearch">
                   <Icon name="search" size={18} className="vsearch__icon" />
@@ -260,11 +274,16 @@ export default function Vargs({ vargs, onEnroll }) {
                     value={query}
                     onChange={(e) => {
                       setQuery(e.target.value);
-                      setLimit(PAGE);
+                      setPage(0);
                     }}
                   />
                   {query ? (
-                    <button type="button" className="vsearch__clear" onClick={() => setQuery('')} aria-label={v.clearSearch}>
+                    <button type="button" className="vsearch__clear" onClick={() => {
+                        setQuery('');
+                        setPage(0);
+                      }}
+                      aria-label={v.clearSearch}
+                    >
                       <Icon name="close" size={16} />
                     </button>
                   ) : null}
@@ -288,28 +307,19 @@ export default function Vargs({ vargs, onEnroll }) {
               ) : (
                 <ul key={filterKey} className="passes">
                   {shown.map((x, i) => (
-                    <Pass key={x.id} varg={x} tone={toneOf[x.vibhag] ?? 0} index={i % PAGE} onEnroll={onEnroll} />
+                    <Pass key={x.id} varg={x} tone={toneOf[x.vibhag] ?? 0} index={i} onEnroll={onEnroll} />
                   ))}
                 </ul>
               )}
 
-              {filtered.length > PAGE ? (
-                <div className="results__more">
+              {pageCount > 1 ? (
+                <nav className="results__more" aria-label={v.pagination}>
                   <div className="results__progress" aria-hidden="true">
-                    <span style={{ width: `${(shown.length / filtered.length) * 100}%` }} />
+                    <span style={{ width: `${((current + 1) / pageCount) * 100}%` }} />
                   </div>
-                  <span>{v.showing(num(shown.length), num(filtered.length))}</span>
-                  {shown.length < filtered.length ? (
-                    <button type="button" className="btn btn--ghost btn--sm" onClick={() => setLimit((l) => l + PAGE)}>
-                      {t.common.showMore}
-                      <Icon name="chevronDown" size={16} />
-                    </button>
-                  ) : (
-                    <button type="button" className="btn btn--text btn--sm" onClick={() => setLimit(PAGE)}>
-                      {t.common.showLess}
-                    </button>
-                  )}
-                </div>
+                  <span>{v.showing(`${num(start + 1)}–${num(start + shown.length)}`, num(filtered.length))}</span>
+                  <Pager page={current} pageCount={pageCount} onChange={goToPage} />
+                </nav>
               ) : null}
 
               <p className="results__source" role="status">

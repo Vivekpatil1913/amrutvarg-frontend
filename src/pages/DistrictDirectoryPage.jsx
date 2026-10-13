@@ -1,7 +1,8 @@
-import { useEffect, useId, useMemo } from 'react';
+import { useEffect, useId, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
+import Pager, { PAGE_SIZE } from '../components/Pager';
 import { CONTACT_ROLES, districtContacts } from '../data/districtContacts';
 import { DISTRICTS, DISTRICTS_BY_DIVISION, DIVISION_OF_DISTRICT } from '../data/districts';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -68,13 +69,15 @@ function ContactCard({ c, featured }) {
 
 // The Amrut Varg regional team, grouped by division with the divisional
 // manager first, searchable in the current language and filterable by
-// district. Filters live in the URL (?d=…&q=…) so Back restores them.
+// district, 8 cards per page. Filters and page live in the URL (?d=…&q=…&p=…)
+// so Back restores them.
 export default function DistrictDirectoryPage() {
   const { t, num, district, division } = useLanguage();
   const d = t.directory;
   const [params, setParams] = useSearchParams();
   const searchId = useId();
   const selectId = useId();
+  const listRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -87,6 +90,8 @@ export default function DistrictDirectoryPage() {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value);
     else next.delete(key);
+    // A new search or district starts again from page 1.
+    if (key !== 'p') next.delete('p');
     setParams(next, { replace: true });
   };
 
@@ -123,6 +128,32 @@ export default function DistrictDirectoryPage() {
   }, [selected, query, division]);
 
   const count = groups.reduce((n, g) => n + g.count, 0);
+
+  // One page of cards, taken from the list in display order (division by
+  // division, divisional manager first), then grouped again under their
+  // division headings. The page is clamped so a shorter list never shows an
+  // empty page.
+  const ordered = useMemo(() => groups.flatMap((g) => [...g.leads, ...g.team]), [groups]);
+  const pageCount = Math.max(1, Math.ceil(ordered.length / PAGE_SIZE));
+  const current = Math.min(Math.max(Number.parseInt(params.get('p'), 10) - 1 || 0, 0), pageCount - 1);
+  const start = current * PAGE_SIZE;
+  const pageItems = ordered.slice(start, start + PAGE_SIZE);
+  const pageGroups = groups
+    .map((g) => {
+      const items = pageItems.filter((c) => c.division === g.name);
+      return {
+        ...g,
+        leads: items.filter((c) => c.roles.includes('divisionalManager')),
+        team: items.filter((c) => !c.roles.includes('divisionalManager')),
+      };
+    })
+    .filter((g) => g.leads.length || g.team.length);
+
+  const goToPage = (n) => {
+    update('p', n > 0 ? String(n + 1) : '');
+    const top = listRef.current?.getBoundingClientRect().top;
+    if (top !== undefined && top < 0) listRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <section className="spage ddir" aria-labelledby="ddir-title">
@@ -183,13 +214,13 @@ export default function DistrictDirectoryPage() {
           </div>
         </div>
 
-        <p className="spage__count" aria-live="polite">
+        <p ref={listRef} className="spage__count" aria-live="polite">
           {d.count(num(count))}
         </p>
 
-        {groups.length ? (
+        {pageGroups.length ? (
           <div className="ddir__groups">
-            {groups.map((g) => (
+            {pageGroups.map((g) => (
               <section key={g.name} className="ddir__group" aria-labelledby={`ddir-${g.name}`}>
                 <header className="ddir__group-head">
                   <h2 id={`ddir-${g.name}`} className="ddir__district">
@@ -214,6 +245,15 @@ export default function DistrictDirectoryPage() {
                 ) : null}
               </section>
             ))}
+            {pageCount > 1 ? (
+              <nav className="results__more" aria-label={d.pagination}>
+                <div className="results__progress" aria-hidden="true">
+                  <span style={{ width: `${((current + 1) / pageCount) * 100}%` }} />
+                </div>
+                <span>{d.showing(`${num(start + 1)}–${num(start + pageItems.length)}`, num(count))}</span>
+                <Pager page={current} pageCount={pageCount} onChange={goToPage} />
+              </nav>
+            ) : null}
           </div>
         ) : districtContacts.length ? (
           <div className="sempty">

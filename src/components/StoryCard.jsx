@@ -6,7 +6,9 @@ import { useLanguage } from '../i18n/LanguageContext';
 
 // One success-story card, shared by the home preview and the listing page.
 // Deliberately unnumbered: stories are told apart by cover, theme and title.
-export default function StoryCard({ story, className = '', style }) {
+// `linkState` travels with the "read more" link (the listing passes its own
+// page and filters, so the story page can lead back to them).
+export default function StoryCard({ story, className = '', style, linkState }) {
   const { t, lang } = useLanguage();
   const y = t.yashogatha;
   const text = story[lang];
@@ -23,7 +25,12 @@ export default function StoryCard({ story, className = '', style }) {
             <Icon name={cat?.icon || 'sparkle'} size={15} />
             {y.categories[story.category]}
           </span>
-          <Link to={`/yashogatha/${story.slug}`} className="scard__more" aria-label={y.readMoreAbout(text.title)}>
+          <Link
+            to={`/yashogatha/${story.slug}`}
+            state={linkState}
+            className="scard__more"
+            aria-label={y.readMoreAbout(text.title)}
+          >
             {y.readMore}
             <Icon name="arrowRight" size={15} />
           </Link>

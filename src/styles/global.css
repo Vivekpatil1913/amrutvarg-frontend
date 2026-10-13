@@ -805,20 +805,21 @@ select.input {
 .notices {
   position: relative;
   z-index: 1;
-  padding-top: clamp(12px, 1.6vw, 18px);
 }
+/* Edge-to-edge bar directly under the header */
 .notices__bar {
   position: relative;
   overflow: hidden;
+  background: linear-gradient(100deg, hsl(22 72% 52% / 0.12), var(--surface) 46%);
+  border-bottom: 1px solid var(--brand-line);
+  box-shadow: var(--shadow-sm);
+}
+/* Content keeps the page's column (.container) inside the full-width bar */
+.notices__inner {
   display: flex;
   align-items: center;
   gap: var(--s-4) var(--s-5);
-  padding: 12px 18px 12px 14px;
-  background: linear-gradient(100deg, hsl(22 72% 52% / 0.12), var(--surface) 46%);
-  border: 1px solid var(--brand-line);
-  border-left: 4px solid var(--brand);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  padding-block: 12px;
 }
 .notices__label {
   display: inline-flex;
@@ -843,8 +844,26 @@ select.input {
   border-radius: 50%;
   background: hsl(0 0% 100% / 0.2);
 }
-.notices__list {
+.notices__count {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brand-deep);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.notices__body {
   flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+.notices__list {
   min-width: 0;
   display: grid;
   gap: var(--s-2);
@@ -874,6 +893,150 @@ select.input {
   line-height: 1.45;
   color: var(--muted);
 }
+.notices__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px var(--s-4);
+  margin: 4px 0 0;
+  font-size: 0.84rem;
+}
+.notices__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+}
+.notices__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--brand-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+.notices__link:hover {
+  text-decoration: underline;
+}
+.notices__toggle {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--brand-ink);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.notices__toggle:hover {
+  text-decoration: underline;
+}
+.notices__toggle svg {
+  transition: transform 0.25s var(--ease);
+}
+.notices__toggle:hover svg {
+  transform: translateX(3px);
+}
+/* In the strip each description keeps to two lines; "Read more" opens it in full. */
+.notices__desc.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.notices__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.notices__more:hover {
+  text-decoration: underline;
+}
+/* Rotating strip: all announcements share one grid cell (height of the
+   tallest), and only the active one is visible. */
+.notices__slides {
+  grid-template-areas: 'slide';
+}
+/* The outgoing announcement hides at once; only the incoming one fades in. */
+.notices__slide {
+  grid-area: slide;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(14px);
+}
+.notices__slides .notices__item + .notices__item {
+  padding-top: 0;
+  border-top: 0;
+}
+.notices__slide.is-active {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+.notices__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+}
+/* 5-second progress line along the bottom of the strip */
+.notices__timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--brand);
+  opacity: 0.55;
+  transform-origin: left;
+  animation: notice-timer 5s linear both;
+}
+@keyframes notice-timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notices__slide,
+  .notices__slide.is-active {
+    transform: none;
+    transition: none;
+  }
+}
+/* Every announcement, in full, inside the "View all" dialog */
+.notices__all {
+  margin: 0;
+  padding: 0 0 var(--pad);
+  list-style: none;
+}
+.notices__all .notices__item {
+  padding: var(--s-4) 0;
+  scroll-margin-top: var(--s-2);
+}
+.notices__all .notices__item:first-child {
+  padding-top: 0;
+}
+.notices__all .notices__item + .notices__item {
+  border-top: 1px dashed var(--brand-line);
+}
+.notices__all .notices__item:last-child {
+  padding-bottom: 0;
+}
 @media (prefers-reduced-motion: no-preference) {
   .notices__bar {
     animation: rise-in 0.6s var(--ease) both;
@@ -890,11 +1053,13 @@ select.input {
   40% { transform: rotate(0); }
 }
 @media (max-width: 640px) {
-  .notices__bar {
+  .notices__inner {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--s-3);
-    padding: 12px 14px;
+  }
+  .notices__body {
+    align-self: stretch;
   }
 }
 
@@ -1507,7 +1672,7 @@ select.input {
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.3s;
+  transition: box-shadow 0.4s var(--ease), border-color 0.3s;
 }
 /* Saffron rule along the top edge that grows in on hover */
 .curr__card::before {
@@ -1520,10 +1685,10 @@ select.input {
   transform-origin: left;
   transition: transform 0.5s var(--ease);
 }
+/* Hover: the card stays in place and gains a soft, warm shadow. */
 .curr__card:hover {
-  transform: translateY(-4px);
   border-color: var(--brand-line);
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 12px hsl(22 50% 30% / 0.08), 0 20px 44px -18px hsl(22 60% 32% / 0.32);
 }
 .curr__card:hover::before {
   transform: scaleX(1);
@@ -1546,12 +1711,12 @@ select.input {
   border-radius: 16px;
   background: var(--brand-soft);
   color: var(--brand-ink);
-  transition: background-color 0.3s, color 0.3s, transform 0.35s var(--ease);
+  transition: background-color 0.3s, color 0.3s;
 }
+/* Hover changes the icon's colours only — no rotation, scaling or movement. */
 .curr__card:hover .curr__icon {
   background: var(--brand-ink);
   color: #fff;
-  transform: rotate(-6deg) scale(1.05);
 }
 .curr__num {
   font-family: var(--font-display);
@@ -1578,13 +1743,6 @@ select.input {
   display: flex;
   justify-content: center;
   margin-top: clamp(20px, 2.6vw, 32px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .curr__card,
-  .curr__card:hover,
-  .curr__card:hover .curr__icon {
-    transform: none;
-  }
 }
 
 
@@ -2848,6 +3006,44 @@ select.input {
   border-radius: 4px;
   background: linear-gradient(90deg, var(--brand-ink), var(--brand-bright));
   transition: width 0.6s var(--ease);
+}
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.pager__btn {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.pager__btn:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--brand-ink);
+}
+.pager__btn[aria-current=page] {
+  border-color: var(--brand-ink);
+  background: var(--brand-ink);
+  color: #fff;
+}
+.pager__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.pager__gap {
+  padding: 0 2px;
+  color: var(--muted);
 }
 .results__source {
   display: flex;
@@ -4335,6 +4531,18 @@ a.desk__link:hover .desk__link-arrow {
   background: hsl(0 0% 100% / 0.6);
   color: var(--muted);
   text-align: center;
+}
+.spage__loading {
+  padding: var(--s-6) 0;
+  color: var(--muted);
+}
+.sgrid.is-loading {
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.spage__pager .pager {
+  justify-content: center;
+  margin-top: var(--s-8);
 }
 
 /* District directory: filters, division groups and team cards */

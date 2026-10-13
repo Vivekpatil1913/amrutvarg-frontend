@@ -1,44 +1,76 @@
-import { useEffect, useId, useMemo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
+import Pager from '../components/Pager';
 import StoryCard from '../components/StoryCard';
-import { STORY_CATEGORIES, stories } from '../data/yashogathaStories';
+import { fetchStoryPage, STORIES_PAGE_SIZE } from '../services/stories';
 import { useLanguage } from '../i18n/LanguageContext';
 
-// Lower-cased, so search ignores case in English; Devanagari is unaffected.
-const norm = (s) => s.toLocaleLowerCase();
-
-// All success stories, filterable by theme and searchable in the current
-// language. Filters live in the URL (?c=…&q=…) so Back restores them.
+// All published success stories, paged on the server: each page of 8 cards is
+// requested from GET /api/stories. The page lives in the URL (?p=…) so Back
+// and shared links restore it.
 export default function YashogathaPage() {
-  const { t, lang } = useLanguage();
+  const { t, lang, num } = useLanguage();
   const y = t.yashogatha;
   const [params, setParams] = useSearchParams();
-  const searchId = useId();
-  const category = STORY_CATEGORIES[params.get('c')] ? params.get('c') : '';
-  const query = params.get('q') || '';
+  const gridTop = useRef(null);
+  const page = Math.max(1, Number.parseInt(params.get('p'), 10) || 1);
+
+  const [result, setResult] = useState(null);
+  const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error'
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const update = (key, value) => {
+  // Identifies the page the URL asks for; each result is tagged with the
+  // request it answers, so a previous page's result is never mistaken for it.
+  const requestKey = `${page}|${lang}`;
+
+  // A newer request (paging, Back/Forward) cancels the one in flight.
+  useEffect(() => {
+    const ctrl = new AbortController();
+    setStatus('loading');
+    fetchStoryPage({ page, pageSize: STORIES_PAGE_SIZE, lang }, ctrl.signal)
+      .then((res) => {
+        setResult({ ...res, requestKey });
+        setStatus('ready');
+      })
+      .catch(() => {
+        if (!ctrl.signal.aborted) setStatus('error');
+      });
+    return () => ctrl.abort();
+  }, [requestKey, page, lang, attempt]);
+
+  // A page past the end (e.g. ?p=9 when there are 5 pages) is corrected to the
+  // last page — only once the answer for this very URL has arrived.
+  useEffect(() => {
+    if (!result || result.requestKey !== requestKey || result.page === page) return;
     const next = new URLSearchParams(params);
-    if (value) next.set(key, value);
-    else next.delete(key);
+    if (result.page > 1) next.set('p', String(result.page));
+    else next.delete('p');
     setParams(next, { replace: true });
+  }, [result, requestKey, page, params, setParams]);
+
+  const goToPage = (p) => {
+    const next = new URLSearchParams(params);
+    if (p > 1) next.set('p', String(p));
+    else next.delete('p');
+    setParams(next);
+    gridTop.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const list = useMemo(() => {
-    const q = norm(query.trim());
-    return stories.filter((s) => {
-      if (category && s.category !== category) return false;
-      if (!q) return true;
-      const text = s[lang];
-      return [text.title, text.short, y.categories[s.category]].some((v) => norm(v).includes(q));
-    });
-  }, [category, query, lang, y]);
+  // The story page's "back to all stories" returns to this page.
+  const listSearch = page > 1 ? `?p=${page}` : '';
+
+  const items = result?.items || [];
+  const total = result?.total || 0;
+  // Pagination appears only when the API's total exceeds one page (8 cards),
+  // so it follows every change in the number of published stories.
+  const showPager = Boolean(result) && total > result.pageSize;
+  const from = total ? (result.page - 1) * result.pageSize + 1 : 0;
+  const to = from ? from + items.length - 1 : 0;
 
   return (
     <section className="spage" aria-labelledby="spage-title">
@@ -61,52 +93,47 @@ export default function YashogathaPage() {
           <p className="section__lead">{y.lead}</p>
         </header>
 
-        <div className="sfilter">
-          <div className="sfilter__search">
-            <label htmlFor={searchId} className="sr-only">
-              {y.searchLabel}
-            </label>
-            <Icon name="search" size={18} />
-            <input
-              id={searchId}
-              type="search"
-              value={query}
-              placeholder={y.searchPlaceholder}
-              onChange={(e) => update('q', e.target.value)}
-            />
-          </div>
-          <div className="sfilter__chips" role="group" aria-label={y.categoryLabel}>
-            {['', ...Object.keys(STORY_CATEGORIES)].map((key) => (
-              <button
-                key={key || 'all'}
-                type="button"
-                className="schip"
-                aria-pressed={category === key}
-                onClick={() => update('c', key)}
-              >
-                {key ? <Icon name={STORY_CATEGORIES[key].icon} size={14} /> : null}
-                {key ? y.categories[key] : y.allCategories}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <p className="spage__count" aria-live="polite">
-          {y.count(list.length)}
+        <p className="spage__count" aria-live="polite" ref={gridTop}>
+          {result ? (showPager ? y.range(num(from), num(to), num(total)) : y.count(num(total))) : null}
         </p>
 
-        {list.length ? (
-          <div className="sgrid" key={`${category}|${query}|${lang}`}>
-            {list.map((story, i) => (
-              <StoryCard key={story.slug} story={story} className="scard--in" style={{ '--i': Math.min(i, 8) }} />
-            ))}
+        {status === 'error' ? (
+          <div className="sempty" role="alert">
+            <p>{y.loadError}</p>
+            <button type="button" className="btn btn--ghost" onClick={() => setAttempt((n) => n + 1)}>
+              {t.common.retry}
+            </button>
           </div>
+        ) : !result ? (
+          <p className="spage__loading" role="status">
+            {t.common.loading}
+          </p>
+        ) : items.length ? (
+          <>
+            <div
+              className={`sgrid${status === 'loading' ? ' is-loading' : ''}`}
+              aria-busy={status === 'loading'}
+              key={`${lang}|${result.page}`}
+            >
+              {items.map((story, i) => (
+                <StoryCard
+                  key={story.slug}
+                  story={story}
+                  className="scard--in"
+                  style={{ '--i': Math.min(i, 8) }}
+                  linkState={{ list: listSearch }}
+                />
+              ))}
+            </div>
+            {showPager ? (
+              <nav className="spage__pager" aria-label={y.pagesLabel}>
+                <Pager page={result.page - 1} pageCount={result.totalPages} onChange={(p) => goToPage(p + 1)} />
+              </nav>
+            ) : null}
+          </>
         ) : (
           <div className="sempty">
-            <p>{y.noResults}</p>
-            <button type="button" className="btn btn--ghost" onClick={() => setParams({}, { replace: true })}>
-              {y.clearFilters}
-            </button>
+            <p>{y.noStories}</p>
           </div>
         )}
       </div>

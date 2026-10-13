@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
 import StoryCover from '../components/StoryCover';
-import { STORY_CATEGORIES, getStory, stories } from '../data/yashogathaStories';
+import { STORY_CATEGORIES, getStory } from '../data/yashogathaStories';
+import { listedStories } from '../data/storyPaging';
 import { useLanguage } from '../i18n/LanguageContext';
 
 // One success story, looked up by its slug. Every story uses this page.
@@ -12,6 +13,10 @@ export default function StoryPage() {
   const { t, lang } = useLanguage();
   const y = t.yashogatha;
   const story = getStory(slug);
+  // Opened from the listing, "back" returns to the same page and filters
+  // (passed as ?c=…&q=…&p=…); otherwise it opens the listing's first page.
+  const { state } = useLocation();
+  const listUrl = `/yashogatha${typeof state?.list === 'string' && state.list.startsWith('?') ? state.list : ''}`;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -27,7 +32,7 @@ export default function StoryPage() {
           </span>
           <h1 className="section__title">{y.notFoundTitle}</h1>
           <p className="section__lead">{y.notFoundDesc}</p>
-          <Link to="/yashogatha" className="btn btn--primary">
+          <Link to={listUrl} className="btn btn--primary">
             <Icon name="arrowLeft" size={17} />
             {y.back}
           </Link>
@@ -38,9 +43,10 @@ export default function StoryPage() {
 
   const text = story[lang];
   const cat = STORY_CATEGORIES[story.category];
-  const index = stories.indexOf(story);
-  const prev = stories[index - 1];
-  const next = stories[index + 1];
+  // Previous / next move between the stories published in the listing only.
+  const index = listedStories.indexOf(story);
+  const prev = index > 0 ? listedStories[index - 1] : null;
+  const next = index >= 0 ? listedStories[index + 1] : null;
   const s = y.sections;
 
   return (
@@ -50,7 +56,7 @@ export default function StoryPage() {
         <nav className="crumbs" aria-label={y.breadcrumb}>
           <Link to="/">{t.nav.home}</Link>
           <span aria-hidden="true">/</span>
-          <Link to="/yashogatha">{y.title}</Link>
+          <Link to={listUrl}>{y.title}</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{text.title}</span>
         </nav>
@@ -111,7 +117,7 @@ export default function StoryPage() {
 
         <nav className="sstory__nav" aria-label={y.storyNav}>
           {prev ? (
-            <Link to={`/yashogatha/${prev.slug}`} className="sstory__step">
+            <Link to={`/yashogatha/${prev.slug}`} state={state} className="sstory__step">
               <span className="sstory__step-label">
                 <Icon name="arrowLeft" size={15} />
                 {y.prev}
@@ -122,7 +128,7 @@ export default function StoryPage() {
             <span />
           )}
           {next ? (
-            <Link to={`/yashogatha/${next.slug}`} className="sstory__step sstory__step--next">
+            <Link to={`/yashogatha/${next.slug}`} state={state} className="sstory__step sstory__step--next">
               <span className="sstory__step-label">
                 {y.next}
                 <Icon name="arrowRight" size={15} />
@@ -133,7 +139,7 @@ export default function StoryPage() {
         </nav>
 
         <div className="sstory__back">
-          <Link to="/yashogatha" className="btn btn--primary">
+          <Link to={listUrl} className="btn btn--primary">
             <Icon name="arrowLeft" size={17} />
             {y.back}
           </Link>

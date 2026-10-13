@@ -53,6 +53,12 @@ const PATHS = {
     </>
   ),
   chevronDown: <path d="M6 9l6 6 6-6" />,
+  calendar: (
+    <>
+      <rect x="4" y="5.5" width="16" height="14.5" rx="2" />
+      <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" />
+    </>
+  ),
   sun: (
     <>
       <circle cx="12" cy="12" r="4" />
