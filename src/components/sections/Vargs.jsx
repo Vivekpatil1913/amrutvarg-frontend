@@ -8,6 +8,7 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import { useVargsSourceNote } from '../../data/VargsProvider';
 import { VARG_NAMES_EN, vargPlaceName } from '../../data/vargNamesEn';
 import { vargPath } from '../../data/vargLinks';
+import { DISTRICTS, DIVISION_OF_DISTRICT } from '../../data/districts';
 import { translations } from '../../i18n/translations';
 
 const PAGE = 8;
@@ -105,14 +106,23 @@ export default function Vargs({ vargs, onEnroll }) {
     return [...map.entries()].map(([name, districts], i) => ({ name, districts, count: districts.length, tone: i }));
   }, [vargs]);
   const toneOf = useMemo(() => Object.fromEntries(divisions.map((d) => [d.name, d.tone])), [divisions]);
-  const districtCount = useMemo(() => new Set(vargs.map((x) => x.district)).size, [vargs]);
 
-  const districtsOfDiv = useMemo(() => {
-    if (!div) return [];
+  // District chips come from the official list of 36 (not from the listings,
+  // which only cover districts that have a varg): all 36 in the official order,
+  // or the selected division's districts. Each carries its number of vargs, 0
+  // where none is listed yet. A listing whose district is not one of the 36
+  // (e.g. "मुंबई", which does not say City or Suburban) gets no chip of its
+  // own, so no district appears twice; it still shows under its division.
+  const vargsPerDistrict = useMemo(() => {
     const counts = new Map();
-    vargs.filter((x) => x.vibhag === div).forEach((x) => counts.set(x.district, (counts.get(x.district) || 0) + 1));
-    return [...counts.entries()].sort((a, b) => district(a[0]).localeCompare(district(b[0]), lang));
-  }, [vargs, div, district, lang]);
+    vargs.forEach((x) => counts.set(x.district, (counts.get(x.district) || 0) + 1));
+    return counts;
+  }, [vargs]);
+  const districtChips = useMemo(
+    () =>
+      DISTRICTS.filter((n) => !div || DIVISION_OF_DISTRICT[n] === div).map((n) => [n, vargsPerDistrict.get(n) || 0]),
+    [div, vargsPerDistrict],
+  );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -181,7 +191,7 @@ export default function Vargs({ vargs, onEnroll }) {
             <dl className="vstats">
               {[
                 { key: 'vargs', icon: 'building', label: v.statVargs, value: vargs.length },
-                { key: 'districts', icon: 'mapPin', label: v.statDistricts, value: districtCount },
+                { key: 'districts', icon: 'mapPin', label: v.statDistricts, value: DISTRICTS.length },
                 { key: 'divisions', icon: 'globe', label: v.statDivisions, value: divisions.length },
               ].map((s) => (
                 <div key={s.key} className="vstats__item">
@@ -217,30 +227,21 @@ export default function Vargs({ vargs, onEnroll }) {
               <DivisionWheel divisions={divisions} total={vargs.length} selected={div} onSelect={selectDivision} />
 
               <div className="atlas__districts">
-                {div ? (
-                  <>
-                    <p className="atlas__sub">{v.districtsIn(division(div))}</p>
-                    <div className="atlas__chips" role="group" aria-label={v.filterDistrict}>
-                      {districtsOfDiv.map(([name, count]) => (
-                        <button
-                          key={name}
-                          type="button"
-                          className="atlas__chip"
-                          aria-pressed={dist === name}
-                          onClick={() => pickDistrict(name)}
-                        >
-                          {district(name)}
-                          {count > 1 ? <span className="atlas__chip-count">{num(count)}</span> : null}
-                        </button>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <p className="atlas__hint">
-                    <Icon name="info" size={15} />
-                    {v.districtHint}
-                  </p>
-                )}
+                <p className="atlas__sub">{div ? v.districtsIn(division(div)) : v.allDistrictsOf(num(DISTRICTS.length))}</p>
+                <div className="atlas__chips" role="group" aria-label={v.filterDistrict}>
+                  {districtChips.map(([name, count]) => (
+                    <button
+                      key={name}
+                      type="button"
+                      className="atlas__chip"
+                      aria-pressed={dist === name}
+                      onClick={() => pickDistrict(name)}
+                    >
+                      {district(name)}
+                      {count > 1 ? <span className="atlas__chip-count">{num(count)}</span> : null}
+                    </button>
+                  ))}
+                </div>
               </div>
             </aside>
 
@@ -279,7 +280,7 @@ export default function Vargs({ vargs, onEnroll }) {
               {filtered.length === 0 ? (
                 <div className="results__empty">
                   <Mandala className="results__empty-art" points={12} />
-                  <p>{v.noMatch}</p>
+                  <p>{dist && !vargsPerDistrict.get(dist) ? v.noneInDistrict(district(dist)) : v.noMatch}</p>
                   <button type="button" className="btn btn--ghost btn--sm" onClick={clearAll}>
                     {v.clearFilters}
                   </button>

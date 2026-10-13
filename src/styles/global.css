@@ -2526,18 +2526,6 @@ select.input {
   font-weight: 600;
   color: var(--night-muted);
 }
-.atlas__hint {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--s-2);
-  font-size: 0.86rem;
-  line-height: 1.45;
-  color: var(--night-muted);
-}
-.atlas__hint svg {
-  flex: none;
-  margin-top: 3px;
-}
 .atlas__chips {
   display: flex;
   flex-wrap: wrap;
@@ -4349,7 +4337,7 @@ a.desk__link:hover .desk__link-arrow {
   text-align: center;
 }
 
-/* District directory: filters, district groups and contact cards */
+/* District directory: filters, division groups and team cards */
 .ddir__filter {
   grid-template-columns: minmax(0, 460px) minmax(0, 260px);
   align-items: center;
@@ -4411,48 +4399,151 @@ a.desk__link:hover .desk__link-arrow {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   gap: var(--s-3);
 }
+.ddir__lead {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
 .dcard {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--s-3);
+  min-width: 0;
   padding: var(--s-4);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s;
 }
-.dcard__role {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+.dcard:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-line);
+  box-shadow: var(--shadow);
+}
+.dcard--featured {
+  border-color: var(--brand-line);
+  background: linear-gradient(135deg, var(--brand-soft), var(--surface) 60%);
+}
+.dcard__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.dcard__avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--brand-soft);
   color: var(--brand-ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.dcard--featured .dcard__avatar {
+  width: 54px;
+  height: 54px;
+  background: var(--brand-ink);
+  color: #fff;
+}
+.dcard__who {
+  min-width: 0;
 }
 .dcard__name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.08rem;
+  font-size: 1.05rem;
+  line-height: 1.3;
 }
-.dcard__links {
-  display: grid;
+.dcard__roles {
+  display: flex;
+  flex-wrap: wrap;
   gap: 4px;
-  margin-top: var(--s-1);
+  margin-top: 4px;
 }
-.dcard__link {
+/* Role pills: managers green, data entry blue, Sakhi / Mitra purple */
+.dcard__role {
+  --role: 145 55% 30%;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: hsl(var(--role) / 0.1);
+  color: hsl(var(--role));
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.dcard__role--divisionalManager {
+  --role: 22 72% 38%;
+}
+.dcard__role--dataEntry {
+  --role: 212 65% 40%;
+}
+.dcard__role--sakhi,
+.dcard__role--mitra,
+.dcard__role--amrutMitra {
+  --role: 275 45% 45%;
+}
+.dcard__where {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: var(--bg-alt);
   color: var(--ink-2);
-  font-size: 0.92rem;
-  text-decoration: none;
-  overflow-wrap: anywhere;
+  font-size: 0.84rem;
+  font-weight: 600;
 }
-.dcard__link svg {
+.dcard__where svg {
   flex: none;
   color: var(--brand);
 }
-.dcard__link:hover {
+.dcard__actions {
+  display: grid;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--line);
+}
+.dcard__btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.dcard__btn svg {
+  flex: none;
+  color: var(--brand);
+}
+.dcard__btn:hover {
+  border-color: var(--brand);
+  background: var(--brand-soft);
   color: var(--brand-ink);
-  text-decoration: underline;
+}
+.dcard__email {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dcard:hover {
+    transform: none;
+  }
 }
 .ddir__pending {
   padding: var(--s-8) var(--s-4);

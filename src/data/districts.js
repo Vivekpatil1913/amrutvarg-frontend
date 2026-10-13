@@ -15,11 +15,47 @@ export const DISTRICTS_BY_DIVISION = {
   'नागपूर': ['नागपूर', 'वर्धा', 'भंडारा', 'गोंदिया', 'चंद्रपूर', 'गडचिरोली'],
 };
 
-export const DISTRICTS = Object.values(DISTRICTS_BY_DIVISION).flat();
+// All 36, in the official order (alphabetical by English name). Every list
+// shows them in this order, in both languages.
+export const DISTRICTS = [
+  'अहिल्यानगर',
+  'अकोला',
+  'अमरावती',
+  'बीड',
+  'भंडारा',
+  'बुलढाणा',
+  'चंद्रपूर',
+  'छत्रपती संभाजीनगर',
+  'धाराशिव',
+  'धुळे',
+  'गडचिरोली',
+  'गोंदिया',
+  'हिंगोली',
+  'जळगाव',
+  'जालना',
+  'कोल्हापूर',
+  'लातूर',
+  'मुंबई शहर',
+  'मुंबई उपनगर',
+  'नागपूर',
+  'नांदेड',
+  'नंदुरबार',
+  'नाशिक',
+  'पालघर',
+  'परभणी',
+  'पुणे',
+  'रायगड',
+  'रत्नागिरी',
+  'सांगली',
+  'सातारा',
+  'सिंधुदुर्ग',
+  'सोलापूर',
+  'ठाणे',
+  'वर्धा',
+  'वाशिम',
+  'यवतमाळ',
+];
 
 export const DIVISION_OF_DISTRICT = Object.fromEntries(
   Object.entries(DISTRICTS_BY_DIVISION).flatMap(([division, names]) => names.map((n) => [n, division])),
 );
-
-// Alphabetical in the reader's language. `label` maps a Marathi name to the shown name.
-export const sortDistricts = (label, lang) => [...DISTRICTS].sort((a, b) => label(a).localeCompare(label(b), lang));
