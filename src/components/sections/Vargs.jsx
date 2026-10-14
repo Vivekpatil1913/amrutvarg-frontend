@@ -10,6 +10,7 @@ import { useVargsSourceNote } from '../../data/VargsProvider';
 import { VARG_NAMES_EN, vargPlaceName } from '../../data/vargNamesEn';
 import { vargPath } from '../../data/vargLinks';
 import { DISTRICTS, DIVISION_OF_DISTRICT } from '../../data/districts';
+import { useMaster } from '../../data/useMasters';
 import { translations } from '../../i18n/translations';
 
 const PAGE = PAGE_SIZE;
@@ -120,11 +121,20 @@ export default function Vargs({ vargs, onEnroll }) {
     vargs.forEach((x) => counts.set(x.district, (counts.get(x.district) || 0) + 1));
     return counts;
   }, [vargs]);
-  const districtChips = useMemo(
-    () =>
-      DISTRICTS.filter((n) => !div || DIVISION_OF_DISTRICT[n] === div).map((n) => [n, vargsPerDistrict.get(n) || 0]),
-    [div, vargsPerDistrict],
-  );
+  // Districts and the division each belongs to come from the masters; the
+  // bundled list stands in while they load or if the API is unreachable.
+  const districtRows = useMaster('districts');
+  const vibhagRows = useMaster('vibhags');
+  const districtChips = useMemo(() => {
+    if (!districtRows.length) {
+      return DISTRICTS.filter((n) => !div || DIVISION_OF_DISTRICT[n] === div)
+        .map((n) => [n, vargsPerDistrict.get(n) || 0]);
+    }
+    const vibhagOf = new Map(vibhagRows.map((g) => [g.id, g.name_mr]));
+    return districtRows
+      .filter((r) => !div || vibhagOf.get(r.vibhag_id) === div)
+      .map((r) => [r.name_mr, vargsPerDistrict.get(r.name_mr) || 0]);
+  }, [div, vargsPerDistrict, districtRows, vibhagRows]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Plus, Pencil, Trash2, RotateCcw, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
 import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { GeoSelect, useGeo } from "../components/ui/GeoSelect.jsx";
 
-const VIBHAGS = ["", "कोकण", "पुणे", "नाशिक", "छत्रपती संभाजीनगर", "अमरावती", "नागपूर"];
+
 
 const EMPTY = {
   vibhag_mr: "", vibhag_en: "", district_mr: "", district_en: "",
@@ -20,8 +21,7 @@ export default function Vargs() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [vibhag, setVibhag] = useState("");
-  const [trash, setTrash] = useState(false);
+  const [vibhag, setVibhag] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(EMPTY);
@@ -31,9 +31,31 @@ export default function Vargs() {
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/vargs",
-    { page, limit, search: debouncedSearch, vibhag, trash: String(trash) },
-    [page, limit, debouncedSearch, vibhag, trash]
+    { page, limit, search: debouncedSearch, vibhag },
+    [page, limit, debouncedSearch, vibhag]
   );
+
+  // Resolved master rows: they supply the English columns and the parent id a
+  // dependent dropdown needs. Field names, order and required status are
+  // unchanged — only where the options come from.
+  const { rows: vibhagRows } = useGeo("vibhags");
+  const vibhagId = vibhagRows.find((v) => v.name_mr === form.vibhag_mr)?.id ?? null;
+  const { rows: districtRows } = useGeo("districts", "vibhag_id", vibhagId);
+  const districtId = districtRows.find((d) => d.name_mr === form.district_mr)?.id ?? null;
+
+  function pickVibhag(name) {
+    const row = vibhagRows.find((v) => v.name_mr === name);
+    // A district and taluka from the previous division are no longer valid.
+    setForm((f) => ({
+      ...f, vibhag_mr: name, vibhag_en: row?.name_en ?? "",
+      district_mr: "", district_en: "", taluka: "",
+    }));
+  }
+
+  function pickDistrict(name) {
+    const row = districtRows.find((d) => d.name_mr === name);
+    setForm((f) => ({ ...f, district_mr: name, district_en: row?.name_en ?? "", taluka: "" }));
+  }
 
   function openNew() { setEditId(null); setForm(EMPTY); setFormOpen(true); }
 
@@ -71,7 +93,7 @@ export default function Vargs() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/vargs/${confirmId}`);
-      toast.show("Moved to trash", "ok");
+      toast.show("Deleted", "ok");
       setConfirmId(null);
       refetch();
     });
@@ -85,7 +107,7 @@ export default function Vargs() {
     { key: "enrollment_count", label: "Enrolled", className: "td-muted a-tabular" },
     {
       key: "is_active", label: "Active",
-      render: (v, row) => !trash && (
+      render: (v, row) => (
         <Switch on={v} onToggle={async () => {
           await mutate(async () => { await api.put(`/admin/vargs/${row.id}`, { ...row, is_active: !v }); refetch(); });
         }} />
@@ -101,7 +123,7 @@ export default function Vargs() {
       </div>
       <select className="a-select" value={vibhag} onChange={(e) => { setVibhag(e.target.value); setPage(1); }}>
         <option value="">All divisions</option>
-        {VIBHAGS.slice(1).map((v) => <option key={v} value={v}>{v}</option>)}
+        {vibhagRows.map((v) => <option key={v.id} value={v.name_mr}>{v.name_mr}</option>)}
       </select>
       <div className="a-toolbar-right">
         <button className="a-btn a-btn-primary" onClick={openNew}><Plus size={16} /> Add new</button>
@@ -116,22 +138,14 @@ export default function Vargs() {
           <h1 className="a-page-title">Amrut Vargs</h1>
           <p className="a-page-desc">Manage active classes across Maharashtra</p>
         </div>
-      </div>
-      <div className="a-tabs">
-        <button className={`a-tab ${!trash ? "active" : ""}`} onClick={() => { setTrash(false); setPage(1); }}>Active</button>
-        <button className={`a-tab ${trash ? "active" : ""}`} onClick={() => { setTrash(true); setPage(1); }}>Trash</button>
-      </div>
+      </div>
       <DataTable columns={columns} rows={data} loading={loading} error={error} meta={meta} onPage={setPage} onPageSize={(n) => { setLimit(n); setPage(1); }} toolbar={toolbar}
         actions={(row) => (
           <>
-            {trash ? (
-              <button className="a-action-btn success" onClick={async () => { await mutate(async () => { await api.post(`/admin/vargs/${row.id}/restore`); toast.show("Restored", "ok"); refetch(); }); }} title="Restore"><RotateCcw size={15} /></button>
-            ) : (
-              <>
+            <>
                 <button className="a-action-btn" onClick={() => openEdit(row)} title="Edit"><Pencil size={15} /></button>
                 <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete"><Trash2 size={15} /></button>
               </>
-            )}
           </>
         )}
       />
@@ -148,10 +162,8 @@ export default function Vargs() {
             <div className="a-form-grid a-form-grid-2">
               <div className="a-field">
                 <label className="a-label a-label-required">Division (Marathi)</label>
-                <select className="a-input" value={form.vibhag_mr} onChange={(e) => setForm({ ...form, vibhag_mr: e.target.value })} required>
-                  <option value="">Select division</option>
-                  {VIBHAGS.slice(1).map((v) => <option key={v} value={v}>{v}</option>)}
-                </select>
+                <GeoSelect master="vibhags" value={form.vibhag_mr}
+                           onChange={pickVibhag} required placeholder="Select division" />
               </div>
               <div className="a-field">
                 <label className="a-label">Division (English)</label>
@@ -161,7 +173,10 @@ export default function Vargs() {
             <div className="a-form-grid a-form-grid-2">
               <div className="a-field">
                 <label className="a-label a-label-required">District (Marathi)</label>
-                <input className="a-input" value={form.district_mr} onChange={(e) => setForm({ ...form, district_mr: e.target.value })} required />
+                <GeoSelect master="districts" parentColumn="vibhag_id"
+                           parentId={vibhagId}
+                           value={form.district_mr} onChange={pickDistrict}
+                           required placeholder="Select district" />
               </div>
               <div className="a-field">
                 <label className="a-label">District (English)</label>
@@ -171,7 +186,11 @@ export default function Vargs() {
             <div className="a-form-grid a-form-grid-2">
               <div className="a-field">
                 <label className="a-label">Taluka</label>
-                <input className="a-input" value={form.taluka} onChange={(e) => setForm({ ...form, taluka: e.target.value })} />
+                <GeoSelect master="talukas" parentColumn="district_id"
+                           parentId={districtId}
+                           value={form.taluka}
+                           onChange={(v) => setForm((f) => ({ ...f, taluka: v }))}
+                           placeholder="Select taluka" />
               </div>
               <div className="a-field">
                 <label className="a-label">Enrollment Count</label>

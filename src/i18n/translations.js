@@ -481,7 +481,7 @@ const mr = {
   // languages) are in src/data/announcements.js.
   announcements: {
     title: 'घोषणा',
-    statuses: { new: 'नवीन', comingSoon: 'लवकरच उपलब्ध' },
+    statuses: { info: 'सूचना', new: 'नवीन', comingSoon: 'लवकरच उपलब्ध', urgent: 'तातडीचे' },
     viewDetails: 'तपशील पहा',
     viewAll: (n) => `सर्व घोषणा पहा (${n})`,
     readMore: 'पुढे वाचा',
@@ -1014,7 +1014,7 @@ const en = {
   },
   announcements: {
     title: 'Announcements',
-    statuses: { new: 'New', comingSoon: 'Coming soon' },
+    statuses: { info: 'Info', new: 'New', comingSoon: 'Coming soon', urgent: 'Urgent' },
     viewDetails: 'View details',
     viewAll: (n) => `View all announcements (${n})`,
     readMore: 'Read more',

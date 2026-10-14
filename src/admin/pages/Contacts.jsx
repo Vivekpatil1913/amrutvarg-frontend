@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Plus, Pencil, Trash2, RotateCcw, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
 import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { GeoSelect, GeoCheckList, useGeo } from "../components/ui/GeoSelect.jsx";
 
 const ROLES = [
   { value: "divisionalManager", label: "Divisional Manager" },
@@ -16,7 +17,7 @@ const ROLES = [
   { value: "amrutMitra", label: "Amrut Mitra" },
 ];
 
-const DIVISIONS = ["कोकण", "पुणे", "नाशिक", "छत्रपती संभाजीनगर", "अमरावती", "नागपूर"];
+
 
 const EMPTY = { division_mr: "", division_en: "", role: "divisionalManager", districts: [], name: "", email: "", phone: "", is_active: true, display_order: 0 };
 
@@ -25,8 +26,7 @@ export default function Contacts() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [division, setDivision] = useState("");
-  const [trash, setTrash] = useState(false);
+  const [division, setDivision] = useState("");
   const debouncedSearch = useDebounce(search);
   const [formOpen, setFormOpen] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -36,8 +36,8 @@ export default function Contacts() {
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/contacts",
-    { page, limit, search: debouncedSearch, division, trash: String(trash) },
-    [page, limit, debouncedSearch, division, trash]
+    { page, limit, search: debouncedSearch, division },
+    [page, limit, debouncedSearch, division]
   );
 
   function openNew() { setEditId(null); setForm(EMPTY); setFormOpen(true); }
@@ -48,6 +48,17 @@ export default function Contacts() {
     setEditId(d.id);
     setForm({ division_mr: d.division_mr, division_en: d.division_en || "", role: d.role, districts: d.districts || [], name: d.name, email: d.email || "", phone: d.phone || "", is_active: d.is_active ?? true, display_order: d.display_order || 0 });
     setFormOpen(true);
+  }
+
+  // Division drives which districts may be picked. Field names, order and the
+  // submitted array of Marathi names are unchanged.
+  const { rows: divisionRows } = useGeo("vibhags");
+  const divisionId = divisionRows.find((d) => d.name_mr === form.division_mr)?.id ?? null;
+
+  function pickDivision(name) {
+    const row = divisionRows.find((d) => d.name_mr === name);
+    // Districts from the previous division no longer belong to this contact.
+    setForm((f) => ({ ...f, division_mr: name, division_en: row?.name_en ?? "", districts: [] }));
   }
 
   async function handleSave(e) {
@@ -77,7 +88,7 @@ export default function Contacts() {
       </div>
       <select className="a-select" value={division} onChange={(e) => { setDivision(e.target.value); setPage(1); }}>
         <option value="">All divisions</option>
-        {DIVISIONS.map((d) => <option key={d} value={d}>{d}</option>)}
+        {divisionRows.map((d) => <option key={d.id} value={d.name_mr}>{d.name_mr}</option>)}
       </select>
       <div className="a-toolbar-right">
         <button className="a-btn a-btn-primary" onClick={openNew}><Plus size={16} /> Add new</button>
@@ -92,22 +103,14 @@ export default function Contacts() {
           <h1 className="a-page-title">District Contacts</h1>
           <p className="a-page-desc">Regional team contacts across Maharashtra</p>
         </div>
-      </div>
-      <div className="a-tabs">
-        <button className={`a-tab ${!trash ? "active" : ""}`} onClick={() => { setTrash(false); setPage(1); }}>Active</button>
-        <button className={`a-tab ${trash ? "active" : ""}`} onClick={() => { setTrash(true); setPage(1); }}>Trash</button>
-      </div>
+      </div>
       <DataTable columns={columns} rows={data} loading={loading} error={error} meta={meta} onPage={setPage} onPageSize={(n) => { setLimit(n); setPage(1); }} toolbar={toolbar}
         actions={(row) => (
           <>
-            {trash ? (
-              <button className="a-action-btn success" onClick={async () => { await mutate(async () => { await api.post(`/admin/contacts/${row.id}/restore`); toast.show("Restored", "ok"); refetch(); }); }} title="Restore"><RotateCcw size={15} /></button>
-            ) : (
-              <>
+            <>
                 <button className="a-action-btn" onClick={() => openEdit(row)} title="Edit"><Pencil size={15} /></button>
                 <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete"><Trash2 size={15} /></button>
               </>
-            )}
           </>
         )}
       />
@@ -124,10 +127,8 @@ export default function Contacts() {
             <div className="a-form-grid a-form-grid-2">
               <div className="a-field">
                 <label className="a-label a-label-required">Division (Marathi)</label>
-                <select className="a-input" value={form.division_mr} onChange={(e) => setForm({ ...form, division_mr: e.target.value })} required>
-                  <option value="">Select division</option>
-                  {DIVISIONS.map((d) => <option key={d} value={d}>{d}</option>)}
-                </select>
+                <GeoSelect master="vibhags" value={form.division_mr} onChange={pickDivision}
+                           required placeholder="Select division" />
               </div>
               <div className="a-field">
                 <label className="a-label">Division (English)</label>
@@ -169,7 +170,7 @@ export default function Contacts() {
           </div>
         </form>
       </Modal>
-      <ConfirmModal open={!!confirmId} onClose={() => setConfirmId(null)} onConfirm={async () => { await mutate(async () => { await api.del(`/admin/contacts/${confirmId}`); toast.show("Moved to trash", "ok"); setConfirmId(null); refetch(); }); }} loading={saving} title="Delete Contact" message="Delete this contact?" />
+      <ConfirmModal open={!!confirmId} onClose={() => setConfirmId(null)} onConfirm={async () => { await mutate(async () => { await api.del(`/admin/contacts/${confirmId}`); toast.show("Deleted", "ok"); setConfirmId(null); refetch(); }); }} loading={saving} title="Delete Contact" message="Delete this contact?" />
     </>
   );
 }

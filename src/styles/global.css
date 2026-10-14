@@ -389,6 +389,10 @@ main:focus {
   color: var(--muted);
   border: 1px dashed var(--brand-line);
 }
+.badge--urgent {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
 
 /* Inputs */
 .input {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Pencil, Trash2, RotateCcw, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Eye, ExternalLink } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
@@ -23,24 +23,48 @@ const EMPTY_FORM = {
   status: "info", pinned: false, is_active: true, display_order: 0,
 };
 
+const STATUS_LABEL = Object.fromEntries(STATUSES.slice(1).map((s) => [s.value, s.label]));
+
+// date columns arrive as 'YYYY-MM-DD'. Split rather than parse: through Date
+// they would be read as UTC midnight and shown a day early west of Greenwich.
+const fmtDate = (v) => {
+  if (!v) return "";
+  const [y, m, d] = String(v).slice(0, 10).split("-");
+  return y && m && d ? `${d}/${m}/${y}` : "";
+};
+
+const fmtStamp = (v) => (v ? new Date(v).toLocaleString("en-IN") : "");
+
+// One label/value line in the view modal; renders an em dash when unset.
+function ViewRow({ label, children, empty }) {
+  return (
+    <div className="a-view-row">
+      <span className="a-view-label">{label}</span>
+      <div className={`a-view-value${empty ? " is-empty" : ""}`}>
+        {empty ? "—" : children}
+      </div>
+    </div>
+  );
+}
+
 export default function Announcements() {
   const toast = useToast();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("");
-  const [trash, setTrash] = useState(false);
+  const [status, setStatus] = useState("");
   const debouncedSearch = useDebounce(search);
   const [formOpen, setFormOpen] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [confirmId, setConfirmId] = useState(null);
+  const [viewRow, setViewRow] = useState(null);
   const { mutate, loading: saving } = useMutation();
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/announcements",
-    { page, limit, search: debouncedSearch, status, trash: String(trash) },
-    [page, limit, debouncedSearch, status, trash]
+    { page, limit, search: debouncedSearch, status },
+    [page, limit, debouncedSearch, status]
   );
 
   function openNew() {
@@ -62,6 +86,18 @@ export default function Announcements() {
       is_active: d.is_active ?? true, display_order: d.display_order || 0,
     });
     setFormOpen(true);
+  }
+
+  // The list already selects every column, and trashed rows are not fetchable
+  // by id, so the row itself is what the view shows — in both tabs.
+  function openView(row) {
+    setViewRow(row);
+  }
+
+  function editFromView() {
+    const row = viewRow;
+    setViewRow(null);
+    openEdit(row);
   }
 
   async function handleSave(e) {
@@ -90,16 +126,8 @@ export default function Announcements() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/announcements/${confirmId}`);
-      toast.show("Moved to trash", "ok");
+      toast.show("Deleted", "ok");
       setConfirmId(null);
-      refetch();
-    });
-  }
-
-  async function handleRestore(id) {
-    await mutate(async () => {
-      await api.post(`/admin/announcements/${id}/restore`);
-      toast.show("Restored", "ok");
       refetch();
     });
   }
@@ -123,14 +151,14 @@ export default function Announcements() {
     {
       key: "is_active",
       label: "Active",
-      render: (v, row) => !trash && (
+      render: (v, row) => (
         <Switch on={v} onToggle={() => toggleActive(row)} />
       ),
     },
     {
       key: "date",
       label: "Date",
-      render: (v) => v ? new Date(v).toLocaleDateString("en-IN") : <span className="td-muted">—</span>,
+      render: (v) => v ? fmtDate(v) : <span className="td-muted">—</span>,
     },
   ];
 
@@ -174,15 +202,7 @@ export default function Announcements() {
           <p className="a-page-desc">Manage website announcements and notices</p>
         </div>
       </div>
-
-      <div className="a-tabs">
-        <button className={`a-tab ${!trash ? "active" : ""}`} onClick={() => { setTrash(false); setPage(1); }}>
-          Active
-        </button>
-        <button className={`a-tab ${trash ? "active" : ""}`} onClick={() => { setTrash(true); setPage(1); }}>
-          Trash
-        </button>
-      </div>
+
 
       <DataTable
         columns={columns}
@@ -195,12 +215,10 @@ export default function Announcements() {
         toolbar={toolbar}
         actions={(row) => (
           <>
-            {trash ? (
-              <button className="a-action-btn success" onClick={() => handleRestore(row.id)} title="Restore">
-                <RotateCcw size={15} />
-              </button>
-            ) : (
-              <>
+            <button className="a-action-btn" onClick={() => openView(row)} title="View">
+              <Eye size={15} />
+            </button>
+            <>
                 <button className="a-action-btn" onClick={() => openEdit(row)} title="Edit">
                   <Pencil size={15} />
                 </button>
@@ -208,10 +226,72 @@ export default function Announcements() {
                   <Trash2 size={15} />
                 </button>
               </>
-            )}
           </>
         )}
       />
+
+      {/* View Modal */}
+      <Modal
+        open={!!viewRow}
+        onClose={() => setViewRow(null)}
+        title="Announcement Details"
+        size="lg"
+        footer={
+          <>
+            <button className="a-btn a-btn-ghost" onClick={() => setViewRow(null)}>Close</button>
+            <button className="a-btn a-btn-primary" onClick={editFromView}>
+                <Pencil size={15} /> Edit
+              </button>
+          </>
+        }
+      >
+        {viewRow && (
+          <>
+            <div className="a-view-tags">
+              <Badge tone={STATUS_TONE[viewRow.status] || "neutral"}>
+                {STATUS_LABEL[viewRow.status] || viewRow.status}
+              </Badge>
+              {viewRow.pinned && <Badge tone="info">Pinned</Badge>}
+              <Badge tone={viewRow.is_active ? "ok" : "neutral"}>
+                {viewRow.is_active ? "Active" : "Inactive"}
+              </Badge>
+              {viewRow.deleted_at && <Badge tone="bad">In trash</Badge>}
+            </div>
+
+            <div className="a-view-list">
+              <ViewRow label="Title (Marathi)" empty={!viewRow.title_mr}>
+                <span className="a-view-strong">{viewRow.title_mr}</span>
+              </ViewRow>
+              <ViewRow label="Title (English)" empty={!viewRow.title_en}>
+                {viewRow.title_en}
+              </ViewRow>
+              <ViewRow label="Description (Marathi)" empty={!viewRow.desc_mr}>
+                {viewRow.desc_mr}
+              </ViewRow>
+              <ViewRow label="Description (English)" empty={!viewRow.desc_en}>
+                {viewRow.desc_en}
+              </ViewRow>
+              <ViewRow label="Link" empty={!viewRow.link}>
+                <a className="a-view-link" href={viewRow.link} target="_blank" rel="noopener noreferrer">
+                  {viewRow.link_label || viewRow.link}
+                  <ExternalLink size={13} />
+                </a>
+              </ViewRow>
+              <ViewRow label="Date" empty={!viewRow.date}>{fmtDate(viewRow.date)}</ViewRow>
+              <ViewRow label="Valid Until" empty={!viewRow.until_date}>
+                {fmtDate(viewRow.until_date)}
+              </ViewRow>
+              <ViewRow label="Display Order">{viewRow.display_order ?? 0}</ViewRow>
+              <ViewRow label="Created" empty={!viewRow.created_at}>
+                {fmtStamp(viewRow.created_at)}
+              </ViewRow>
+              <ViewRow label="Last Updated" empty={!viewRow.updated_at}>
+                {fmtStamp(viewRow.updated_at)}
+              </ViewRow>
+            </div>
+          </>
+        )}
+      </Modal>
 
       {/* Add/Edit Modal */}
       <Modal

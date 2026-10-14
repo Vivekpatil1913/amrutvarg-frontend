@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Eye, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Eye, Search, Trash2 } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { Modal } from "../components/ui/Modal.jsx";
+import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
 
@@ -12,16 +13,15 @@ const STATUSES = ["", "new", "reviewed", "actioned", "archived"];
 const STATUS_TONE = { new: "info", reviewed: "ok", actioned: "accent", archived: "neutral" };
 
 export default function Submissions() {
+  const navigate = useNavigate();
   const toast = useToast();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [formType, setFormType] = useState("");
   const [status, setStatus] = useState("");
+  const [confirmId, setConfirmId] = useState(null);
   const debouncedSearch = useDebounce(search);
-  const [viewRow, setViewRow] = useState(null);
-  const [detailOpen, setDetailOpen] = useState(false);
-  const [statusUpdate, setStatusUpdate] = useState({ status: "", notes: "" });
   const { mutate, loading: saving } = useMutation();
 
   const { data, meta, loading, error, refetch } = useList(
@@ -30,21 +30,15 @@ export default function Submissions() {
     [page, limit, debouncedSearch, formType, status]
   );
 
-  async function openDetail(row) {
-    const res = await api.get(`/admin/submissions/${row.id}`);
-    setViewRow(res.data);
-    setStatusUpdate({ status: res.data.status, notes: res.data.notes || "" });
-    setDetailOpen(true);
-  }
-
-  async function updateStatus() {
+  async function handleDelete() {
     await mutate(async () => {
-      await api.put(`/admin/submissions/${viewRow.id}/status`, statusUpdate);
-      toast.show("Status updated", "ok");
-      setDetailOpen(false);
+      await api.del(`/admin/submissions/${confirmId}`);
+      toast.show("Deleted", "ok");
+      setConfirmId(null);
       refetch();
     });
   }
+
 
   const columns = [
     { key: "form_type", label: "Form", render: (v) => <Badge tone="neutral">{v}</Badge> },
@@ -78,46 +72,29 @@ export default function Submissions() {
           <p className="a-page-desc">Participant, organizer, and leader registrations</p>
         </div>
       </div>
+
       <DataTable columns={columns} rows={data} loading={loading} error={error} meta={meta} onPage={setPage} onPageSize={(n) => { setLimit(n); setPage(1); }} toolbar={toolbar}
         actions={(row) => (
-          <button className="a-action-btn" onClick={() => openDetail(row)} title="View"><Eye size={15} /></button>
+          <>
+            <button className="a-action-btn" onClick={() => navigate(`/admin/submissions/${row.id}`)} title="View">
+              <Eye size={15} />
+            </button>
+            <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete">
+                <Trash2 size={15} />
+              </button>
+          </>
         )}
       />
-      <Modal open={detailOpen} onClose={() => setDetailOpen(false)} title="Submission Details" size="lg"
-        footer={
-          <>
-            <button className="a-btn a-btn-ghost" onClick={() => setDetailOpen(false)}>Close</button>
-            <button className="a-btn a-btn-primary" onClick={updateStatus} disabled={saving}>{saving ? "Saving…" : "Update Status"}</button>
-          </>
-        }
-      >
-        {viewRow && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              <Badge tone="neutral">{viewRow.form_type}</Badge>
-              <Badge tone={STATUS_TONE[viewRow.status] || "neutral"}>{viewRow.status}</Badge>
-              <span className="a-text-muted a-text-sm">{new Date(viewRow.submitted_at).toLocaleString("en-IN")}</span>
-            </div>
-            <div className="a-card" style={{ padding: "1rem", maxHeight: "20rem", overflow: "auto" }}>
-              <pre style={{ fontSize: "0.75rem", color: "var(--a-content-soft)", whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0 }}>
-                {JSON.stringify(viewRow.data, null, 2)}
-              </pre>
-            </div>
-            <div className="a-form-grid a-form-grid-2">
-              <div className="a-field">
-                <label className="a-label">Update Status</label>
-                <select className="a-input" value={statusUpdate.status} onChange={(e) => setStatusUpdate({ ...statusUpdate, status: e.target.value })}>
-                  {STATUSES.slice(1).map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </div>
-              <div className="a-field">
-                <label className="a-label">Notes</label>
-                <input className="a-input" value={statusUpdate.notes} onChange={(e) => setStatusUpdate({ ...statusUpdate, notes: e.target.value })} placeholder="Optional notes" />
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
+
+      <ConfirmModal
+        open={!!confirmId}
+        onClose={() => setConfirmId(null)}
+        onConfirm={handleDelete}
+        loading={saving}
+        title="Delete Submission"
+        message="Delete this submission?"
+        subMessage="This is somebody's registration. It is removed from the list; the record itself is retained."
+      />
     </>
   );
 }

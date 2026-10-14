@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Pencil, Trash2, RotateCcw, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
@@ -38,8 +38,7 @@ export default function Stories() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [published, setPublished] = useState("");
-  const debouncedSearch = useDebounce(search);
-  const [trash, setTrash] = useState(false);
+  const debouncedSearch = useDebounce(search);
   const [formOpen, setFormOpen] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(EMPTY);
@@ -48,8 +47,8 @@ export default function Stories() {
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/stories",
-    { page, limit, search: debouncedSearch, category, published, trash: String(trash) },
-    [page, limit, debouncedSearch, category, published, trash]
+    { page, limit, search: debouncedSearch, category, published },
+    [page, limit, debouncedSearch, category, published]
   );
 
   function openNew() { setEditId(null); setForm(EMPTY); setFormOpen(true); }
@@ -132,22 +131,14 @@ export default function Stories() {
           <h1 className="a-page-title">Yashogatha Stories</h1>
           <p className="a-page-desc">Manage success stories for the website</p>
         </div>
-      </div>
-      <div className="a-tabs">
-        <button className={`a-tab ${!trash ? "active" : ""}`} onClick={() => { setTrash(false); setPage(1); }}>Active</button>
-        <button className={`a-tab ${trash ? "active" : ""}`} onClick={() => { setTrash(true); setPage(1); }}>Trash</button>
-      </div>
+      </div>
       <DataTable columns={columns} rows={data} loading={loading} error={error} meta={meta} onPage={setPage} onPageSize={(n) => { setLimit(n); setPage(1); }} toolbar={toolbar}
         actions={(row) => (
           <>
-            {trash ? (
-              <button className="a-action-btn success" onClick={async () => { await mutate(async () => { await api.post(`/admin/stories/${row.id}/restore`); toast.show("Restored", "ok"); refetch(); }); }} title="Restore"><RotateCcw size={15} /></button>
-            ) : (
-              <>
+            <>
                 <button className="a-action-btn" onClick={() => openEdit(row)} title="Edit"><Pencil size={15} /></button>
                 <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete"><Trash2 size={15} /></button>
               </>
-            )}
           </>
         )}
       />
@@ -231,7 +222,7 @@ export default function Stories() {
           </div>
         </form>
       </Modal>
-      <ConfirmModal open={!!confirmId} onClose={() => setConfirmId(null)} onConfirm={async () => { await mutate(async () => { await api.del(`/admin/stories/${confirmId}`); toast.show("Moved to trash", "ok"); setConfirmId(null); refetch(); }); }} loading={saving} title="Delete Story" message="Delete this story?" />
+      <ConfirmModal open={!!confirmId} onClose={() => setConfirmId(null)} onConfirm={async () => { await mutate(async () => { await api.del(`/admin/stories/${confirmId}`); toast.show("Deleted", "ok"); setConfirmId(null); refetch(); }); }} loading={saving} title="Delete Story" message="Delete this story?" />
     </>
   );
 }

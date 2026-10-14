@@ -10,9 +10,13 @@ import {
   FormError,
   PreviewResult,
   SuccessResult,
+  VibhagOptions,
+  TalukaField,
+  ClosedResult,
   focusFirstInvalid,
 } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useFormConfig } from '../../data/useFormConfig';
 import { useForm } from '../../hooks/useForm';
 import { checkPhoto, isDate, isEmail, isMobile, isPhone, isWholeNumber, PHOTO_TYPES } from '../../services/validation';
 import { submitLeader } from '../../services/submissions';
@@ -77,6 +81,7 @@ export default function LeaderForm({ open, onClose }) {
   const formRef = useRef(null);
   const fileRef = useRef(null);
   const form = useForm(INITIAL, validate, t);
+  const cfg = useFormConfig('leader');
   const { values: v, setValue } = form;
   const [photo, setPhoto] = useState(null);
   const [photoError, setPhotoError] = useState('');
@@ -125,6 +130,18 @@ export default function LeaderForm({ open, onClose }) {
       ...describe(id, error),
     };
   };
+  // Changing a level clears the levels below it, so a district from the old
+  // division or a taluka from the old district can never be submitted.
+  const pickDivision = (name) => {
+    setValue('division', name);
+    setValue('district', '');
+    setValue('taluka', '');
+  };
+  const pickDistrict = (name) => {
+    setValue('district', name);
+    setValue('taluka', '');
+  };
+
   const field = (key, id, required, control, extra = {}) => (
     <Field id={id} label={l[key]} required={required} error={form.errorFor(key)} {...extra}>
       {control}
@@ -132,12 +149,14 @@ export default function LeaderForm({ open, onClose }) {
   );
   const phoneProps = { type: 'tel', inputMode: 'numeric', maxLength: 10, placeholder: t.organizer.mobilePlaceholder };
 
-  const done = form.status === 'preview' || form.status === 'sent';
+  const done = form.status === 'preview' || form.status === 'sent' || !cfg.isActive;
 
   return (
-    <Modal open={open} onClose={close} icon="award" title={l.formTitle} subtitle={done ? null : t.common.requiredNote} size="lg">
+    <Modal open={open} onClose={close} icon="award" title={cfg.title || l.formTitle} subtitle={done ? null : t.common.requiredNote} size="lg">
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
-      {form.status === 'sent' ? <SuccessResult title={l.successTitle} desc={l.successDesc} onClose={close} /> : null}
+      {!cfg.isActive && form.status !== 'sent' && form.status !== 'preview'
+        ? <ClosedResult message={cfg.closedMessage} onClose={close} /> : null}
+      {form.status === 'sent' ? <SuccessResult title={cfg.successTitle || l.successTitle} desc={cfg.successDesc || l.successDesc} onClose={close} /> : null}
       {!done ? (
         <form ref={formRef} onSubmit={onSubmit} noValidate className="form">
           <FormStep step={1} title={l.sectionLeader}>
@@ -174,16 +193,32 @@ export default function LeaderForm({ open, onClose }) {
               {field('institutionName', 'ld-inst', true, <input {...bind('institutionName', 'ld-inst')} maxLength={500} />)}
               {field('institutionEmail', 'ld-inst-email', false, <input {...bind('institutionEmail', 'ld-inst-email')} type="email" maxLength={255} />)}
               {field('institutionPhone', 'ld-inst-phone', false, <input {...bind('institutionPhone', 'ld-inst-phone')} type="tel" maxLength={20} />)}
+              {/* Division first: it narrows the districts, which in turn narrow
+                  the talukas. Choosing a level clears the ones below it so no
+                  stale combination can be submitted. */}
+              {field('division', 'ld-division', true,
+                <select {...bind('division', 'ld-division')} onChange={(e) => pickDivision(e.target.value)}>
+                  <VibhagOptions />
+                </select>)}
               {field(
                 'district',
                 'ld-district',
                 true,
-                <select {...bind('district', 'ld-district')}>
-                  <DistrictOptions />
+                <select
+                  {...bind('district', 'ld-district')}
+                  onChange={(e) => pickDistrict(e.target.value)}
+                  disabled={!v.division}
+                >
+                  <DistrictOptions vibhagName={v.division} />
                 </select>,
               )}
-              {field('division', 'ld-division', true, <input {...bind('division', 'ld-division')} maxLength={255} />)}
-              {field('taluka', 'ld-taluka', true, <input {...bind('taluka', 'ld-taluka')} maxLength={255} />)}
+              {field('taluka', 'ld-taluka', true,
+                <TalukaField
+                  id="ld-taluka"
+                  districtName={v.district}
+                  className="input"
+                  inputProps={{ ...bind('taluka', 'ld-taluka'), disabled: !v.district }}
+                />)}
               {field('village', 'ld-village', true, <input {...bind('village', 'ld-village')} maxLength={255} />)}
             </div>
           </FormStep>
@@ -221,7 +256,7 @@ export default function LeaderForm({ open, onClose }) {
           </FormStep>
 
           <FormError message={form.formError} />
-          <FormActions onCancel={close} busy={form.status === 'busy'} submitLabel={t.common.submit} />
+          <FormActions onCancel={close} busy={form.status === 'busy'} submitLabel={cfg.submitLabel || t.common.submit} />
         </form>
       ) : null}
     </Modal>

@@ -2,19 +2,109 @@ import Icon from './Icon';
 import { useLanguage } from '../i18n/LanguageContext';
 import { OFFICIAL_LINKS } from '../i18n/translations';
 import { DISTRICTS } from '../data/districts';
+import { useMaster, findByName } from '../data/useMasters';
 
-// Options for a district <select>: all 36 districts, valued by Marathi name
-// (as the AMRUT VARG service stores them) and labelled in the current language.
-export function DistrictOptions() {
+// District list for every form's district <select>. Options come from the CMS
+// district master, falling back to the bundled list when it is unreachable, so
+// the dropdown is never empty. The option VALUE stays the Marathi name, which
+// is what these forms have always submitted.
+// Pass `vibhagName` to narrow the list to that division's districts; without it
+// every district is offered, which is what the forms carrying no vibhag field
+// need.
+export function DistrictOptions({ vibhagName = null }) {
   const { t, district } = useLanguage();
+  const vibhags = useMaster('vibhags');
+  const vibhag = vibhagName ? findByName(vibhags, vibhagName) : null;
+
+  // Scoped when a division is chosen, otherwise the full list.
+  const scoped = useMaster('districts', 'vibhag_id', vibhag?.id ?? null);
+  const all = useMaster('districts');
+  const rows = vibhagName ? scoped : all;
+
+  // Only the unscoped list falls back to the bundled names: a scoped list that
+  // is empty means "this division has none", not "the API is down".
+  const names = rows.length ? rows.map((d) => d.name_mr) : vibhagName ? [] : DISTRICTS;
+
   return (
     <>
-      <option value="">{t.common.select}</option>
-      {DISTRICTS.map((n) => (
+      <option value="">
+        {vibhagName && !names.length ? t.common.select : t.common.select}
+      </option>
+      {names.map((n) => (
         <option key={n} value={n}>
           {district(n)}
         </option>
       ))}
+    </>
+  );
+}
+
+// Vibhag (revenue division) options, same fallback behaviour.
+export function VibhagOptions() {
+  const { t, lang } = useLanguage();
+  const rows = useMaster('vibhags');
+  return (
+    <>
+      <option value="">{t.common.select}</option>
+      {rows.map((v) => (
+        <option key={v.id} value={v.name_mr}>
+          {lang === 'en' && v.name_en ? v.name_en : v.name_mr}
+        </option>
+      ))}
+    </>
+  );
+}
+
+// Taluka suggestions for one district, as a <datalist> rather than a <select>.
+//
+// The taluka master only covers districts that already run an Amrut Varg, so a
+// hard dropdown would leave most districts with nothing selectable and block
+// the form. A datalist offers what the master knows while the field stays a
+// free-text input — same type, same validation, same submitted value.
+//
+// `districtName` is the Marathi name the form holds; it resolves through former
+// names too, so an older district spelling still finds its talukas.
+export function TalukaSuggestions({ id, districtName }) {
+  const districts = useMaster('districts');
+  const match = findByName(districts, districtName);
+  const rows = useMaster('talukas', 'district_id', match?.id ?? null);
+
+  if (!rows.length) return null;
+  return (
+    <datalist id={id}>
+      {rows.map((tk) => <option key={tk.id} value={tk.name_mr} />)}
+    </datalist>
+  );
+}
+
+// Taluka control that cascades from the chosen district.
+//
+// Where the master knows that district's talukas it renders a real dependent
+// <select>; where it knows none it renders the original free-text input, so a
+// district whose talukas have not been entered yet can still be filled in. The
+// field name, label, required status and submitted value are the same either
+// way — only the control adapts to what the master holds.
+export function TalukaField({ id, districtName, inputProps, className = 'input' }) {
+  const { t } = useLanguage();
+  const districts = useMaster('districts');
+  const match = findByName(districts, districtName);
+  const rows = useMaster('talukas', 'district_id', match?.id ?? null);
+
+  if (rows.length) {
+    return (
+      <select className={className} {...inputProps}>
+        <option value="">{t.common.select}</option>
+        {rows.map((tk) => (
+          <option key={tk.id} value={tk.name_mr}>{tk.name_mr}</option>
+        ))}
+      </select>
+    );
+  }
+
+  return (
+    <>
+      <input className={className} {...inputProps} maxLength={255} list={`${id}-list`} />
+      <TalukaSuggestions id={`${id}-list`} districtName={districtName} />
     </>
   );
 }
@@ -86,6 +176,26 @@ export function PreviewResult({ onClose }) {
           <span className="sr-only">{t.common.opensNewTab}</span>
         </a>
         <button type="button" className="btn btn--ghost" onClick={onClose}>
+          {t.common.close}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Shown in place of the fields when an administrator has closed the form. The
+// server refuses these submissions too, so this is a courtesy to the visitor
+// rather than the control that enforces it.
+export function ClosedResult({ message, onClose }) {
+  const { t } = useLanguage();
+  return (
+    <div className="result" role="status">
+      <span className="result__icon">
+        <Icon name="info" size={28} />
+      </span>
+      <p className="result__desc">{message}</p>
+      <div className="result__actions">
+        <button type="button" className="btn btn--primary" onClick={onClose}>
           {t.common.close}
         </button>
       </div>

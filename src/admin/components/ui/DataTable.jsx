@@ -10,7 +10,6 @@ export function DataTable({
   onPage,
   onPageSize,
   toolbar,
-  totalPill = true,
   actions,
   sno = true,
 }) {
@@ -50,16 +49,11 @@ export function DataTable({
         </div>
       ) : (
         <>
-          {totalPill && (
-            <div style={{ padding: "0.75rem 1.25rem 0" }}>
-              <span className="a-total-pill">{total} total</span>
-            </div>
-          )}
           <div className="a-table-scroll">
             <table className="a-table">
               <thead>
                 <tr>
-                  {sno && <th className="td-sno">#</th>}
+                  {sno && <th className="td-sno">Sr No</th>}
                   {columns.map((col) => (
                     <th key={col.key} style={col.width ? { width: col.width } : {}}>
                       {col.label}

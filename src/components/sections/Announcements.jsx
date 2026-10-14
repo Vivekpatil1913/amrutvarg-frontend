@@ -10,9 +10,27 @@ const CMS_API = import.meta.env.VITE_CMS_API;
 const ROTATE_MS = 5000;
 
 const STATUS = {
+  info: { icon: 'info', className: 'badge--muted' },
   new: { icon: 'sparkle', className: 'badge--ok' },
   comingSoon: { icon: 'clock', className: 'badge--muted' },
+  urgent: { icon: 'alert', className: 'badge--urgent' },
 };
+
+// The CMS stores one flat row per announcement, with the two languages in
+// separate columns. Reshape it into the form the strip renders — the same one
+// src/data/announcements.js uses.
+const fromCms = (row) => ({
+  id: `cms-${row.id}`,
+  title: { mr: row.title_mr || '', en: row.title_en || '' },
+  desc: { mr: row.desc_mr || '', en: row.desc_en || '' },
+  date: row.date || undefined,
+  until: row.until_date || undefined,
+  status: row.status,
+  pinned: Boolean(row.pinned),
+  link: row.link
+    ? { href: row.link, label: { mr: row.link_label || '', en: row.link_label || '' } }
+    : undefined,
+});
 
 const text = (field, lang) => (field && (field[lang] || field.mr || field.en)) || '';
 
@@ -99,7 +117,7 @@ export default function Announcements() {
     if (!CMS_API) return;
     fetch(`${CMS_API}/public/announcements`)
       .then(r => r.ok ? r.json() : Promise.reject())
-      .then(({ data }) => { if (Array.isArray(data) && data.length) setRawList(data); })
+      .then(({ data }) => { if (Array.isArray(data) && data.length) setRawList(data.map(fromCms)); })
       .catch(() => {});
   }, []);
 

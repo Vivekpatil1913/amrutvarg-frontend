@@ -1,7 +1,8 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard, Megaphone, BookOpen, MapPin, Users, Settings,
-  FileText, Image, ChevronRight, LogOut, Sparkles,
+  LayoutDashboard, Megaphone, BookOpen, Users, Settings,
+  FileText, Image, ChevronRight, LogOut, Sparkles, LayoutTemplate,
+  Landmark, Map, MapPinned, Milestone,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 
@@ -13,11 +14,27 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: "Website",
+    items: [
+      { to: "/admin/hero", icon: LayoutTemplate, label: "Amrut Varg Hero" },
+      // Forms is hidden from the menu; /admin/forms still resolves if opened directly.
+    ],
+  },
+  {
+    label: "Master Management",
+    items: [
+      { to: "/admin/masters/states", icon: Landmark, label: "State Master" },
+      { to: "/admin/masters/vibhags", icon: Map, label: "Vibhag Master" },
+      { to: "/admin/masters/districts", icon: MapPinned, label: "District Master" },
+      { to: "/admin/masters/talukas", icon: Milestone, label: "Taluka Master" },
+    ],
+  },
+  {
     label: "Content",
     items: [
       { to: "/admin/announcements", icon: Megaphone, label: "Announcements" },
       { to: "/admin/stories", icon: BookOpen, label: "Yashogatha Stories" },
-      { to: "/admin/vargs", icon: MapPin, label: "Amrut Vargs" },
+      // Amrut Vargs is hidden from the menu; /admin/vargs still resolves directly.
       { to: "/admin/contacts", icon: Users, label: "District Contacts" },
       { to: "/admin/media", icon: Image, label: "Media Library" },
     ],

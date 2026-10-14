@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import Modal from '../Modal';
-import { DistrictOptions, Field, describe, FormActions, FormError, PreviewResult, SuccessResult, focusFirstInvalid } from '../FormControls';
+import { DistrictOptions, Field, describe, FormActions, FormError, PreviewResult, SuccessResult, ClosedResult, focusFirstInvalid } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useFormConfig } from '../../data/useFormConfig';
 import { useForm } from '../../hooks/useForm';
 import { isMobile } from '../../services/validation';
 import { submitOrganizer } from '../../services/submissions';
@@ -23,6 +24,7 @@ export default function OrganizerForm({ open, onClose }) {
   const o = t.organizer;
   const formRef = useRef(null);
   const form = useForm(INITIAL, validate, t);
+  const cfg = useFormConfig('organizer');
 
   const close = () => {
     form.reset();
@@ -37,12 +39,14 @@ export default function OrganizerForm({ open, onClose }) {
     if (!ok) focusFirstInvalid(formRef.current);
   };
 
-  const done = form.status === 'preview' || form.status === 'sent';
+  const done = form.status === 'preview' || form.status === 'sent' || !cfg.isActive;
 
   return (
-    <Modal open={open} onClose={close} icon="flag" title={o.title} subtitle={done ? null : t.common.requiredNote} size="sm">
+    <Modal open={open} onClose={close} icon="flag" title={cfg.title || o.title} subtitle={done ? null : t.common.requiredNote} size="sm">
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
-      {form.status === 'sent' ? <SuccessResult title={o.successTitle} desc={o.successDesc} onClose={close} /> : null}
+      {!cfg.isActive && form.status !== 'sent' && form.status !== 'preview'
+        ? <ClosedResult message={cfg.closedMessage} onClose={close} /> : null}
+      {form.status === 'sent' ? <SuccessResult title={cfg.successTitle || o.successTitle} desc={cfg.successDesc || o.successDesc} onClose={close} /> : null}
       {!done ? (
         <form ref={formRef} onSubmit={onSubmit} noValidate className="form">
           <div className="form-grid">
@@ -77,7 +81,7 @@ export default function OrganizerForm({ open, onClose }) {
             })}
           </div>
           <FormError message={form.formError} />
-          <FormActions onCancel={close} busy={form.status === 'busy'} submitLabel={t.common.enrollNow} />
+          <FormActions onCancel={close} busy={form.status === 'busy'} submitLabel={cfg.submitLabel || t.common.enrollNow} />
         </form>
       ) : null}
     </Modal>

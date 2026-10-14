@@ -20,6 +20,24 @@ const today = () => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
+// The CMS keeps the two languages in separate columns; the site reads one
+// `vibhag`/`district` per record, as src/data/vargs.js and normalizeVargs both
+// produce. Without this the division count came out as zero, because every
+// record carried `vibhag_mr` and nothing read it.
+const fromCms = (row) => ({
+  id: row.id,
+  vibhag: row.vibhag_mr || row.vibhag_en || '',
+  vibhagEn: row.vibhag_en || '',
+  district: row.district_mr || row.district_en || '',
+  districtEn: row.district_en || '',
+  taluka: row.taluka || '',
+  schoolName: row.school_name || '',
+  vargName: row.varg_name || '',
+  coordinatorName: row.coordinator_name || '',
+  enrollmentCount: Number.isInteger(row.enrollment_count) ? row.enrollment_count : null,
+  status: 'APPROVED',
+});
+
 export function VargsProvider({ children }) {
   const [state, setState] = useState({
     vargs: snapshot,
@@ -35,7 +53,7 @@ export function VargsProvider({ children }) {
       .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
       .then(({ data }) => {
         if (Array.isArray(data) && data.length) {
-          setState({ vargs: data, asOf: today(), status: 'live' });
+          setState({ vargs: data.map(fromCms), asOf: today(), status: 'live' });
           return;
         }
         throw new Error('empty');

@@ -5,6 +5,7 @@ import Mandala from '../components/Mandala';
 import Pager, { PAGE_SIZE } from '../components/Pager';
 import { CONTACT_ROLES, districtContacts as staticContacts } from '../data/districtContacts';
 import { DISTRICTS, DISTRICTS_BY_DIVISION, DIVISION_OF_DISTRICT } from '../data/districts';
+import { useMaster } from '../data/useMasters';
 import { useLanguage } from '../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE, translations } from '../i18n/translations';
 
@@ -74,6 +75,9 @@ function ContactCard({ c, featured }) {
 // district, 8 cards per page. Filters and page live in the URL (?d=…&q=…&p=…)
 // so Back restores them.
 export default function DistrictDirectoryPage() {
+  // Filter options come from the district master, falling back to the bundled
+  // list when the API is unreachable so the page is never left without options.
+  const districtRows = useMaster('districts');
   const { t, num, district, division } = useLanguage();
   const d = t.directory;
   const [params, setParams] = useSearchParams();

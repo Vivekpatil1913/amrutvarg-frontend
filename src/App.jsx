@@ -18,11 +18,15 @@ import { AdminLayout } from './admin/components/layout/AdminLayout.jsx';
 import './admin/styles/admin.css';
 const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
 const Dashboard = lazy(() => import('./admin/pages/Dashboard.jsx'));
+const HeroSection = lazy(() => import('./admin/pages/HeroSection.jsx'));
+const FormsAdmin = lazy(() => import('./admin/pages/Forms.jsx'));
+const Masters = lazy(() => import('./admin/pages/Masters.jsx'));
 const Announcements = lazy(() => import('./admin/pages/Announcements.jsx'));
 const Stories = lazy(() => import('./admin/pages/Stories.jsx'));
 const Vargs = lazy(() => import('./admin/pages/Vargs.jsx'));
 const Contacts = lazy(() => import('./admin/pages/Contacts.jsx'));
 const Submissions = lazy(() => import('./admin/pages/Submissions.jsx'));
+const SubmissionDetail = lazy(() => import('./admin/pages/SubmissionDetail.jsx'));
 const Settings = lazy(() => import('./admin/pages/Settings.jsx'));
 const Media = lazy(() => import('./admin/pages/Media.jsx'));
 const AdminProfile = lazy(() => import('./admin/pages/Profile.jsx'));
@@ -74,11 +78,18 @@ function AdminRoutes() {
         <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/hero" element={<HeroSection />} />
+          <Route path="/admin/forms" element={<FormsAdmin />} />
+          <Route path="/admin/masters/states" element={<Masters master="states" />} />
+          <Route path="/admin/masters/vibhags" element={<Masters master="vibhags" />} />
+          <Route path="/admin/masters/districts" element={<Masters master="districts" />} />
+          <Route path="/admin/masters/talukas" element={<Masters master="talukas" />} />
           <Route path="/admin/announcements" element={<Announcements />} />
           <Route path="/admin/stories" element={<Stories />} />
           <Route path="/admin/vargs" element={<Vargs />} />
           <Route path="/admin/contacts" element={<Contacts />} />
           <Route path="/admin/submissions" element={<Submissions />} />
+          <Route path="/admin/submissions/:id" element={<SubmissionDetail />} />
           <Route path="/admin/settings" element={<Settings />} />
           <Route path="/admin/media" element={<Media />} />
           <Route path="/admin/profile" element={<AdminProfile />} />

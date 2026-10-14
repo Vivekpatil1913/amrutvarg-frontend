@@ -9,9 +9,12 @@ import {
   FormError,
   PreviewResult,
   SuccessResult,
+  TalukaField,
+  ClosedResult,
   focusFirstInvalid,
 } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useFormConfig } from '../../data/useFormConfig';
 import { vargPlaceName } from '../../data/vargNamesEn';
 import { useForm } from '../../hooks/useForm';
 import { isDate, isEmail, isMobile, isPastDate, isPin } from '../../services/validation';
@@ -154,6 +157,7 @@ export default function ParticipantForm({ varg, onClose }) {
   const s = t.student;
   const formRef = useRef(null);
   const form = useForm(INITIAL, validate, t);
+  const cfg = useFormConfig('participant');
   const { values: v, setValue, setValues } = form;
   const placeName = vargPlaceName(varg, lang);
   const school = v.category === 'SCHOOL';
@@ -181,6 +185,13 @@ export default function ParticipantForm({ varg, onClose }) {
       ...describe(id, error, hint),
     };
   };
+  // Changing the district clears the taluka, so a taluka from the previous
+  // district can never be submitted.
+  const pickDistrict = (name) => {
+    setValue('district', name);
+    setValue('cityTaluka', '');
+  };
+
   const field = (key, id, label, required, control, extra = {}) => (
     <Field id={id} label={label} required={required} error={form.errorFor(key)} {...extra}>
       {control}
@@ -209,15 +220,17 @@ export default function ParticipantForm({ varg, onClose }) {
       otherLanguage: code === 'OTHER' && !checked ? '' : prev.otherLanguage,
     }));
 
-  const done = form.status === 'preview' || form.status === 'sent';
+  const done = form.status === 'preview' || form.status === 'sent' || !cfg.isActive;
   const declError = form.errorFor('declarationAccepted');
   const catError = form.errorFor('category');
 
   return (
-    <Modal open={!!varg} onClose={close} icon="graduation" title={s.title} subtitle={done ? placeName : t.common.requiredNote} size="lg">
+    <Modal open={!!varg} onClose={close} icon="graduation" title={cfg.title || s.title} subtitle={done ? placeName : t.common.requiredNote} size="lg">
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
+      {!cfg.isActive && form.status !== 'sent' && form.status !== 'preview'
+        ? <ClosedResult message={cfg.closedMessage} onClose={close} /> : null}
       {form.status === 'sent' ? (
-        <SuccessResult title={s.successTitle} desc={s.successDesc(placeName)} onClose={close} />
+        <SuccessResult title={cfg.successTitle || s.successTitle} desc={cfg.successDesc || s.successDesc(placeName)} onClose={close} />
       ) : null}
       {!done && varg ? (
         <form ref={formRef} onSubmit={onSubmit} noValidate className="form">
@@ -444,16 +457,29 @@ export default function ParticipantForm({ varg, onClose }) {
                 )}
                 <div className="form-grid">
                   {field('parentGuardianName', 'st-parent', s.parentName, true, <input className="input" {...bind('parentGuardianName', 'st-parent')} maxLength={255} />)}
-                  {field('cityTaluka', 'st-city', s.cityTaluka, true, <input className="input" {...bind('cityTaluka', 'st-city')} maxLength={255} />)}
+                  {/* District first, so the taluka below it can be narrowed to
+                      that district. This form carries no vibhag field, so the
+                      district list is the full one. */}
                   {field(
                     'district',
                     'st-district',
                     s.district,
                     true,
-                    <select className="input" {...bind('district', 'st-district')}>
+                    <select
+                      className="input"
+                      {...bind('district', 'st-district')}
+                      onChange={(e) => pickDistrict(e.target.value)}
+                    >
                       <DistrictOptions />
                     </select>,
                   )}
+                  {field('cityTaluka', 'st-city', s.cityTaluka, true,
+                    <TalukaField
+                      id="st-city"
+                      districtName={v.district}
+                      className="input"
+                      inputProps={{ ...bind('cityTaluka', 'st-city'), disabled: !v.district }}
+                    />)}
                   {field(
                     'pinCode',
                     'st-pin',
@@ -564,7 +590,7 @@ export default function ParticipantForm({ varg, onClose }) {
           ) : null}
 
           <FormError message={form.formError} />
-          <FormActions onCancel={close} busy={form.status === 'busy'} submitLabel={t.common.enrollNow} />
+          <FormActions onCancel={close} busy={form.status === 'busy'} submitLabel={cfg.submitLabel || t.common.enrollNow} />
         </form>
       ) : null}
     </Modal>
