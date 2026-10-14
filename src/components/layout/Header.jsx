@@ -289,10 +289,6 @@ export default function Header() {
               <a href="#join" className="btn btn--primary" onClick={(e) => onNav(e, 'join')}>
                 {t.nav.cta}
               </a>
-              <Link to="/admin/login" className="mobile-menu__admin" onClick={() => setOpen(false)}>
-                <Icon name="lock" size={16} />
-                {t.nav.admin}
-              </Link>
             </div>
           </nav>
         </div>

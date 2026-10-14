@@ -1,12 +1,14 @@
-import { useEffect, useId, useMemo, useRef } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
 import Pager, { PAGE_SIZE } from '../components/Pager';
-import { CONTACT_ROLES, districtContacts } from '../data/districtContacts';
+import { CONTACT_ROLES, districtContacts as staticContacts } from '../data/districtContacts';
 import { DISTRICTS, DISTRICTS_BY_DIVISION, DIVISION_OF_DISTRICT } from '../data/districts';
 import { useLanguage } from '../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE, translations } from '../i18n/translations';
+
+const CMS_API = import.meta.env.VITE_CMS_API;
 
 const norm = (s) => (s || '').toLocaleLowerCase();
 const DIVISIONS = Object.keys(DISTRICTS_BY_DIVISION);
@@ -75,6 +77,15 @@ export default function DistrictDirectoryPage() {
   const { t, num, district, division } = useLanguage();
   const d = t.directory;
   const [params, setParams] = useSearchParams();
+  const [districtContacts, setDistrictContacts] = useState(staticContacts);
+
+  useEffect(() => {
+    if (!CMS_API) return;
+    fetch(`${CMS_API}/public/contacts`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(({ data }) => { if (Array.isArray(data) && data.length) setDistrictContacts(data); })
+      .catch(() => {});
+  }, []);
   const searchId = useId();
   const selectId = useId();
   const listRef = useRef(null);

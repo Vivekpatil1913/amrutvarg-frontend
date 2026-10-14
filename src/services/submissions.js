@@ -6,9 +6,12 @@
 // existing integration with the AMRUT VARG service — the same endpoints the
 // live portal posts to — and resolves with { sent: true } only on success.
 
-import { API_BASE, LIVE_SUBMIT } from './config';
+import { LIVE_SUBMIT } from './config';
 
 export { LIVE_SUBMIT };
+
+// CMS API base URL (Amrutvarg backend)
+const CMS_API = import.meta.env.VITE_CMS_API || 'http://localhost:4000/api/v1';
 
 export class SubmitError extends Error {
   constructor(kind, message) {
@@ -20,30 +23,30 @@ export class SubmitError extends Error {
 async function post(path, body, isForm = false) {
   let res;
   try {
-    res = await fetch(`${API_BASE}${path}`, {
+    res = await fetch(`${CMS_API}${path}`, {
       method: 'POST',
       headers: isForm ? undefined : { 'Content-Type': 'application/json' },
       body: isForm ? body : JSON.stringify(body),
     });
   } catch {
-    throw new SubmitError('network', 'Network error');
+    throw new SubmitError('network', 'Network error — please check your connection');
   }
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new SubmitError('server', data.message || `HTTP ${res.status}`);
+    throw new SubmitError('server', data?.error?.message || `HTTP ${res.status}`);
   }
   return res.json();
 }
 
 export async function submitParticipant(payload) {
   if (!LIVE_SUBMIT) return { sent: false };
-  await post('/api/participants', payload);
+  await post('/forms/participants', payload);
   return { sent: true };
 }
 
 export async function submitOrganizer(payload) {
   if (!LIVE_SUBMIT) return { sent: false };
-  await post('/api/organizers', payload);
+  await post('/forms/organizers', payload);
   return { sent: true };
 }
 
@@ -54,6 +57,6 @@ export async function submitLeader(payload, photo) {
     if (value !== null && value !== undefined && value !== '') form.append(key, String(value));
   });
   if (photo) form.append('photo', photo);
-  await post('/api/leaders', form, true);
+  await post('/forms/leaders', form, true);
   return { sent: true };
 }

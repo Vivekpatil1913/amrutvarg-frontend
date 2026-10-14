@@ -1,0 +1,1851 @@
+[
+  {
+    "id": "40c71e93-d4e9-4659-a8a8-377d8fb6255e",
+    "source_id": "row-1",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "districtManager",
+    "districts": [
+      "नंदुरबार"
+    ],
+    "name": "योगेश भीमराव अहिरे",
+    "email": "ahirey85@gmail.com",
+    "phone": "9730881165",
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "3d521007-d0c4-44a2-8a91-6086ad62c86c",
+    "source_id": "row-2",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "sakhi",
+    "districts": [
+      "यवतमाळ"
+    ],
+    "name": "भार्गवी जितेंद्र लाखे",
+    "email": "bhargavilakhe28@gmail.com",
+    "phone": "9158075546",
+    "is_active": true,
+    "display_order": 1,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "cb59a915-715a-4c39-a3d6-2e7f8009c54f",
+    "source_id": "row-3",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "dataEntry",
+    "districts": [
+      "वाशिम"
+    ],
+    "name": "रोहित वसंतराव देशमुख",
+    "email": "kale9421@gmail.com",
+    "phone": "9850389811",
+    "is_active": true,
+    "display_order": 2,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "34f155bf-7ab7-42a0-8774-6620492b4c9c",
+    "source_id": "row-4",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "districtManager",
+    "districts": [
+      "वाशिम",
+      "अकोला"
+    ],
+    "name": "योगेश अरविंद जोशी",
+    "email": "yogeshjoshi068@gmail.com",
+    "phone": "8379083865",
+    "is_active": true,
+    "display_order": 3,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "e4dc5766-e565-4095-a258-8e82e017db15",
+    "source_id": "row-5",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "dataEntry",
+    "districts": [
+      "पालघर"
+    ],
+    "name": "अमित उदय आठवले",
+    "email": "amitathavale743@gmail.com",
+    "phone": "9975117807",
+    "is_active": true,
+    "display_order": 4,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "4614f930-4975-4d12-8389-267ce4d5e802",
+    "source_id": "row-6",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "धाराशिव"
+    ],
+    "name": "रवि रमेश वैद्य",
+    "email": "ravivaidya60@gmail.com",
+    "phone": "7057335232",
+    "is_active": true,
+    "display_order": 5,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "890d71d9-35f3-495f-80dd-315d47839ae1",
+    "source_id": "row-7",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "dataEntry",
+    "districts": [
+      "अकोला"
+    ],
+    "name": "गणेश शामराव मुळे",
+    "email": "muleyg26@gmail.com",
+    "phone": "8975522591",
+    "is_active": true,
+    "display_order": 6,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "d85864d6-2664-4aef-82b1-6bd9039ed990",
+    "source_id": "row-8",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "sakhi",
+    "districts": [
+      "अहिल्यानगर"
+    ],
+    "name": "गौरी अशोक कुलकर्णी",
+    "email": "kulkarnigauri220@gmail.com",
+    "phone": "8669010131",
+    "is_active": true,
+    "display_order": 7,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "563988b7-66f4-4d41-b759-3b576b3db34e",
+    "source_id": "row-9",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "dataEntry",
+    "districts": [
+      "अकोला"
+    ],
+    "name": "प्राची प्रवीण देव",
+    "email": "deoprachi33@gmail.com",
+    "phone": "9923321393",
+    "is_active": true,
+    "display_order": 8,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "98d3050d-1cba-4a6e-8b63-e2b2aa1eb102",
+    "source_id": "row-10",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "districtManager",
+    "districts": [
+      "सांगली"
+    ],
+    "name": "मनोज मारुती मिरासदार",
+    "email": "mirasdarm@gmail.com",
+    "phone": "7057607419",
+    "is_active": true,
+    "display_order": 9,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c4cdca4e-8a6d-439e-bfb6-da12c5b37a0f",
+    "source_id": "row-11",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "dataEntry",
+    "districts": [
+      "जळगाव"
+    ],
+    "name": "प्रद्योत भालचंद्र कुळकर्णी",
+    "email": "kulkarni.pradyot@gmail.com",
+    "phone": "7620782295",
+    "is_active": true,
+    "display_order": 10,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "278c33ba-dc7c-424b-8e83-0dbd3fc2cdfd",
+    "source_id": "row-12",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "districtManager",
+    "districts": [
+      "रायगड"
+    ],
+    "name": "शैलेश विनायक मराठे",
+    "email": "astutealibag@gmail.com",
+    "phone": "9423892182",
+    "is_active": true,
+    "display_order": 11,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "51cbc5d3-075d-4c17-b1de-fffbe11dfaff",
+    "source_id": "row-13",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "districtManager",
+    "districts": [
+      "पुणे"
+    ],
+    "name": "सिद्धेश नरहरी केसकर",
+    "email": "siddheshkeskar3@gmail.com",
+    "phone": "9359403891",
+    "is_active": true,
+    "display_order": 12,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6984fd6a-e4cf-4136-aca3-61b0de822e4b",
+    "source_id": "row-14",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "dataEntry",
+    "districts": [
+      "जळगाव"
+    ],
+    "name": "प्रद्योत भालचंद्र कुळकर्णी",
+    "email": "kulkarni.pradyot@gmail.com",
+    "phone": "7620782295",
+    "is_active": true,
+    "display_order": 13,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "881c1efe-1a2b-490c-9b51-322073f9fb05",
+    "source_id": "row-15",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "बीड"
+    ],
+    "name": "सुमित शिवाजीराव धिरडे",
+    "email": "sumitrajedhirde@gmail.com",
+    "phone": "9975677272",
+    "is_active": true,
+    "display_order": 14,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "0c0e2a39-aea5-4c3f-a5eb-106d093d556e",
+    "source_id": "row-16",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "dataEntry",
+    "districts": [
+      "कोल्हापूर"
+    ],
+    "name": "अभिजीत अरुण कुलकर्णी",
+    "email": "abhijeetarunkulkarni111@gmail.com",
+    "phone": "8275378019",
+    "is_active": true,
+    "display_order": 15,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "82d26c7c-17e7-4d2a-8447-f5964f1f54a8",
+    "source_id": "row-17",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "districtManager",
+    "districts": [
+      "अमरावती"
+    ],
+    "name": "ऋषिकेश हरिष कथलकर",
+    "email": "rkathalkar24@gmail.com",
+    "phone": "7249451152",
+    "is_active": true,
+    "display_order": 16,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "812aa41c-650b-4e68-af55-a8909a283f85",
+    "source_id": "row-18",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "mitra",
+    "districts": [
+      "अमरावती"
+    ],
+    "name": "केदार विनायक चावरकर",
+    "email": "k96657@gmail.com",
+    "phone": "8149087497",
+    "is_active": true,
+    "display_order": 17,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "1ab5fd71-5b9e-499f-a1b8-b854d63ffb87",
+    "source_id": "row-19",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "mitra",
+    "districts": [
+      "नाशिक"
+    ],
+    "name": "मयूर मधुकर हातवळणे",
+    "email": "mayurhatwalne12@gmail.com",
+    "phone": "9860513428",
+    "is_active": true,
+    "display_order": 18,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6106351c-7327-4b26-b970-37a70bb697d7",
+    "source_id": "row-20",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "districtManager",
+    "districts": [
+      "सातारा"
+    ],
+    "name": "विनायक मंगलधीश पाठकजी",
+    "email": "mangalsut@gmail.com",
+    "phone": "9923197206",
+    "is_active": true,
+    "display_order": 19,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "eed541bd-a914-471d-810b-c33453c75883",
+    "source_id": "row-21",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "districtManager",
+    "districts": [
+      "अहिल्यानगर"
+    ],
+    "name": "सागर पंढरीनाथ भोपे",
+    "email": "sagarbhope11@gmail.com",
+    "phone": "9766622274",
+    "is_active": true,
+    "display_order": 20,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "8ca8064b-71b5-45ee-b196-b8381dcae508",
+    "source_id": "row-22",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "नांदेड"
+    ],
+    "name": "सौरभ संतोष माळहिप्परगेकर",
+    "email": "mail4saurabh9290@gmail.com",
+    "phone": "7083868522",
+    "is_active": true,
+    "display_order": 21,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "4a3af20f-ad41-4115-b065-d6e31d6b040f",
+    "source_id": "row-23",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "sakhi",
+    "districts": [
+      "अमरावती"
+    ],
+    "name": "साक्षी सुनील कुळकर्णी",
+    "email": "sakshiskulkarni1998@gmail.com",
+    "phone": "7972896998",
+    "is_active": true,
+    "display_order": 22,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "b1262f44-2b6d-42aa-9e2d-3a0df3b113a4",
+    "source_id": "row-24",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "sakhi",
+    "districts": [
+      "पुणे"
+    ],
+    "name": "शीतल वेदांत कुलकर्णी",
+    "email": "sheetalkulkarni618@gmail.com",
+    "phone": "7276414713",
+    "is_active": true,
+    "display_order": 23,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "9424b5f5-ef2d-480c-9a40-4dd73171ae6e",
+    "source_id": "row-25",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "नांदेड"
+    ],
+    "name": "विश्वेश्वर वासुदेवराव जोशी",
+    "email": "joshivishweshwar2@gmail.com",
+    "phone": "8600240032",
+    "is_active": true,
+    "display_order": 24,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "07efaf2b-65b9-4b95-93e0-ea7a430fbdaf",
+    "source_id": "row-26",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "लातूर"
+    ],
+    "name": "ओमकार भूषण शेटे",
+    "email": "omishete@gmail.com",
+    "phone": "7391998866",
+    "is_active": true,
+    "display_order": 25,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "379aa41d-7575-4456-9bad-fe72d308facd",
+    "source_id": "row-27",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "नांदेड"
+    ],
+    "name": "विश्वास कृष्णराव बदापूरकर",
+    "email": "badapurkarvishwas@gmail.com",
+    "phone": "9422874346",
+    "is_active": true,
+    "display_order": 26,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6f7f6e7f-a534-41f8-a9a4-60313827ce1e",
+    "source_id": "row-28",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "mitra",
+    "districts": [
+      "गोंदिया"
+    ],
+    "name": "प्रणय मदनसिंह नागले",
+    "email": "pranaynagle9@gmail.com",
+    "phone": "7397823304",
+    "is_active": true,
+    "display_order": 27,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "a6d620b4-c547-44dc-aec2-1f5268fd2d92",
+    "source_id": "row-29",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "districtManager",
+    "districts": [
+      "वर्धा"
+    ],
+    "name": "ऋषिकेश पंडितराव खराटे",
+    "email": "rushikeshkharate57@gmail.com",
+    "phone": "7709226229",
+    "is_active": true,
+    "display_order": 28,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "ff54e192-0a75-410e-b248-977922abcac3",
+    "source_id": "row-30",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "dataEntry",
+    "districts": [
+      "सोलापूर"
+    ],
+    "name": "बिरुदेव अज्ञान वाघमोडे",
+    "email": "birudevwaghmode01@gmail.com",
+    "phone": "9284483216",
+    "is_active": true,
+    "display_order": 29,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "8969b915-7cd4-4a64-8c19-34579d8466c7",
+    "source_id": "row-31",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "धाराशिव"
+    ],
+    "name": "अजय उमेश कुलकर्णी",
+    "email": "ajaykulkarni.unilever@gmail.com",
+    "phone": "9130354294",
+    "is_active": true,
+    "display_order": 30,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "ba2d571b-feca-4dff-84fe-e9caf84fb30c",
+    "source_id": "row-32",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "बीड"
+    ],
+    "name": "चिंतेश रामभाऊ जोशी",
+    "email": "chintesh154@gmail.com",
+    "phone": "9421944752",
+    "is_active": true,
+    "display_order": 31,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "a29936c1-8ddd-4554-8a42-a59f8a6e5336",
+    "source_id": "row-33",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "divisionalManager",
+    "districts": [],
+    "name": "प्रविण प्रकाश कोळेश्वर",
+    "email": "pravinkoleshwar@gmail.com",
+    "phone": "9370499541",
+    "is_active": true,
+    "display_order": 32,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "18ab286d-a264-441e-9f60-2876ce264259",
+    "source_id": "row-34",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "dataEntry",
+    "districts": [
+      "ठाणे"
+    ],
+    "name": "माया विनोद खेत्रे",
+    "email": "maya.khetre21@gmail.com",
+    "phone": "8108383871",
+    "is_active": true,
+    "display_order": 33,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6e78c22f-2acd-4b31-be29-184e3cf7cc55",
+    "source_id": "row-35",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "mitra",
+    "districts": [
+      "जळगाव"
+    ],
+    "name": "किरण सुरेश शिंपी",
+    "email": "kiranshimpi89@gmail.com",
+    "phone": "9604050630",
+    "is_active": true,
+    "display_order": 34,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "fa505b2c-dd0a-41cb-a768-6818e1c3f333",
+    "source_id": "row-36",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "districtManager",
+    "districts": [
+      "सिंधुदुर्ग"
+    ],
+    "name": "श्रीराम जयप्रकाश केळकर",
+    "email": "shriram.kelkar2000@gmail.com",
+    "phone": "8554059044",
+    "is_active": true,
+    "display_order": 35,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "814f2379-f117-40cd-a3fb-f8db7c818035",
+    "source_id": "row-37",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "sakhi",
+    "districts": [
+      "अकोला"
+    ],
+    "name": "प्राची प्रवीण देव",
+    "email": "deoprachi33@gmail.com",
+    "phone": "9923321393",
+    "is_active": true,
+    "display_order": 36,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "104ae7d6-5426-42d0-8a96-72a25610c2fa",
+    "source_id": "row-38",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "districtManager",
+    "districts": [
+      "गोंदिया"
+    ],
+    "name": "कार्तिक रविशंकर तिवारी",
+    "email": "kartiktiwari722@gmail.com",
+    "phone": "7620442709",
+    "is_active": true,
+    "display_order": 37,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "08dbe8de-9f73-4e5d-8927-2d80525548f5",
+    "source_id": "row-39",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "dataEntry",
+    "districts": [
+      "सातारा"
+    ],
+    "name": "अविनाश अनंतकुमार कुलकर्णी",
+    "email": "avikulkarni259@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 38,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "ecd058f1-d340-4e7f-adfd-e5a7dbae7919",
+    "source_id": "row-40",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "mitra",
+    "districts": [
+      "अहिल्यानगर"
+    ],
+    "name": "संदिप विजयकुमार देशपांडे",
+    "email": "sandeepdeshpande152@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 39,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "7d543539-5f52-41c9-a746-0b35aaf857f4",
+    "source_id": "row-41",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "परभणी"
+    ],
+    "name": "रवि अरुणराव कुलकर्णी",
+    "email": "kulkarniravi500@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 40,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c997406a-227a-435b-a2cf-c4858df0c22e",
+    "source_id": "row-42",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "districtManager",
+    "districts": [
+      "नागपूर"
+    ],
+    "name": "आदित्य अवधूत कुलकर्णी",
+    "email": "aadikul3121@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 41,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "502dc6ba-e1e2-4d0c-8ce1-6a72fd306ab5",
+    "source_id": "row-43",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "sakhi",
+    "districts": [
+      "सांगली"
+    ],
+    "name": "गौरी महेश कुलकर्णी",
+    "email": "gourikulkarni20@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 42,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "e172bf6e-315d-4d4d-beda-2c27ae9acfc4",
+    "source_id": "row-44",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "धाराशिव"
+    ],
+    "name": "चिन्मय प्रभाकर कुलकर्णी",
+    "email": "chinmay.k951@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 43,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "80ad189d-07c0-4404-98d6-2e17f2c33948",
+    "source_id": "row-45",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "लातूर"
+    ],
+    "name": "शुभम सुहासराव मुळजकर",
+    "email": "shubham.mulajakar@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 44,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "3e65900b-4265-45fd-9c7e-f4e715a2898d",
+    "source_id": "row-46",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "mitra",
+    "districts": [
+      "अहिल्यानगर"
+    ],
+    "name": "शरद आण्णासाहेब क्षिरसागर",
+    "email": "kshirsagarsharad8@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 45,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "626c3256-15b3-4456-aa57-3574ac5341b1",
+    "source_id": "row-47",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "dataEntry",
+    "districts": [
+      "गोंदिया"
+    ],
+    "name": "पियुष महेश पुरोहित",
+    "email": "piyushpurohit1212@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 46,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "8484e8d6-c583-4e4b-90fd-399975706571",
+    "source_id": "row-48",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "mitra",
+    "districts": [
+      "वाशिम"
+    ],
+    "name": "नंदकिशोर प्रभाकर वनस्कर",
+    "email": "santaji8011@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 47,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "b3865640-5201-4b5c-be62-5b7f6024311a",
+    "source_id": "row-49",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "छत्रपती संभाजीनगर"
+    ],
+    "name": "रामेश्वर शिवाजी साळुंके",
+    "email": "rameshwarsalunke518@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 48,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "5a0c965a-e6be-4618-904d-e10d04fe9b90",
+    "source_id": "row-50",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "sakhi",
+    "districts": [
+      "भंडारा"
+    ],
+    "name": "साक्षी प्रशांत जोशी",
+    "email": "sakshijoshi20001@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 49,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "2f413e81-483a-4430-a981-44e2f7ecc5ca",
+    "source_id": "row-51",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "divisionalManager",
+    "districts": [
+      "नागपूर"
+    ],
+    "name": "धनंजय गोपाळराव कुळकर्णी",
+    "email": "kulkarnid760@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 50,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "f1ba364e-5d1c-44e8-bbc0-eaaf8cfc9c30",
+    "source_id": "row-52",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "जालना"
+    ],
+    "name": "नितीन सूर्यकांत खेकाळे",
+    "email": "ni3khekale@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 51,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "02d2bc45-523f-462c-a0ee-ace87ba2f195",
+    "source_id": "row-53",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "हिंगोली"
+    ],
+    "name": "संजय रामराव मेथेकर",
+    "email": "smethekar80@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 52,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "e9cb9e38-f45b-4b30-86b6-35a96e200116",
+    "source_id": "row-54",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "परभणी"
+    ],
+    "name": "अनंत रावसाहेब जोगदंड",
+    "email": "anant.lic2010@rediffmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 53,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "cb64e833-2cb1-43c2-8b1b-ea66fc119de4",
+    "source_id": "row-55",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "dataEntry",
+    "districts": [
+      "नागपूर"
+    ],
+    "name": "ओंकार लक्ष्मण गांधी",
+    "email": "omkargandhi1@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 54,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "05ada7f5-9512-43c0-9346-0dc60e20df43",
+    "source_id": "row-56",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "dataEntry",
+    "districts": [
+      "वर्धा"
+    ],
+    "name": "धीरज भिकमचंद राठी",
+    "email": "dhirajrathi125@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 55,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "ca733331-e19f-467e-8e4e-478a4892312f",
+    "source_id": "row-57",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "mitra",
+    "districts": [
+      "नागपूर"
+    ],
+    "name": "निखिलेश नरेंद्र रहिसे",
+    "email": "nikhileshrahise@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 56,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "49c9171f-93c7-42c4-995f-343576b6ecfe",
+    "source_id": "row-58",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "dataEntry",
+    "districts": [],
+    "name": "कीर्ती अमित शेटे",
+    "email": "kirt2589@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 57,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "b52e95e2-b206-4f98-9077-0d80926d06b7",
+    "source_id": "row-59",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "हिंगोली"
+    ],
+    "name": "श्रीकांत गंगाधर धोतरे",
+    "email": "shrikantdhotare1019@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 58,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "1c4e8f13-f91e-4cba-9772-88a1513f906a",
+    "source_id": "row-60",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "dataEntry",
+    "districts": [
+      "अहिल्यानगर"
+    ],
+    "name": "वैभव फक्कडराव कुलकर्णी",
+    "email": "kulkarnivaibhav375@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 59,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "eb520437-e36f-4113-afa4-19da629315de",
+    "source_id": "row-61",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "परभणी"
+    ],
+    "name": "अनिरुद्ध प्रमोदराव काटे",
+    "email": "apkate50@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 60,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "0a2052e1-9c3a-4927-829d-e8fbdb6191e8",
+    "source_id": "row-62",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "districtManager",
+    "districts": [
+      "गडचिरोली"
+    ],
+    "name": "विक्रममोहन सुधाकर पांडे",
+    "email": "vikramp844@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 61,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "9a6c32ed-173b-4872-8a41-504232cf697e",
+    "source_id": "row-63",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "dataEntry",
+    "districts": [
+      "चंद्रपूर"
+    ],
+    "name": "वैष्णवी अंकुश दारव्हेकर",
+    "email": "vaishnaviamgaonkar2018@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 62,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "d9f2b0e3-0da2-4f63-95e9-3c909257363c",
+    "source_id": "row-64",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "districtManager",
+    "districts": [
+      "चंद्रपूर"
+    ],
+    "name": "आदित्यसिंह शंकरसिंह सेंगर",
+    "email": "sengaraditya57@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 63,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "7df880da-8ee3-4418-841d-d569e671dd0a",
+    "source_id": "row-65",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "divisionalManager",
+    "districts": [
+      "पुणे"
+    ],
+    "name": "प्रथमेश प्रशांत कुलकर्णी",
+    "email": "prathameshkulkarni33@gmail.com",
+    "phone": "9823228596",
+    "is_active": true,
+    "display_order": 64,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "7d8dcea8-06f2-4223-9907-204c049ad18a",
+    "source_id": "row-66",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "sakhi",
+    "districts": [
+      "धुळे"
+    ],
+    "name": "वैशाली दिलीप कुलकर्णी",
+    "email": "vaishalikulkarni710@gmail.com",
+    "phone": "7779057899",
+    "is_active": true,
+    "display_order": 65,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "29d274bb-f535-4b3d-8655-4edb164537c2",
+    "source_id": "row-67",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "districtManager",
+    "districts": [
+      "सोलापूर"
+    ],
+    "name": "श्रेयस आनंद कुलकर्णी",
+    "email": "kulalok1@gmail.com",
+    "phone": "8669589834",
+    "is_active": true,
+    "display_order": 66,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "367f53d3-0271-47ae-bbd5-63a306275f93",
+    "source_id": "row-68",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "mitra",
+    "districts": [
+      "चंद्रपूर"
+    ],
+    "name": "सतीश कनकैया नारायणदास",
+    "email": "mrsnarayandas@gmail.com",
+    "phone": "9890746453",
+    "is_active": true,
+    "display_order": 67,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "b38d128c-4621-4d1b-9b1d-83b268657012",
+    "source_id": "row-69",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "mitra",
+    "districts": [
+      "गडचिरोली"
+    ],
+    "name": "वेदांत सुनील मेहता",
+    "email": "vedsunilmehta@gmail.com",
+    "phone": "8208407357",
+    "is_active": true,
+    "display_order": 68,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "98b5e318-2ed0-4372-8646-ef71f4e42352",
+    "source_id": "row-70",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "dataEntry",
+    "districts": [
+      "गडचिरोली"
+    ],
+    "name": "सौ माधुरी महेश रोटकर",
+    "email": "madhurotkar132@gmail.com",
+    "phone": "9923780790",
+    "is_active": true,
+    "display_order": 69,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "a1c837ae-6111-411e-bac6-ed670bb16341",
+    "source_id": "row-71",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "districtManager",
+    "districts": [
+      "रत्नागिरी"
+    ],
+    "name": "संतोष मधुकर जुवळे",
+    "email": "santoshjuvale88@gmail.com",
+    "phone": "8087276515",
+    "is_active": true,
+    "display_order": 70,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "daad6087-5042-440f-a242-1890683eb25e",
+    "source_id": "row-72",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [],
+    "name": "रुचा शामसुंदरजी शर्मा",
+    "email": "ruchasharma73@gmail.com",
+    "phone": "7709080073",
+    "is_active": true,
+    "display_order": 71,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "af42dda1-7d95-4aa1-8ac6-2b9833264e7e",
+    "source_id": "row-73",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "sakhi",
+    "districts": [
+      "रत्नागिरी"
+    ],
+    "name": "अश्विनी पुरुषोत्तम करमरकर",
+    "email": "ashwinikarmarkar9@gmail.com",
+    "phone": "8275260285",
+    "is_active": true,
+    "display_order": 72,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "1673a11b-b55b-450d-b4a3-2d8b823e1a95",
+    "source_id": "row-74",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "districtManager",
+    "districts": [
+      "भंडारा"
+    ],
+    "name": "ओमकार मिलिंदराव हरदास",
+    "email": "omkarhardas885@gmail.com",
+    "phone": "8857934732",
+    "is_active": true,
+    "display_order": 73,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "9462651f-5fcd-43bc-8f41-aef5d4df6359",
+    "source_id": "row-75",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "sakhi",
+    "districts": [
+      "सोलापूर"
+    ],
+    "name": "आर्या विवेक कुलकर्णी",
+    "email": "aryakulkarni1503@gmail.com",
+    "phone": "9145281104",
+    "is_active": true,
+    "display_order": 74,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "397edc02-0cca-4325-8c5a-d21ecc601f0a",
+    "source_id": "row-76",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "sakhi",
+    "districts": [
+      "रायगड"
+    ],
+    "name": "जान्हवी महेंद्र साठे",
+    "email": "janhavisathe6@gmail.com",
+    "phone": "8879278740",
+    "is_active": true,
+    "display_order": 75,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "fb96d0e7-78cd-4010-bbdd-7776553c5d07",
+    "source_id": "row-77",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "divisionalManager",
+    "districts": [
+      "रत्नागिरी"
+    ],
+    "name": "अमित श्रीपाद सामंत",
+    "email": "amrut.kokan.div@gmail.com",
+    "phone": "9112227669",
+    "is_active": true,
+    "display_order": 76,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "f3350ccb-bce9-49ff-9f20-cc7b3f17f58e",
+    "source_id": "row-78",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "sakhi",
+    "districts": [
+      "वर्धा"
+    ],
+    "name": "सायली अनिरुद्ध कठाळे",
+    "email": "sayalikathale03@gmail.com",
+    "phone": "8788387315",
+    "is_active": true,
+    "display_order": 77,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "fd08dabb-02fd-4b24-9c2b-7b86238290e8",
+    "source_id": "row-79",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "dataEntry",
+    "districts": [
+      "नाशिक"
+    ],
+    "name": "संजय शंकरगिर गोसावी",
+    "email": "gosavisanjay15@gmail.com",
+    "phone": "8857073911",
+    "is_active": true,
+    "display_order": 78,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "d150f673-9850-4b21-877d-7502520cb345",
+    "source_id": "row-80",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "छत्रपती संभाजीनगर"
+    ],
+    "name": "योगेश भास्करराव रोडे",
+    "email": "rode.yogesh199@gmail.com",
+    "phone": "9403200606",
+    "is_active": true,
+    "display_order": 79,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "030e353f-816b-486f-af86-2f15f8ed99b3",
+    "source_id": "row-81",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "छत्रपती संभाजीनगर"
+    ],
+    "name": "अक्षय चंद्रकांत लंबे",
+    "email": "aclambeoffice@gmail.com",
+    "phone": "7350691680",
+    "is_active": true,
+    "display_order": 80,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6be8183b-b0be-4d57-82e9-6178018aca84",
+    "source_id": "row-82",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "districtManager",
+    "districts": [
+      "बीड"
+    ],
+    "name": "विशाल अशोकराव जोशी",
+    "email": "vishaljoshi251@gmail.com",
+    "phone": "9421173251",
+    "is_active": true,
+    "display_order": 81,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c60b0380-e031-4c5b-9876-e661624273ee",
+    "source_id": "row-83",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "districtManager",
+    "districts": [
+      "यवतमाळ"
+    ],
+    "name": "परिक्षीत कमलकिशोर शर्मा",
+    "email": "parikshitsharma143@gmail.com",
+    "phone": "8087248674",
+    "is_active": true,
+    "display_order": 82,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "be76dbcf-b24a-44a4-afdd-66f84b413598",
+    "source_id": "row-84",
+    "division_mr": "नागपूर",
+    "division_en": "Nagpur",
+    "role": "sakhi",
+    "districts": [
+      "नागपूर"
+    ],
+    "name": "नितु आनंद वसाडकर",
+    "email": "nvasadkar@gmail.com",
+    "phone": "8956119837",
+    "is_active": true,
+    "display_order": 83,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "a520d6f0-6f90-45e2-a69e-0f4f007d2acf",
+    "source_id": "row-85",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "dataEntry",
+    "districts": [
+      "धुळे"
+    ],
+    "name": "विनोद विश्वेश्वर देशपांडे",
+    "email": "vinodoffice789@gmail.com",
+    "phone": "9403019099",
+    "is_active": true,
+    "display_order": 84,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c456147b-ef75-4c5c-a2d0-b5f6575a6d31",
+    "source_id": "row-86",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "divisionalManager",
+    "districts": [
+      "नाशिक"
+    ],
+    "name": "मंगेश अच्युत खाडीलकर",
+    "email": "khadilkarmangesh@gmail.com",
+    "phone": "9881699155",
+    "is_active": true,
+    "display_order": 85,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "1be35aff-2e4d-4a9e-9e0f-46a22451868e",
+    "source_id": "row-87",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "sakhi",
+    "districts": [
+      "छत्रपती संभाजीनगर"
+    ],
+    "name": "मंजु अतुल कुलकर्णी",
+    "email": "manju.a.kulkarni@gmail.com",
+    "phone": "9404593726",
+    "is_active": true,
+    "display_order": 86,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "572a9f40-c462-4d9c-b006-304e1815dd9d",
+    "source_id": "row-88",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "districtManager",
+    "districts": [
+      "जळगाव"
+    ],
+    "name": "राजेंद्र भगवानराव कानडे",
+    "email": "rajendrakanade16@gmail.com",
+    "phone": "8237657178",
+    "is_active": true,
+    "display_order": 87,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "e92e1800-1352-4f10-8339-91f53c94f708",
+    "source_id": "row-89",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "districtManager",
+    "districts": [
+      "बुलढाणा"
+    ],
+    "name": "जिग्नेश शैलेश कमानी",
+    "email": "jigneshkamani1993@gmail.com",
+    "phone": "8308998922",
+    "is_active": true,
+    "display_order": 88,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "872892d1-8045-4537-9b35-46a99845d2dc",
+    "source_id": "row-90",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "dataEntry",
+    "districts": [
+      "सांगली"
+    ],
+    "name": "शैलेंद्र शरद जहागिरदार",
+    "email": "jahagirdarshailendra@gmail.com",
+    "phone": "7972830757",
+    "is_active": true,
+    "display_order": 89,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "399e5998-577a-445e-8729-d8bb3a8cb667",
+    "source_id": "row-91",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "mitra",
+    "districts": [
+      "जळगाव"
+    ],
+    "name": "किरण सुरेश शिंपी",
+    "email": "kiranshimpi89@gmail.com",
+    "phone": "9604050630",
+    "is_active": true,
+    "display_order": 90,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6a5189f5-1a99-4ea6-aea3-c3e06aac6753",
+    "source_id": "row-92",
+    "division_mr": "पुणे",
+    "division_en": "Pune",
+    "role": "districtManager",
+    "districts": [
+      "कोल्हापूर"
+    ],
+    "name": "प्रशांत अरुण जोशी",
+    "email": "prashant3996@gmail.com",
+    "phone": "9822414375",
+    "is_active": true,
+    "display_order": 91,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c2038b08-ab5b-4f6c-956b-e0c1db8d1fae",
+    "source_id": "row-93",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "dataEntry",
+    "districts": [
+      "हिंगोली"
+    ],
+    "name": "दिगंबर भाऊदेव जोशी",
+    "email": "digjos170@gmail.com",
+    "phone": "9890559261",
+    "is_active": true,
+    "display_order": 92,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "1660efd9-eae7-483f-92d2-1cdc012d6a71",
+    "source_id": "row-94",
+    "division_mr": "कोंकण",
+    "division_en": "Konkan",
+    "role": "districtManager",
+    "districts": [
+      "मुंबई"
+    ],
+    "name": "राजेश गोपीचंद पवार",
+    "email": "amrut.mumbaicity@gmail.com",
+    "phone": "9892848348",
+    "is_active": true,
+    "display_order": 93,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "db256a95-96ac-430f-9245-8084b9c4e41e",
+    "source_id": "row-95",
+    "division_mr": "छत्रपती संभाजीनगर",
+    "division_en": "Chhatrapati Sambhajinagar",
+    "role": "mitra",
+    "districts": [
+      "लातूर"
+    ],
+    "name": "प्रशांत विजय कापसे",
+    "email": "prashantkapse27121997@gmail.com",
+    "phone": "9923878803",
+    "is_active": true,
+    "display_order": 94,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "daf0d345-0011-44c3-8fc2-99dc4254a7fa",
+    "source_id": "row-96",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "sakhi",
+    "districts": [
+      "नाशिक"
+    ],
+    "name": "हर्षाली प्रसाद पुराणिक",
+    "email": "harshumalwatkar09@gmail.com",
+    "phone": "7840969081",
+    "is_active": true,
+    "display_order": 95,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "82144a5d-022e-4915-a156-7835b30178c5",
+    "source_id": "row-97",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "dataEntry",
+    "districts": [
+      "यवतमाळ"
+    ],
+    "name": "कामेश दिलीप राखे",
+    "email": "kameshd.rakhe03@gmail.com",
+    "phone": "7020984512",
+    "is_active": true,
+    "display_order": 96,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "2504a0f0-5a34-4d90-a33e-76fa8cc25a7b",
+    "source_id": "row-98",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "sakhi",
+    "districts": [
+      "बुलढाणा"
+    ],
+    "name": "नम्रता प्रणव वाचपे",
+    "email": "namratawachpe@gmail.com",
+    "phone": "9356627306",
+    "is_active": true,
+    "display_order": 97,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c5625102-5fc6-4e0e-acdd-6415bc425d53",
+    "source_id": "row-99",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "districtManager",
+    "districts": [
+      "धुळे"
+    ],
+    "name": "हेमंत अरुण पाठक",
+    "email": "pathak.hemant3217@gmail.com",
+    "phone": "9822829555",
+    "is_active": true,
+    "display_order": 98,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "6cfcd717-c03e-453a-a537-f63e47accaea",
+    "source_id": "row-100",
+    "division_mr": "अमरावती",
+    "division_en": "Amravati",
+    "role": "dataEntry",
+    "districts": [
+      "बुलढाणा"
+    ],
+    "name": "नंदकिशोर मोतीराम मगर",
+    "email": "magarnandu93@gmail.com",
+    "phone": "9503698881",
+    "is_active": true,
+    "display_order": 99,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "c7b486a0-c2d4-4913-9779-25fc5e966d1b",
+    "source_id": "row-101",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "mitra",
+    "districts": [
+      "नंदुरबार"
+    ],
+    "name": "कार्तिकसिंग जीवनसिंग परदेशी",
+    "email": "kartikpardeshi18655@gmail.com",
+    "phone": "8308246201",
+    "is_active": true,
+    "display_order": 100,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "3784840a-cee2-4cfe-af6c-9dd609fe5594",
+    "source_id": "row-102",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "amrutMitra",
+    "districts": [
+      "नाशिक"
+    ],
+    "name": "अजिंक्य संजय कन्नाल",
+    "email": "ajinkyakannal@gmail.com",
+    "phone": "9665692676",
+    "is_active": true,
+    "display_order": 101,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "a8adcfdc-ec10-4b76-9259-fb94bf8e75cc",
+    "source_id": "row-103",
+    "division_mr": "नाशिक",
+    "division_en": "Nashik",
+    "role": "districtManager",
+    "districts": [
+      "नाशिक"
+    ],
+    "name": "दिपक हरिलाल गुप्ता",
+    "email": "journalist.guptadipak@gmail.com",
+    "phone": "9423476929",
+    "is_active": true,
+    "display_order": 102,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  }
+]

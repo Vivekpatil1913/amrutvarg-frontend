@@ -1,0 +1,40 @@
+[
+  {
+    "id": "eb8facbc-c875-4f42-83cb-3c9a31299e71",
+    "source_id": "test-dummy",
+    "title_mr": "चाचणी घोषणा (तात्पुरती)",
+    "title_en": "Test announcement (temporary)",
+    "desc_mr": "ही केवळ घोषणा-पट्टीची चाचणी करण्यासाठी तात्पुरती घोषणा आहे. दर ५ सेकंदांनी पुढील घोषणा दिसते.",
+    "desc_en": "This is a temporary announcement used only to test the announcement bar. The next announcement appears every 5 seconds.",
+    "link": null,
+    "link_label": null,
+    "date": "2026-10-13",
+    "until_date": null,
+    "status": "new",
+    "pinned": false,
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  },
+  {
+    "id": "cbd486e8-ca80-4b96-9d3f-c760aec7803e",
+    "source_id": "guidelines",
+    "title_mr": "मार्गदर्शक सूचना व परिपत्रके",
+    "title_en": "Guidelines & Circulars",
+    "desc_mr": "अमृत वर्गाच्या अधिकृत मार्गदर्शक सूचना किंवा PDF परिपत्रके अद्याप या संकेतस्थळावर प्रकाशित झालेली नाहीत. ती उपलब्ध झाल्यावर येथे दिली जातील.",
+    "desc_en": "Official Amrut Varg guidelines or PDF circulars have not yet been published on this website. They will be listed here once available.",
+    "link": null,
+    "link_label": null,
+    "date": null,
+    "until_date": null,
+    "status": "comingSoon",
+    "pinned": false,
+    "is_active": true,
+    "display_order": 1,
+    "created_at": "2026-10-13T13:16:28.721Z",
+    "updated_at": "2026-10-13T13:16:28.721Z",
+    "deleted_at": null
+  }
+]
