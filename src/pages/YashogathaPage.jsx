@@ -5,6 +5,8 @@ import Pager from '../components/Pager';
 import StoryCard from '../components/StoryCard';
 import { fetchStoryPage, STORIES_PAGE_SIZE } from '../services/stories';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useYashogatha } from '../data/useYashogatha';
+import { pick } from '../data/useHero';
 
 // All published success stories, paged on the server: each page of 8 cards is
 // requested from GET /api/stories. The page lives in the URL (?p=…) so Back
@@ -12,6 +14,13 @@ import { useLanguage } from '../i18n/LanguageContext';
 export default function YashogathaPage() {
   const { t, lang, num } = useLanguage();
   const y = t.yashogatha;
+  // Wording comes from the CMS when it is reachable, the bundle otherwise.
+  const cms = useYashogatha();
+  const badge = cms ? pick(cms.text, 'badge', lang) : y.badge;
+  const heading = cms ? pick(cms.text, 'title', lang) : y.title;
+  const lead = cms ? pick(cms.text, 'lead', lang) : y.lead;
+  const noStories = cms ? pick(cms.labels, 'no_stories', lang) : y.noStories;
+  const showDot = cms ? cms.text.eyebrow_dot !== false : true;
   const [params, setParams] = useSearchParams();
   const gridTop = useRef(null);
   const page = Math.max(1, Number.parseInt(params.get('p'), 10) || 1);
@@ -79,18 +88,18 @@ export default function YashogathaPage() {
         <nav className="crumbs" aria-label={y.breadcrumb}>
           <Link to="/">{t.nav.home}</Link>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{y.title}</span>
+          <span aria-current="page">{heading}</span>
         </nav>
 
         <header className="spage__head">
           <p className="eyebrow">
             <span className="eyebrow__dot" aria-hidden="true" />
-            {y.badge}
+            {badge}
           </p>
           <h1 id="spage-title" className="section__title">
-            {y.title}
+            {heading}
           </h1>
-          <p className="section__lead">{y.lead}</p>
+          <p className="section__lead">{lead}</p>
         </header>
 
         <p className="spage__count" aria-live="polite" ref={gridTop}>
@@ -133,7 +142,7 @@ export default function YashogathaPage() {
           </>
         ) : (
           <div className="sempty">
-            <p>{y.noStories}</p>
+            <p>{noStories}</p>
           </div>
         )}
       </div>

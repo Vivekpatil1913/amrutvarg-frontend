@@ -6,16 +6,24 @@ import StoryCover from '../components/StoryCover';
 import { STORY_CATEGORIES, getStory } from '../data/yashogathaStories';
 import { listedStories } from '../data/storyPaging';
 import { useLanguage } from '../i18n/LanguageContext';
-
-const STORIES_API = import.meta.env.VITE_STORIES_API || '/api/stories';
+import { useYashogatha } from '../data/useYashogatha';
+import { pick } from '../data/useHero';
+import { fetchStory } from '../services/stories';
 
 // One success story, looked up by its slug. Every story uses this page.
 export default function StoryPage() {
   const { slug } = useParams();
   const { t, lang } = useLanguage();
   const y = t.yashogatha;
-  // Start with the static story (instant render, covers all seeded stories).
-  // Then try the CMS API — this handles stories created only in the admin panel.
+  // Wording comes from the CMS when it is reachable, the bundle otherwise.
+  const cms = useYashogatha();
+  const listLabel = cms ? pick(cms.text, 'title', lang) : y.title;
+  const sampleTag = cms ? pick(cms.labels, 'sample_tag', lang) : y.sampleTag;
+  // A null note means an editor switched the disclaimer off.
+  const detailNote = cms ? (cms.detail_note ? pick(cms.detail_note, 'text', lang) : '') : y.detailNote;
+  // Start with the bundled story so the page renders at once, then replace it
+  // with the CMS record, which is what an editor actually manages. A story
+  // created only in the admin has no bundled version and arrives with the fetch.
   const [story, setStory] = useState(() => getStory(slug));
 
   const { state } = useLocation();
@@ -23,13 +31,12 @@ export default function StoryPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Reset to static when navigating between stories
+    // Back to the bundled story first, so navigating between stories never
+    // shows the previous one's body while the next is still loading.
     setStory(getStory(slug));
-    // Also try to fetch the CMS version (covers admin-created stories)
     const ctrl = new AbortController();
-    fetch(`${STORIES_API}/${slug}`, { signal: ctrl.signal })
-      .then(r => r.ok ? r.json() : Promise.reject())
-      .then(data => { if (data && data.slug) setStory(data); })
+    fetchStory(slug, ctrl.signal)
+      .then((data) => { if (data) setStory(data); })
       .catch(() => {});
     return () => ctrl.abort();
   }, [slug]);
@@ -56,7 +63,9 @@ export default function StoryPage() {
   const text = story[lang];
   const cat = STORY_CATEGORIES[story.category];
   // Previous / next move between the stories published in the listing only.
-  const index = listedStories.indexOf(story);
+  // Matched by slug, not by identity: a story loaded from the CMS is a
+  // different object from the bundled one with the same slug.
+  const index = listedStories.findIndex((s) => s.slug === story.slug);
   const prev = index > 0 ? listedStories[index - 1] : null;
   const next = index >= 0 ? listedStories[index + 1] : null;
   const s = y.sections;
@@ -68,7 +77,7 @@ export default function StoryPage() {
         <nav className="crumbs" aria-label={y.breadcrumb}>
           <Link to="/">{t.nav.home}</Link>
           <span aria-hidden="true">/</span>
-          <Link to={listUrl}>{y.title}</Link>
+          <Link to={listUrl}>{listLabel}</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{text.title}</span>
         </nav>
@@ -79,7 +88,7 @@ export default function StoryPage() {
               <Icon name={cat.icon} size={15} />
               {y.categories[story.category]}
             </span>
-            <span className="sstory__tag">{y.sampleTag}</span>
+            <span className="sstory__tag">{sampleTag}</span>
           </p>
           <h1 id="sstory-title" className="sstory__title">
             {text.title}
@@ -89,42 +98,69 @@ export default function StoryPage() {
 
         <StoryCover story={story} className="sstory__banner" eager />
 
-        <p className="snote snote--sm">
-          <Icon name="info" size={17} />
-          {y.detailNote}
-        </p>
+        {/* Empty when an editor switched the disclaimer off. */}
+        {detailNote ? (
+          <p className="snote snote--sm">
+            <Icon name="info" size={17} />
+            {detailNote}
+          </p>
+        ) : null}
 
+        {/* A part an editor has not written yet is left out altogether, rather
+            than printing its heading above nothing. */}
         <article className="sstory__body">
-          <h2>{s.intro}</h2>
-          <p>{text.intro}</p>
+          {text.intro ? (
+            <>
+              <h2>{s.intro}</h2>
+              <p>{text.intro}</p>
+            </>
+          ) : null}
 
-          <h2>{s.challenge}</h2>
-          <p>{text.challenge}</p>
+          {text.challenge ? (
+            <>
+              <h2>{s.challenge}</h2>
+              <p>{text.challenge}</p>
+            </>
+          ) : null}
 
-          <h2>{s.journey}</h2>
-          {text.journey.map((para, i) => (
-            <p key={`j-${i}`}>{para}</p>
-          ))}
-
-          <h2>{s.change}</h2>
-          {text.change.map((para, i) => (
-            <p key={`c-${i}`}>{para}</p>
-          ))}
-
-          <div className="sstory__lessons">
-            <h2>{s.lessons}</h2>
-            <ul>
-              {text.lessons.map((item, i) => (
-                <li key={`l-${i}`}>
-                  <Icon name="checkCircle" size={18} />
-                  {item}
-                </li>
+          {text.journey.length ? (
+            <>
+              <h2>{s.journey}</h2>
+              {text.journey.map((para, i) => (
+                <p key={`j-${i}`}>{para}</p>
               ))}
-            </ul>
-          </div>
+            </>
+          ) : null}
 
-          <h2>{s.conclusion}</h2>
-          <p>{text.conclusion}</p>
+          {text.change.length ? (
+            <>
+              <h2>{s.change}</h2>
+              {text.change.map((para, i) => (
+                <p key={`c-${i}`}>{para}</p>
+              ))}
+            </>
+          ) : null}
+
+          {text.lessons.length ? (
+            <div className="sstory__lessons">
+              <h2>{s.lessons}</h2>
+              <ul>
+                {text.lessons.map((item, i) => (
+                  <li key={`l-${i}`}>
+                    <Icon name="checkCircle" size={18} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {text.conclusion ? (
+            <>
+              <h2>{s.conclusion}</h2>
+              <p>{text.conclusion}</p>
+            </>
+          ) : null}
         </article>
 
         <nav className="sstory__nav" aria-label={y.storyNav}>

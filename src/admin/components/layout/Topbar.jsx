@@ -3,23 +3,37 @@ import { PanelLeftClose, PanelLeftOpen, ExternalLink, UserCircle, LogOut, Menu, 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 
+// Breadcrumb trail per route: the sidebar group it sits under, then the page.
+// Routes added after this map was written fell through to "Admin", which is why
+// the trail read "Admin / Admin" on the newer screens.
 const ROUTE_LABELS = {
-  "/admin/dashboard": "Dashboard",
-  "/admin/announcements": "Announcements",
-  "/admin/stories": "Yashogatha Stories",
-  "/admin/vargs": "Amrut Vargs",
-  "/admin/contacts": "District Contacts",
-  "/admin/media": "Media Library",
-  "/admin/submissions": "Form Submissions",
-  "/admin/settings": "Website Settings",
-  "/admin/profile": "My Profile",
+  "/admin/dashboard": ["Overview", "Dashboard"],
+  "/admin/hero": ["Website", "Amrut Varg Hero"],
+  "/admin/about": ["Website", "About Section"],
+  "/admin/activities": ["Website", "Activities Section"],
+  "/admin/session": ["Website", "Session Section"],
+  "/admin/yashogatha": ["Website", "Yashogatha"],
+  "/admin/forms": ["Website", "Forms"],
+  "/admin/masters/states": ["Master Management", "State Master"],
+  "/admin/masters/vibhags": ["Master Management", "Vibhag Master"],
+  "/admin/masters/districts": ["Master Management", "District Master"],
+  "/admin/masters/talukas": ["Master Management", "Taluka Master"],
+  "/admin/announcements": ["Content", "Announcements"],
+  "/admin/stories": ["Content", "Yashogatha Stories"],
+  "/admin/vargs": ["Website", "Amrut Varg Section"],
+  "/admin/contacts": ["Content", "District Contacts"],
+  "/admin/media": ["Content", "Media Library"],
+  "/admin/submissions": ["Operations", "Form Submissions"],
+  "/admin/settings": ["Operations", "Website Settings"],
+  "/admin/profile": ["Account", "My Profile"],
 };
 
-function getLabel(pathname) {
-  for (const [path, label] of Object.entries(ROUTE_LABELS)) {
-    if (pathname === path || pathname.startsWith(path + "/")) return label;
-  }
-  return "Admin";
+// Longest path first, so /admin/masters/states is not shadowed by a prefix.
+function getTrail(pathname) {
+  const match = Object.keys(ROUTE_LABELS)
+    .sort((a, b) => b.length - a.length)
+    .find((path) => pathname === path || pathname.startsWith(path + "/"));
+  return match ? ROUTE_LABELS[match] : [null, "Admin"];
 }
 
 function initials(name = "") {
@@ -91,7 +105,7 @@ function ProfileDropdown({ user, logout }) {
 export function Topbar({ collapsed, onToggle, onMobileMenu }) {
   const location = useLocation();
   const { user, logout } = useAdminAuth();
-  const pageLabel = getLabel(location.pathname);
+  const [group, pageLabel] = getTrail(location.pathname);
 
   return (
     <header className="a-topbar">

@@ -18,12 +18,30 @@ import { AdminLayout } from './admin/components/layout/AdminLayout.jsx';
 import './admin/styles/admin.css';
 const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
 const Dashboard = lazy(() => import('./admin/pages/Dashboard.jsx'));
-const HeroSection = lazy(() => import('./admin/pages/HeroSection.jsx'));
+const HeroList = lazy(() => import('./admin/pages/HeroList.jsx'));
+const HeroForm = lazy(() => import('./admin/pages/HeroForm.jsx'));
+const HeroView = lazy(() => import('./admin/pages/HeroView.jsx'));
+const AboutList = lazy(() => import('./admin/pages/AboutList.jsx'));
+const AboutForm = lazy(() => import('./admin/pages/AboutForm.jsx'));
+const AboutView = lazy(() => import('./admin/pages/AboutView.jsx'));
+const ActivitiesList = lazy(() => import('./admin/pages/ActivitiesList.jsx'));
+const ActivitiesForm = lazy(() => import('./admin/pages/ActivitiesForm.jsx'));
+const ActivitiesView = lazy(() => import('./admin/pages/ActivitiesView.jsx'));
+const SessionList = lazy(() => import('./admin/pages/SessionList.jsx'));
+const SessionForm = lazy(() => import('./admin/pages/SessionForm.jsx'));
+const SessionView = lazy(() => import('./admin/pages/SessionView.jsx'));
+const YashogathaList = lazy(() => import('./admin/pages/YashogathaList.jsx'));
+const YashogathaForm = lazy(() => import('./admin/pages/YashogathaForm.jsx'));
+const YashogathaStoryForm = lazy(() => import('./admin/pages/YashogathaStoryForm.jsx'));
+const YashogathaStoryView = lazy(() => import('./admin/pages/YashogathaStoryView.jsx'));
+const YashogathaView = lazy(() => import('./admin/pages/YashogathaView.jsx'));
 const FormsAdmin = lazy(() => import('./admin/pages/Forms.jsx'));
 const Masters = lazy(() => import('./admin/pages/Masters.jsx'));
 const Announcements = lazy(() => import('./admin/pages/Announcements.jsx'));
-const Stories = lazy(() => import('./admin/pages/Stories.jsx'));
-const Vargs = lazy(() => import('./admin/pages/Vargs.jsx'));
+const VargsList = lazy(() => import('./admin/pages/VargsList.jsx'));
+const VargsSectionForm = lazy(() => import('./admin/pages/VargsSectionForm.jsx'));
+const VargForm = lazy(() => import('./admin/pages/VargForm.jsx'));
+const VargView = lazy(() => import('./admin/pages/VargView.jsx'));
 const Contacts = lazy(() => import('./admin/pages/Contacts.jsx'));
 const Submissions = lazy(() => import('./admin/pages/Submissions.jsx'));
 const SubmissionDetail = lazy(() => import('./admin/pages/SubmissionDetail.jsx'));
@@ -78,15 +96,36 @@ function AdminRoutes() {
         <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/hero" element={<HeroSection />} />
+          <Route path="/admin/hero" element={<HeroList />} />
+          <Route path="/admin/hero/edit" element={<HeroForm />} />
+          <Route path="/admin/hero/view" element={<HeroView />} />
+          <Route path="/admin/about" element={<AboutList />} />
+          <Route path="/admin/about/edit" element={<AboutForm />} />
+          <Route path="/admin/about/view" element={<AboutView />} />
+          <Route path="/admin/activities" element={<ActivitiesList />} />
+          <Route path="/admin/activities/edit" element={<ActivitiesForm />} />
+          <Route path="/admin/activities/view" element={<ActivitiesView />} />
+          <Route path="/admin/session" element={<SessionList />} />
+          <Route path="/admin/session/edit" element={<SessionForm />} />
+          <Route path="/admin/session/view" element={<SessionView />} />
+          <Route path="/admin/yashogatha" element={<YashogathaList />} />
+          <Route path="/admin/yashogatha/settings" element={<YashogathaForm />} />
+          <Route path="/admin/yashogatha/view" element={<YashogathaView />} />
+          <Route path="/admin/yashogatha/new" element={<YashogathaStoryForm />} />
+          <Route path="/admin/yashogatha/:id/edit" element={<YashogathaStoryForm />} />
+          <Route path="/admin/yashogatha/:id" element={<YashogathaStoryView />} />
           <Route path="/admin/forms" element={<FormsAdmin />} />
           <Route path="/admin/masters/states" element={<Masters master="states" />} />
           <Route path="/admin/masters/vibhags" element={<Masters master="vibhags" />} />
           <Route path="/admin/masters/districts" element={<Masters master="districts" />} />
           <Route path="/admin/masters/talukas" element={<Masters master="talukas" />} />
           <Route path="/admin/announcements" element={<Announcements />} />
-          <Route path="/admin/stories" element={<Stories />} />
-          <Route path="/admin/vargs" element={<Vargs />} />
+          <Route path="/admin/stories" element={<Navigate to="/admin/yashogatha" replace />} />
+          <Route path="/admin/vargs" element={<VargsList />} />
+          <Route path="/admin/vargs/settings" element={<VargsSectionForm />} />
+          <Route path="/admin/vargs/new" element={<VargForm />} />
+          <Route path="/admin/vargs/:id/edit" element={<VargForm />} />
+          <Route path="/admin/vargs/:id" element={<VargView />} />
           <Route path="/admin/contacts" element={<Contacts />} />
           <Route path="/admin/submissions" element={<Submissions />} />
           <Route path="/admin/submissions/:id" element={<SubmissionDetail />} />

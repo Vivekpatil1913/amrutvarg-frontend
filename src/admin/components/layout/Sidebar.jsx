@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Megaphone, BookOpen, Users, Settings,
   FileText, Image, ChevronRight, LogOut, Sparkles, LayoutTemplate,
-  Landmark, Map, MapPinned, Milestone,
+  Landmark, Map, MapPin, MapPinned, Milestone, Info, Activity, Clock, Quote,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 
@@ -17,6 +17,11 @@ const NAV_GROUPS = [
     label: "Website",
     items: [
       { to: "/admin/hero", icon: LayoutTemplate, label: "Amrut Varg Hero" },
+      { to: "/admin/about", icon: Info, label: "About Section" },
+      { to: "/admin/activities", icon: Activity, label: "Activities Section" },
+      { to: "/admin/session", icon: Clock, label: "Session Section" },
+      { to: "/admin/yashogatha", icon: BookOpen, label: "Yashogatha" },
+      { to: "/admin/vargs", icon: MapPin, label: "Amrut Varg Section" },
       // Forms is hidden from the menu; /admin/forms still resolves if opened directly.
     ],
   },
@@ -33,7 +38,7 @@ const NAV_GROUPS = [
     label: "Content",
     items: [
       { to: "/admin/announcements", icon: Megaphone, label: "Announcements" },
-      { to: "/admin/stories", icon: BookOpen, label: "Yashogatha Stories" },
+      // Yashogatha Stories is reached through Website > Yashogatha; /admin/stories still resolves.
       // Amrut Vargs is hidden from the menu; /admin/vargs still resolves directly.
       { to: "/admin/contacts", icon: Users, label: "District Contacts" },
       { to: "/admin/media", icon: Image, label: "Media Library" },

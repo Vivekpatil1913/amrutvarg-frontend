@@ -24,7 +24,7 @@ export default function Dashboard() {
 
   const TILES = [
     { label: "Active Announcements", value: stats?.activeAnnouncements, icon: Megaphone, to: "/admin/announcements", color: "#1d4ed8" },
-    { label: "Published Stories", value: stats?.publishedStories, icon: BookOpen, to: "/admin/stories", color: "#16a34a" },
+    { label: "Published Stories", value: stats?.publishedStories, icon: BookOpen, to: "/admin/yashogatha", color: "#16a34a" },
     { label: "Active Vargs", value: stats?.activeVargs, icon: MapPin, to: "/admin/vargs", color: "#b45309" },
     { label: "Team Contacts", value: stats?.teamContacts, icon: Users, to: "/admin/contacts", color: "#7c3aed" },
     { label: "New Submissions", value: stats?.newSubmissions, icon: FileText, to: "/admin/submissions", color: "#dc2626" },

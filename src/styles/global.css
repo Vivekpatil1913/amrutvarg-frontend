@@ -2468,6 +2468,11 @@ select.input {
     top: calc(var(--header-h) + 16px);
   }
 }
+  /* The atlas can be switched off in the CMS; the results then take the row. */
+  .explorer--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
 
 /* Schematic division explorer */
 .atlas {

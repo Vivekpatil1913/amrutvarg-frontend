@@ -20,6 +20,22 @@ export default function StoryCover({ story, className = '', eager = false }) {
   const cat = STORY_CATEGORIES[story.category] || STORY_CATEGORIES.personality;
   const photo = story.image && PHOTOS[story.image];
 
+  // A photograph uploaded in the admin wins over the bundled programme photo,
+  // which in turn wins over the illustrated motif below.
+  const uploaded = story.image_url || story.imageUrl;
+  if (uploaded) {
+    return (
+      <div className={`scover ${className}`}>
+        <img
+          src={uploaded}
+          alt=""
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      </div>
+    );
+  }
+
   if (photo) {
     return (
       <div className={`scover ${className}`}>

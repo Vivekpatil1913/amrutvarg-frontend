@@ -13,7 +13,9 @@ const GAP = 4;
 
 export const toneColor = (tone) => `hsl(22 72% ${36 + tone * 7}%)`;
 
-export default function DivisionWheel({ divisions, total, selected, onSelect }) {
+// `allLabel` is the ring's centre when no division is picked; the section
+// passes the CMS wording and falls back to the bundled phrase.
+export default function DivisionWheel({ divisions, total, selected, onSelect, allLabel }) {
   const { t, num, division } = useLanguage();
   const v = t.vargs;
   const [hover, setHover] = useState('');
@@ -68,7 +70,7 @@ export default function DivisionWheel({ divisions, total, selected, onSelect }) 
         >
           <span key={focus || 'all'} className="wheel__center-inner">
             <span className="wheel__num">{num(focused ? focused.count : total)}</span>
-            <span className="wheel__cap">{focused ? division(focused.name) : v.allDivisions}</span>
+            <span className="wheel__cap">{focused ? division(focused.name) : allLabel || v.allDivisions}</span>
             {focused ? <span className="wheel__share">{v.share(num(focused.count), num(total))}</span> : null}
           </span>
         </button>
