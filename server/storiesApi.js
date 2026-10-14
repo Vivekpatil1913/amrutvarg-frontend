@@ -6,7 +6,7 @@
 // Filtering, search and paging happen here, so the browser downloads one page
 // of card summaries at a time. Served by the Vite dev and preview servers (see
 // vite.config.js); a production host must serve the same route (or proxy it
-// to the backend) — see VITE_STORIES_API in .env.example.
+// to the backend) — see VITE_STORIES_API in .env.
 
 import { paginateStories } from '../src/data/storyPaging.js';
 

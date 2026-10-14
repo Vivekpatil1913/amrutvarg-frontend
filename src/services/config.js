@@ -1,4 +1,4 @@
-// Environment-specific settings for the AMRUT VARG service (see .env.example).
+// Environment-specific settings for the AMRUT VARG service (see .env).
 
 // Base URL of the AMRUT VARG service — the same backend the live portal uses.
 export const API_BASE = import.meta.env.VITE_API_BASE || 'https://d1n58pfwi63jf3.cloudfront.net';
