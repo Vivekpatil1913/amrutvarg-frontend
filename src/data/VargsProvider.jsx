@@ -6,16 +6,14 @@ import { vargs as snapshot, VARGS_SNAPSHOT_DATE } from './vargs';
 
 // The active Amrut Varg list, shared by every page.
 //
-// The bundled snapshot is shown first, so the site never waits on the network
-// or goes blank. With VITE_ENABLE_LIVE_CONTENT=true the latest published list
-// is then read from the AMRUT VARG service and replaces it; if that fails the
-// snapshot stays, labelled with its own date.
-//
 //   vargs   — approved records only
 //   asOf    — ISO date the list reflects
-//   status  — 'snapshot' (live reading off) | 'loading' | 'live' | 'error'
+//   status  — 'snapshot' | 'loading' | 'live' | 'error'
+//
+// Data priority: CMS local API → external portal (LIVE_CONTENT) → static snapshot.
 
 const VargsContext = createContext(null);
+const CMS_API = import.meta.env.VITE_CMS_API;
 
 const today = () => {
   const d = new Date();
@@ -26,17 +24,36 @@ export function VargsProvider({ children }) {
   const [state, setState] = useState({
     vargs: snapshot,
     asOf: VARGS_SNAPSHOT_DATE,
-    status: LIVE_CONTENT ? 'loading' : 'snapshot',
+    status: 'loading',
   });
 
   useEffect(() => {
-    if (!LIVE_CONTENT) return undefined;
     const ctrl = new AbortController();
-    fetchActiveVargs(ctrl.signal)
-      .then((list) => setState({ vargs: list, asOf: today(), status: 'live' }))
+
+    // 1. Try the local CMS API first
+    fetch(`${CMS_API}/public/vargs`, { signal: ctrl.signal })
+      .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+      .then(({ data }) => {
+        if (Array.isArray(data) && data.length) {
+          setState({ vargs: data, asOf: today(), status: 'live' });
+          return;
+        }
+        throw new Error('empty');
+      })
       .catch(() => {
-        if (!ctrl.signal.aborted) setState((s) => ({ ...s, status: 'error' }));
+        if (ctrl.signal.aborted) return;
+        // 2. Fall back to external portal if enabled
+        if (LIVE_CONTENT) {
+          fetchActiveVargs(ctrl.signal)
+            .then(list => setState({ vargs: list, asOf: today(), status: 'live' }))
+            .catch(() => {
+              if (!ctrl.signal.aborted) setState(s => ({ ...s, status: 'error' }));
+            });
+        } else {
+          setState(s => ({ ...s, status: 'snapshot' }));
+        }
       });
+
     return () => ctrl.abort();
   }, []);
 

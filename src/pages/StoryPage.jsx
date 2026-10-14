@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
@@ -7,19 +7,31 @@ import { STORY_CATEGORIES, getStory } from '../data/yashogathaStories';
 import { listedStories } from '../data/storyPaging';
 import { useLanguage } from '../i18n/LanguageContext';
 
+const STORIES_API = import.meta.env.VITE_STORIES_API || '/api/stories';
+
 // One success story, looked up by its slug. Every story uses this page.
 export default function StoryPage() {
   const { slug } = useParams();
   const { t, lang } = useLanguage();
   const y = t.yashogatha;
-  const story = getStory(slug);
-  // Opened from the listing, "back" returns to the same page and filters
-  // (passed as ?c=…&q=…&p=…); otherwise it opens the listing's first page.
+  // Start with the static story (instant render, covers all seeded stories).
+  // Then try the CMS API — this handles stories created only in the admin panel.
+  const [story, setStory] = useState(() => getStory(slug));
+
   const { state } = useLocation();
   const listUrl = `/yashogatha${typeof state?.list === 'string' && state.list.startsWith('?') ? state.list : ''}`;
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Reset to static when navigating between stories
+    setStory(getStory(slug));
+    // Also try to fetch the CMS version (covers admin-created stories)
+    const ctrl = new AbortController();
+    fetch(`${STORIES_API}/${slug}`, { signal: ctrl.signal })
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(data => { if (data && data.slug) setStory(data); })
+      .catch(() => {});
+    return () => ctrl.abort();
   }, [slug]);
 
   if (!story) {

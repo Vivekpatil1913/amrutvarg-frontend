@@ -1,8 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Icon from '../Icon';
 import Modal from '../Modal';
-import { activeAnnouncements } from '../../data/announcements';
+import { activeAnnouncements, announcements as staticAnnouncements } from '../../data/announcements';
 import { useLanguage } from '../../i18n/LanguageContext';
+
+const CMS_API = import.meta.env.VITE_CMS_API;
 
 // Time each announcement stays in the strip before the next one.
 const ROTATE_MS = 5000;
@@ -91,7 +93,17 @@ const reducedMotionQuery = () => window.matchMedia?.('(prefers-reduced-motion: r
 export default function Announcements() {
   const { t, num } = useLanguage();
   const a = t.announcements;
-  const items = activeAnnouncements();
+  const [rawList, setRawList] = useState(staticAnnouncements);
+
+  useEffect(() => {
+    if (!CMS_API) return;
+    fetch(`${CMS_API}/public/announcements`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(({ data }) => { if (Array.isArray(data) && data.length) setRawList(data); })
+      .catch(() => {});
+  }, []);
+
+  const items = activeAnnouncements(rawList);
   const count = items.length;
   const [open, setOpen] = useState(false);
   const [focusId, setFocusId] = useState(null);

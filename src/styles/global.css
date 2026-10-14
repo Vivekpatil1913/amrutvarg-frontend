@@ -551,10 +551,13 @@ select.input {
   box-shadow: 0 8px 24px -20px hsl(22 50% 25% / 0.5);
 }
 .site-header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: var(--s-4);
+  gap: var(--s-2);
+  padding-inline: clamp(8px, 1.5vw, 16px);
   height: var(--header-h);
+  min-width: 0;
 }
 .brand {
   display: flex;
@@ -583,7 +586,10 @@ select.input {
 
 /* Pill navigation: links sit in one soft capsule; a pill slides to the active link */
 .nav {
-  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
 }
 .nav__list {
   position: relative;
@@ -639,6 +645,8 @@ select.input {
   display: flex;
   align-items: center;
   gap: var(--s-2);
+  flex-shrink: 0;
+  justify-content: flex-end;
 }
 .site-header__cta {
   min-height: 36px;
@@ -746,6 +754,9 @@ select.input {
   font-weight: 500;
 }
 @media (max-width: 1199px) {
+  .site-header__inner {
+    grid-template-columns: auto auto;
+  }
   .nav,
   .site-header__cta {
     display: none;
@@ -768,11 +779,14 @@ select.input {
     display: none;
   }
   .nav__link {
-    padding-inline: 10px;
+    padding-inline: 9px;
+  }
+  .lang-en .nav__list {
+    gap: 0;
   }
   .lang-en .nav__link {
-    padding-inline: 7px;
-    font-size: 0.82rem;
+    padding-inline: 5px;
+    font-size: 0.78rem;
   }
 }
 /* English nav labels are longer; the logo alone carries the brand there. */
@@ -780,6 +794,15 @@ select.input {
   .lang-en .brand__divider,
   .lang-en .brand__name {
     display: none;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1699px) {
+  .lang-en .nav__list {
+    gap: 0;
+  }
+  .lang-en .nav__link {
+    padding-inline: 7px;
+    font-size: 0.81rem;
   }
 }
 @media (max-width: 480px) {
