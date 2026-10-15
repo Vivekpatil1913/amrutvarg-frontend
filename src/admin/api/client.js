@@ -8,14 +8,15 @@ export function clearToken() { _token = null; localStorage.removeItem("av_admin_
 
 async function request(method, path, body, opts = {}) {
   const token = getToken();
-  const headers = { "Content-Type": "application/json" };
+  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+  const headers = isFormData ? {} : { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
   const res = await fetch(`${BASE}${path}`, {
     method,
     headers,
     credentials: "include",
-    body: body != null ? JSON.stringify(body) : undefined,
+    body: body == null ? undefined : isFormData ? body : JSON.stringify(body),
     ...opts,
   });
 
@@ -36,9 +37,9 @@ async function request(method, path, body, opts = {}) {
 export const api = {
   get: (path) => request("GET", path),
   post: (path, body) => request("POST", path, body),
-  put: (path, body) => request("PUT", path, body),
-  patch: (path, body) => request("PATCH", path, body),
-  del: (path) => request("DELETE", path),
+  put: (path, body, opts) => request("PUT", path, body, opts),
+  patch: (path, body, opts) => request("PATCH", path, body, opts),
+  del: (path, opts) => request("DELETE", path, undefined, opts),
 
   // Multipart upload
   upload: async (path, formData) => {

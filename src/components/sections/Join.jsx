@@ -1,100 +1,170 @@
 import Icon from '../Icon';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { OFFICIAL_LINKS } from '../../i18n/translations';
+import { useJoin } from '../../data/useJoin';
+import { pick } from '../../data/useHero';
 
 // The three registration routes: student (via the class list — the student
-// form belongs to a chosen Varg), organiser and Amrut Varg Leader. The organiser and leader cards carry the
-// `organizer` / `leader` anchors used by the navigation.
-const META = {
-  participant: { icon: 'graduation', id: 'participant' },
-  organizer: { icon: 'flag', id: 'organizer' },
-  leader: { icon: 'award', id: 'leader' },
-};
+// form belongs to a chosen Varg), organiser and Amrut Varg Leader.
+//
+// Content comes from the CMS when it is reachable and falls back to the bundled
+// translations otherwise, so the section always renders something complete.
+//
+// `action` decides which flow a card's button opens. It is an enum, not free
+// text: every value is wired to a handler here, so a card can never carry a
+// button that does nothing.
+//
+// It also maps to the slug the anchor links and the per-card styling already
+// use (#participant, .path--participant), which is why the map is kept rather
+// than deriving the slug from the action name.
+const SLUGS = { varg: 'participant', organizer: 'organizer', leader: 'leader' };
+
+// React key for a card. Deliberately derived from the slug and position rather
+// than the record id: the bundled fallback renders first and the CMS copy swaps
+// in a moment later, and a key that changed between the two would make React
+// replace the <li> instead of updating it. The replacement is a fresh node, so
+// the reveal attribute and the header's scroll-spy observer — both bound to the
+// element that existed at mount — would quietly stop applying to it.
+const cardKey = (card, i) => `${SLUGS[card.action]}-${i}`;
+
+// Shape of the bundled fallback, kept in the same field order the CMS sends so
+// the two render through one code path.
+function bundled(t) {
+  const j = t.join;
+  const chips = (labels) => labels.map((label, n) => ({ id: `need-${n}`, label }));
+  return [
+    {
+      key: 'participant', action: 'varg', icon: 'graduation', actionIcon: 'graduation',
+      title: j.paths[0].title, desc: j.paths[0].desc,
+      needs: chips([t.student.fullName, t.student.mobile, t.student.dob, t.student.parentName, t.student.address]),
+      note: j.paths[0].note, linkNote: '', linkLabel: '', linkUrl: '',
+      actionLabel: j.paths[0].action,
+    },
+    {
+      key: 'organizer', action: 'organizer', icon: 'flag', actionIcon: 'userPlus',
+      title: j.paths[1].title, desc: t.organizer.desc,
+      needs: chips([t.organizer.name, t.organizer.place, t.organizer.mobile, t.organizer.designation, t.organizer.district]),
+      note: '', linkNote: '', linkLabel: '', linkUrl: '',
+      actionLabel: j.paths[1].action,
+    },
+    {
+      key: 'leader', action: 'leader', icon: 'award', actionIcon: 'userPlus',
+      title: j.paths[2].title, desc: t.leader.desc,
+      needs: [],
+      note: '',
+      linkNote: t.leader.listEmpty, linkLabel: t.preview.openPortal, linkUrl: OFFICIAL_LINKS.portal,
+      actionLabel: t.leader.registerButton,
+    },
+  ];
+}
 
 export default function Join({ onFindVarg, onOrganizer, onLeader }) {
-  const { t, num } = useLanguage();
+  const { t, num, lang } = useLanguage();
   const j = t.join;
-  const actions = { participant: onFindVarg, organizer: onOrganizer, leader: onLeader };
-  const labels = {
-    participant: { text: j.paths[0].action, icon: 'graduation' },
-    organizer: { text: j.paths[1].action, icon: 'userPlus' },
-    leader: { text: t.leader.registerButton, icon: 'userPlus' },
-  };
-  const descs = { participant: j.paths[0].desc, organizer: t.organizer.desc, leader: t.leader.desc };
-  // Required fields of each form, taken from the form definitions themselves.
-  const needs = {
-    participant: [t.student.fullName, t.student.mobile, t.student.dob, t.student.parentName, t.student.address],
-    organizer: [t.organizer.name, t.organizer.place, t.organizer.mobile, t.organizer.designation, t.organizer.district],
-  };
+  const cms = useJoin();
+  const handlers = { varg: onFindVarg, organizer: onOrganizer, leader: onLeader };
+
+  const cards = cms
+    ? cms.cards.map((card) => ({
+        key: card.id,
+        action: card.action,
+        icon: card.icon,
+        actionIcon: card.action_icon,
+        title: pick(card, 'title', lang),
+        desc: pick(card, 'desc', lang),
+        needs: (card.needs ?? []).map((need) => ({ id: need.id, label: pick(need, 'label', lang) })),
+        note: pick(card, 'note', lang),
+        linkNote: pick(card, 'link_note', lang),
+        linkLabel: pick(card, 'link_label', lang),
+        linkUrl: card.link_url ?? '',
+        actionLabel: pick(card, 'action', lang),
+      }))
+    : bundled(t);
+
+  const badge = cms ? pick(cms.text, 'badge', lang) : j.badge;
+  const title = cms ? pick(cms.text, 'title', lang) : j.title;
+  const lead = cms ? pick(cms.text, 'lead', lang) : j.desc;
+  const needsLabel = cms ? pick(cms.text, 'needs_label', lang) : j.needs;
+  const showDot = cms ? cms.text.eyebrow_dot !== false : true;
 
   return (
     <section id="join" className="section join" aria-labelledby="join-title">
       <div className="container">
         <header className="section__head section__head--split" data-reveal>
           <div>
-            <p className="eyebrow">
-              <span className="eyebrow__dot" aria-hidden="true" />
-              {j.badge}
-            </p>
+            {badge ? (
+              <p className="eyebrow">
+                {showDot ? <span className="eyebrow__dot" aria-hidden="true" /> : null}
+                {badge}
+              </p>
+            ) : null}
             <h2 id="join-title" className="section__title">
-              {j.title}
+              {title}
             </h2>
           </div>
-          <p className="section__lead">{j.desc}</p>
+          {lead ? <p className="section__lead">{lead}</p> : null}
         </header>
 
-        <ol className="paths">
-          {j.paths.map((p, i) => (
-            <li key={p.key} id={META[p.key].id} className={`path path--${p.key}`} data-reveal style={{ '--d': i }}>
-              <div className="path__top">
-                <span className="path__icon">
-                  <Icon name={META[p.key].icon} size={22} />
-                </span>
-                <span className="path__step" aria-hidden="true">
-                  {num(`0${i + 1}`)}
-                </span>
-              </div>
-              <h3 className="path__title">{p.title}</h3>
-              <p className="path__desc">{descs[p.key]}</p>
-              {needs[p.key] ? (
-                <div className="path__needs">
-                  <p className="path__needs-label">{j.needs}</p>
-                  <ul className="path__chips">
-                    {needs[p.key].map((label, n) => (
-                      <li key={`${p.key}-need-${n}`}>{label}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              {p.note ? (
-                <p className="path__note path__note--light">
-                  <Icon name="info" size={15} />
-                  <span>{p.note}</span>
-                </p>
-              ) : null}
-              {p.key === 'leader' ? (
-                <p className="path__note path__note--light">
-                  <Icon name="info" size={15} />
-                  <span>
-                    {t.leader.listEmpty}{' '}
-                    <a href={OFFICIAL_LINKS.portal} target="_blank" rel="noopener noreferrer">
-                      {t.preview.openPortal}
-                      <span className="sr-only"> {t.common.opensNewTab}</span>
-                    </a>
-                  </span>
-                </p>
-              ) : null}
-              <button
-                type="button"
-                className="btn btn--primary path__action"
-                onClick={actions[p.key]}
+        {cards.length ? (
+          <ol className="paths">
+            {cards.map((card, i) => (
+              <li
+                key={cardKey(card, i)}
+                id={SLUGS[card.action]}
+                className={`path path--${SLUGS[card.action]}`}
+                data-reveal
+                style={{ '--d': i }}
               >
-                <Icon name={labels[p.key].icon} size={18} />
-                {labels[p.key].text}
-              </button>
-            </li>
-          ))}
-        </ol>
+                <div className="path__top">
+                  <span className="path__icon">
+                    <Icon name={card.icon} size={22} />
+                  </span>
+                  <span className="path__step" aria-hidden="true">
+                    {num(`0${i + 1}`)}
+                  </span>
+                </div>
+                <h3 className="path__title">{card.title}</h3>
+                {card.desc ? <p className="path__desc">{card.desc}</p> : null}
+                {card.needs.length ? (
+                  <div className="path__needs">
+                    {needsLabel ? <p className="path__needs-label">{needsLabel}</p> : null}
+                    <ul className="path__chips">
+                      {card.needs.map((need) => (
+                        <li key={`${card.key}-${need.id}`}>{need.label}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {card.note ? (
+                  <p className="path__note path__note--light">
+                    <Icon name="info" size={15} />
+                    <span>{card.note}</span>
+                  </p>
+                ) : null}
+                {card.linkUrl && card.linkLabel ? (
+                  <p className="path__note path__note--light">
+                    <Icon name="info" size={15} />
+                    <span>
+                      {card.linkNote ? `${card.linkNote} ` : null}
+                      <a href={card.linkUrl} target="_blank" rel="noopener noreferrer">
+                        {card.linkLabel}
+                        <span className="sr-only"> {t.common.opensNewTab}</span>
+                      </a>
+                    </span>
+                  </p>
+                ) : null}
+                <button
+                  type="button"
+                  className="btn btn--primary path__action"
+                  onClick={handlers[card.action]}
+                >
+                  <Icon name={card.actionIcon} size={18} />
+                  {card.actionLabel}
+                </button>
+              </li>
+            ))}
+          </ol>
+        ) : null}
       </div>
     </section>
   );

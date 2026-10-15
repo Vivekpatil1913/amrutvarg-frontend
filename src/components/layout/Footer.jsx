@@ -5,15 +5,36 @@ import logo from '../../assets/amrut-logo.png';
 import { NAV_ITEMS, useSectionNav } from './Header';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE } from '../../i18n/translations';
+import { useFooter } from '../../data/useFooter';
+import { pick } from '../../data/useHero';
+
+// Fallback names for the screen-reader label on a social icon, used when the
+// admin leaves the label blank — which is the normal case, since the icon is
+// the whole point.
+const PLATFORM_NAMES = {
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  twitter: 'X',
+  linkedin: 'LinkedIn',
+};
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const goTo = useSectionNav();
+  const cms = useFooter();
 
-  const official = [
-    { href: OFFICIAL_LINKS.portal, label: t.resources.items[0].title },
-    { href: OFFICIAL_LINKS.amrut, label: t.resources.items[1].title },
-  ];
+  const official = cms
+    ? cms.links.map((l) => ({ href: l.url, label: pick(l, 'title', lang) }))
+    : [
+        { href: OFFICIAL_LINKS.portal, label: t.resources.items[0].title },
+        { href: OFFICIAL_LINKS.amrut, label: t.resources.items[1].title },
+      ];
+
+  // Only profiles with an address reach the site, so this is already the list
+  // worth drawing.
+  const social = cms?.social ?? [];
+  const officialHeading = cms ? pick(cms.text, 'official_heading', lang) || t.footer.official : t.footer.official;
+  const socialHeading = cms ? pick(cms.text, 'social_heading', lang) : '';
 
   return (
     <footer className="footer">
@@ -58,20 +79,22 @@ export default function Footer() {
           </ul>
         </nav>
 
-        <div className="footer__col">
-          <h2 className="footer__heading">{t.footer.official}</h2>
-          <ul>
-            {official.map(({ href, label }) => (
-              <li key={href}>
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  {label}
-                  <Icon name="external" size={14} />
-                  <span className="sr-only">{t.common.opensNewTab}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {official.length ? (
+          <div className="footer__col">
+            <h2 className="footer__heading">{officialHeading}</h2>
+            <ul>
+              {official.map(({ href, label }) => (
+                <li key={href}>
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    {label}
+                    <Icon name="external" size={14} />
+                    <span className="sr-only">{t.common.opensNewTab}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         <div className="footer__col">
           <h2 className="footer__heading">{t.footer.contact}</h2>
@@ -80,6 +103,31 @@ export default function Footer() {
             <Icon name="phone" size={18} />
             {STATE_COORDINATOR_PHONE}
           </a>
+
+          {social.length ? (
+            <div className="footer__social-wrap">
+              {socialHeading ? <p className="footer__muted footer__social-heading">{socialHeading}</p> : null}
+              <ul className="footer__social">
+                {social.map((s) => {
+                  const name = pick(s, 'label', lang) || PLATFORM_NAMES[s.platform] || s.platform;
+                  return (
+                    <li key={s.id}>
+                      <a
+                        className="footer__social-link"
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer me"
+                        aria-label={name}
+                      >
+                        <Icon name={s.icon || (PLATFORM_NAMES[s.platform] ? s.platform : 'link')} size={18} />
+                        <span className="sr-only">{t.common.opensNewTab}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
         </div>
       </div>
 

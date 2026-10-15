@@ -3676,7 +3676,7 @@ a.desk__link:hover .desk__link-arrow {
 .footer__gov {
   margin-top: var(--s-2);
   font-weight: 600;
-  color: var(--night-ink);
+  color: hsl(30 80% 78%);
 }
 .footer__heading {
   margin-bottom: var(--s-2);
@@ -3719,6 +3719,24 @@ a.desk__link:hover .desk__link-arrow {
 .footer__muted {
   margin-bottom: 2px;
   font-size: 0.94rem;
+}
+.footer__social-heading {
+  color: hsl(30 80% 78%);
+  font-weight: 600;
+}
+.footer__social {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s-2);
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  color: hsl(30 80% 78%) !important;
 }
 .footer__phone {
   font-family: var(--font-display);

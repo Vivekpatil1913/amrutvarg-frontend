@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { PanelLeftClose, PanelLeftOpen, ExternalLink, UserCircle, LogOut, Menu, ChevronDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
+import { avatarSrc } from "../../avatar.js";
 
 // Breadcrumb trail per route: the sidebar group it sits under, then the page.
 // Routes added after this map was written fell through to "Admin", which is why
@@ -12,6 +13,8 @@ const ROUTE_LABELS = {
   "/admin/about": ["Website", "About Section"],
   "/admin/activities": ["Website", "Activities Section"],
   "/admin/session": ["Website", "Session Section"],
+  "/admin/join": ["Website", "Join Section"],
+  "/admin/directory": ["Website", "Directory Page"],
   "/admin/yashogatha": ["Website", "Yashogatha"],
   "/admin/forms": ["Website", "Forms"],
   "/admin/masters/states": ["Master Management", "State Master"],
@@ -40,6 +43,13 @@ function initials(name = "") {
   return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "A";
 }
 
+function Avatar({ user, style }) {
+  const src = avatarSrc(user?.avatarUrl);
+  return <div className="a-avatar" style={style}>
+    {src ? <img src={src} alt="" /> : initials(user?.name)}
+  </div>;
+}
+
 function ProfileDropdown({ user, logout }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -57,9 +67,7 @@ function ProfileDropdown({ user, logout }) {
     <div ref={ref} style={{ position: "relative" }}>
         {/* Avatar trigger */}
         <button className="a-profile-trigger" onClick={() => setOpen((v) => !v)}>
-          <div className="a-avatar" style={{ width: "2.25rem", height: "2.25rem", fontSize: "0.8125rem" }}>
-            {initials(user?.name)}
-          </div>
+          <Avatar user={user} style={{ width: "2.25rem", height: "2.25rem", fontSize: "0.8125rem" }} />
           <div className="a-profile-info">
             <span className="a-profile-name">{user?.name || "Admin"}</span>
             <span className="a-profile-role">{user?.role || "Admin"}</span>
@@ -72,9 +80,7 @@ function ProfileDropdown({ user, logout }) {
           <div className="a-profile-dropdown">
             {/* Header row */}
             <div className="a-pd-header">
-              <div className="a-avatar" style={{ width: "2.5rem", height: "2.5rem", fontSize: "0.875rem", flexShrink: 0 }}>
-                {initials(user?.name)}
-              </div>
+              <Avatar user={user} style={{ width: "2.5rem", height: "2.5rem", fontSize: "0.875rem", flexShrink: 0 }} />
               <div style={{ minWidth: 0 }}>
                 <div className="a-pd-name">{user?.name || "Admin"}</div>
                 <div className="a-pd-role">{user?.role || "Admin"}</div>

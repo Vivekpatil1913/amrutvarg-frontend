@@ -11,13 +11,20 @@ const CMS_API = import.meta.env.VITE_CMS_API || "http://localhost:4000/api/v1";
 const cache = new Map();
 const inFlight = new Map();
 
-function load(master, parentColumn, parentId, signal) {
+function load(master, parentColumn, parentId) {
   const key = parentId ? `${master}:${parentId}` : master;
   if (cache.has(key)) return Promise.resolve(cache.get(key));
   if (inFlight.has(key)) return inFlight.get(key);
 
   const qs = parentId ? `?${parentColumn}=${parentId}` : "";
-  const req = fetch(`${CMS_API}/public/masters/${master}${qs}`, { signal })
+  // Deliberately given no AbortSignal. This promise is shared by every dropdown
+  // asking for the same master, so letting one consumer cancel it cancels it
+  // for all of them: under StrictMode's mount → cleanup → mount, the first
+  // mount's abort killed the request and the second mount was handed that same
+  // already-rejected promise, leaving the field on "Loading…" for good. A
+  // consumer that no longer wants the answer ignores it via `ticket` below
+  // instead of cancelling shared work.
+  const req = fetch(`${CMS_API}/public/masters/${master}${qs}`)
     .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
     .then(({ data }) => {
       const rows = Array.isArray(data) ? data : [];
@@ -51,20 +58,20 @@ export function useGeo(master, parentColumn = null, parentId = null) {
     }
 
     const ticket = ++latest.current;
-    const ctrl = new AbortController();
+    let active = true;
     setState((s) => ({ ...s, loading: true, error: null }));
 
-    load(master, parentColumn, parentId, ctrl.signal)
+    load(master, parentColumn, parentId)
       .then((rows) => {
         // A slower earlier request must not overwrite a newer selection.
-        if (ticket === latest.current) setState({ rows, loading: false, error: null });
+        if (active && ticket === latest.current) setState({ rows, loading: false, error: null });
       })
       .catch((err) => {
-        if (err.name === "AbortError" || ticket !== latest.current) return;
+        if (!active || ticket !== latest.current) return;
         setState({ rows: [], loading: false, error: err.message || "Could not load" });
       });
 
-    return () => ctrl.abort();
+    return () => { active = false; };
   }, [master, parentColumn, parentId, attempt]);
 
   return { ...state, retry: () => setAttempt((a) => a + 1) };

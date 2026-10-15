@@ -183,6 +183,76 @@ const PATHS = {
       <path d="M7 15l1.5 4.5M17.5 9.5a3.5 3.5 0 0 1 0 5" />
     </>
   ),
+
+  // Social marks. Drawn in the same stroke style as the rest of the set so the
+  // footer row reads as one piece of artwork rather than four pasted logos.
+  facebook: <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />,
+  instagram: (
+    <>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      {/* A zero-length line with the svg's round linecap draws the lens dot. */}
+      <path d="M17.5 6.5h0" />
+    </>
+  ),
+  linkedin: (
+    <>
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-13h4v1.5A6 6 0 0 1 16 8z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
+    </>
+  ),
+  // The one filled mark in the set: the X glyph is built from thin diagonals,
+  // and outlining them at this stroke width doubles every edge into a muddle.
+  twitter: (
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M17.2 3h3.3l-7.2 8.2L21.8 21h-6.6l-5.2-6.6L4.1 21H.8l7.7-8.8L.4 3H7l4.7 6.1L17.2 3zm-1.2 16h1.8L6.1 4.9H4.2L16 19z"
+    />
+  ),
+  youtube: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="4" />
+      <path d="m10 9 5 3-5 3z" />
+    </>
+  ),
+  tiktok: <path d="M14 4v11.2a4 4 0 1 1-3-3.9M14 4c.6 3.2 2.5 5 5.5 5.3" />,
+  whatsapp: (
+    <>
+      <path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.5L3 20l.9-4.7a8.5 8.5 0 1 1 16.6-3.6z" />
+      <path d="M8.5 8.5c.5 3 2.2 4.8 5.2 5.8l1.2-1.2 2 1c-.3 1.5-1.4 2.1-2.7 2-3.4-.4-6.7-3.7-7-7.1-.1-1.3.5-2.4 2-2.7l1 2z" />
+    </>
+  ),
+  telegram: <path d="m22 3-7 18-4-7-7-4 18-7zM11 14 22 3" />,
+  pinterest: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m9 20 2.2-8.2M9.8 10.2c0-2.2 1.5-3.7 3.8-3.7 2 0 3.3 1.2 3.3 3 0 2.3-1.2 4.2-3 4.2-1 0-1.7-.8-1.5-1.8l.5-2" />
+    </>
+  ),
+  threads: <path d="M19.5 10.2c-.5-4.2-3-6.5-7.2-6.5-4.7 0-7.8 3.2-7.8 8.3 0 5.4 3 8.3 7.7 8.3 4 0 6.7-2.2 6.7-5.3 0-2.6-1.8-4.2-4.5-4.2-2.1 0-3.6 1-3.6 2.5 0 1.2.9 2 2.2 2 2.7 0 4.5-2.8 4.5-6.2" />,
+  discord: (
+    <>
+      <path d="M7 6.5a16 16 0 0 1 10 0l2.5 11a14 14 0 0 1-4 2l-1-1.5M9.5 18 8.5 19.5a14 14 0 0 1-4-2L7 6.5" />
+      <path d="M9 12h.01M15 12h.01" />
+    </>
+  ),
+  reddit: (
+    <>
+      <path d="M12 7.5 13 4l4 1" />
+      <circle cx="17.5" cy="5" r="1" />
+      <path d="M5 12c-2-1-3.5 2 .5 3.5.8 3 3.2 4.5 6.5 4.5s5.7-1.5 6.5-4.5c4-1.5 2.5-4.5.5-3.5" />
+      <path d="M8.5 14h.01M15.5 14h.01M9.5 17c1.5 1 3.5 1 5 0" />
+    </>
+  ),
+  link: (
+    <>
+      <path d="M10 13.5 8.5 15a4 4 0 0 1-5.5-5.8l3-3a4 4 0 0 1 5.7 0" />
+      <path d="m14 10.5 1.5-1.5A4 4 0 0 1 21 14.8l-3 3a4 4 0 0 1-5.7 0" />
+      <path d="m8.5 15 7-7" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 20, className, title }) {
@@ -202,7 +272,7 @@ export default function Icon({ name, size = 20, className, title }) {
       focusable="false"
     >
       {title ? <title>{title}</title> : null}
-      {PATHS[name]}
+      {PATHS[name] ?? PATHS.link}
     </svg>
   );
 }

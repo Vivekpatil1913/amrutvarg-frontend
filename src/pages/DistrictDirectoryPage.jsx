@@ -1,21 +1,18 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
 import Pager, { PAGE_SIZE } from '../components/Pager';
-import { CONTACT_ROLES, districtContacts as staticContacts } from '../data/districtContacts';
+import { CONTACT_ROLES } from '../data/districtContacts';
 import { DISTRICTS, DISTRICTS_BY_DIVISION, DIVISION_OF_DISTRICT } from '../data/districts';
-import { useMaster } from '../data/useMasters';
+import { useDistrictContacts } from '../data/useDistrictContacts';
+import { useDirectory, fill } from '../data/useDirectory';
+import { pick } from '../data/useHero';
 import { useLanguage } from '../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE, translations } from '../i18n/translations';
 
-const CMS_API = import.meta.env.VITE_CMS_API;
-
 const norm = (s) => (s || '').toLocaleLowerCase();
 const DIVISIONS = Object.keys(DISTRICTS_BY_DIVISION);
-
-// Role first, then district in the official order, so each grid reads the same way.
-const rank = (c) => CONTACT_ROLES.indexOf(c.roles[0]) * 100 + (c.districts.length ? DISTRICTS.indexOf(c.districts[0]) : -1);
 
 // First letters of the first name and the surname, as whole graphemes so
 // Marathi conjuncts stay intact.
@@ -30,9 +27,8 @@ const initials = (name) => {
     .join('');
 };
 
-function ContactCard({ c, featured }) {
-  const { t, num, district } = useLanguage();
-  const d = t.directory;
+function ContactCard({ c, featured, labels, roleLabel }) {
+  const { num, district } = useLanguage();
   return (
     <li className={`dcard${featured ? ' dcard--featured' : ''}`}>
       <div className="dcard__head">
@@ -44,7 +40,7 @@ function ContactCard({ c, featured }) {
           <p className="dcard__roles">
             {c.roles.map((r) => (
               <span key={r} className={`dcard__role dcard__role--${r}`}>
-                {d.roles[r]}
+                {roleLabel(r)}
               </span>
             ))}
           </p>
@@ -52,16 +48,16 @@ function ContactCard({ c, featured }) {
       </div>
       <p className="dcard__where">
         <Icon name="mapPin" size={14} />
-        {c.districts.length ? c.districts.map((n) => district(n)).join(', ') : d.wholeDivision}
+        {c.districts.length ? c.districts.map((n) => district(n)).join(', ') : labels.wholeDivision}
       </p>
       <div className="dcard__actions">
         {c.phone ? (
-          <a href={`tel:+91${c.phone}`} className="dcard__btn" aria-label={`${d.call}: ${c.name}, ${c.phone}`}>
+          <a href={`tel:+91${c.phone}`} className="dcard__btn" aria-label={`${labels.call}: ${c.name}, ${c.phone}`}>
             <Icon name="phone" size={15} />
             <span>{num(c.phone)}</span>
           </a>
         ) : null}
-        <a href={`mailto:${c.email}`} className="dcard__btn" aria-label={`${d.email}: ${c.name}, ${c.email}`}>
+        <a href={`mailto:${c.email}`} className="dcard__btn" aria-label={`${labels.email}: ${c.name}, ${c.email}`}>
           <Icon name="mail" size={15} />
           <span className="dcard__email">{c.email}</span>
         </a>
@@ -70,26 +66,23 @@ function ContactCard({ c, featured }) {
   );
 }
 
-// The Amrut Varg regional team, grouped by division with the divisional
-// manager first, searchable in the current language and filterable by
-// district, 8 cards per page. Filters and page live in the URL (?d=…&q=…&p=…)
-// so Back restores them.
+// The Amrut Varg regional team, grouped by division with the featured role
+// first, searchable in the current language and filterable by district, 8 cards
+// per page. Filters and page live in the URL (?d=…&q=…&p=…) so Back restores
+// them.
+//
+// Wording comes from the CMS when it is reachable and falls back to the bundled
+// translations otherwise, so the page always renders something complete. The
+// role list is CMS-driven too: its order sorts the cards, and the roles marked
+// featured get the wide card at the top of their division — both were fixed in
+// code before.
 export default function DistrictDirectoryPage() {
-  // Filter options come from the district master, falling back to the bundled
-  // list when the API is unreachable so the page is never left without options.
-  const districtRows = useMaster('districts');
-  const { t, num, district, division } = useLanguage();
+  const { t, num, district, division, lang } = useLanguage();
   const d = t.directory;
+  const cms = useDirectory();
+  const districtContacts = useDistrictContacts();
   const [params, setParams] = useSearchParams();
-  const [districtContacts, setDistrictContacts] = useState(staticContacts);
 
-  useEffect(() => {
-    if (!CMS_API) return;
-    fetch(`${CMS_API}/public/contacts`)
-      .then(r => r.ok ? r.json() : Promise.reject())
-      .then(({ data }) => { if (Array.isArray(data) && data.length) setDistrictContacts(data); })
-      .catch(() => {});
-  }, []);
   const searchId = useId();
   const selectId = useId();
   const listRef = useRef(null);
@@ -97,6 +90,99 @@ export default function DistrictDirectoryPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const roles = useMemo(
+    () =>
+      cms
+        ? cms.roles
+        : CONTACT_ROLES.map((id) => ({
+            id,
+            label_mr: translations.mr.directory.roles[id],
+            label_en: translations.en.directory.roles[id],
+            featured: id === 'divisionalManager',
+          })),
+    [cms]
+  );
+  const roleOrder = useMemo(() => roles.map((r) => r.id), [roles]);
+  const featuredRoles = useMemo(
+    () => new Set(roles.filter((r) => r.featured).map((r) => r.id)),
+    [roles]
+  );
+
+  // A role id with no entry in the list still shows something rather than an
+  // empty badge — a contact can carry a role an editor has since renamed.
+  const roleLabel = (id) => {
+    const role = roles.find((r) => r.id === id);
+    return role ? pick(role, 'label', lang) : id;
+  };
+  const isFeatured = (c) => c.roles.some((r) => featuredRoles.has(r));
+
+  const labels = cms
+    ? {
+        badge: pick(cms.text, 'badge', lang),
+        title: pick(cms.text, 'title', lang),
+        lead: pick(cms.text, 'lead', lang),
+        breadcrumb: pick(cms.text, 'breadcrumb', lang),
+        searchLabel: pick(cms.text, 'search_label', lang),
+        searchPlaceholder: pick(cms.text, 'search_placeholder', lang),
+        districtLabel: pick(cms.text, 'district_label', lang),
+        allDistricts: pick(cms.text, 'all_districts', lang),
+        pagination: pick(cms.text, 'pagination', lang),
+        noResults: pick(cms.text, 'no_results', lang),
+        clearFilters: pick(cms.text, 'clear_filters', lang),
+        wholeDivision: pick(cms.text, 'whole_division', lang),
+        call: pick(cms.text, 'call', lang),
+        email: pick(cms.text, 'email', lang),
+        pendingTitle: pick(cms.text, 'pending_title', lang),
+        pendingDesc: pick(cms.text, 'pending_desc', lang),
+        official: pick(cms.text, 'official', lang),
+        submitInfo: pick(cms.text, 'submit_info', lang),
+        stateNote: pick(cms.text, 'state_note', lang),
+        stateRole: pick(cms.text, 'state_role', lang),
+        showDot: cms.text.eyebrow_dot !== false,
+      }
+    : {
+        badge: d.badge,
+        title: d.title,
+        lead: d.lead,
+        breadcrumb: d.breadcrumb,
+        searchLabel: d.searchLabel,
+        searchPlaceholder: d.searchPlaceholder,
+        districtLabel: d.districtLabel,
+        allDistricts: d.allDistricts,
+        pagination: d.pagination,
+        noResults: d.noResults,
+        clearFilters: d.clearFilters,
+        wholeDivision: d.wholeDivision,
+        call: d.call,
+        email: d.email,
+        pendingTitle: d.pendingTitle,
+        pendingDesc: d.pendingDesc,
+        official: d.official,
+        submitInfo: d.submitInfo,
+        stateNote: d.stateNote,
+        stateRole: t.contact.cardTitle,
+        showDot: true,
+      };
+
+  const links = cms
+    ? cms.links
+    : {
+        official_url: OFFICIAL_LINKS.coordinators,
+        submit_form_url: OFFICIAL_LINKS.districtOfficerForm,
+        state_phone: STATE_COORDINATOR_PHONE,
+      };
+
+  // The three lines that carry a value are templates in the CMS and functions
+  // in the bundled copy, so each is resolved through one call site.
+  const countText = (n) =>
+    cms
+      ? fill(pick(cms.text, Number(n) === 1 ? 'count_one' : 'count_many', lang), { n: num(n) })
+      : d.count(num(n));
+  const showingText = (shown, total) =>
+    cms ? fill(pick(cms.text, 'showing', lang), { shown, total }) : d.showing(shown, total);
+  const divisionText = (name) =>
+    cms ? fill(pick(cms.text, 'division_label', lang), { name }) : d.division(name);
 
   const selected = DISTRICTS.includes(params.get('d')) ? params.get('d') : '';
   const query = params.get('q') || '';
@@ -111,12 +197,22 @@ export default function DistrictDirectoryPage() {
   };
 
   const groups = useMemo(() => {
+    // Role first, then district in the official order, so each grid reads the
+    // same way. A role missing from the list sorts last rather than jumping to
+    // the front, which is what indexOf's -1 would otherwise do.
+    const rank = (c) => {
+      const idx = roleOrder.indexOf(c.roles[0]);
+      return (idx === -1 ? roleOrder.length : idx) * 100
+        + (c.districts.length ? DISTRICTS.indexOf(c.districts[0]) : -1);
+    };
+    const featured = (c) => c.roles.some((r) => featuredRoles.has(r));
+
     const q = norm(query.trim());
     const matchesDistrict = (c) =>
       !selected ||
       c.districts.includes(selected) ||
       // Division-wide staff also serve the chosen district.
-      (c.division === DIVISION_OF_DISTRICT[selected] && (!c.districts.length || c.roles.includes('divisionalManager')));
+      (c.division === DIVISION_OF_DISTRICT[selected] && (!c.districts.length || featured(c)));
     const matchesQuery = (c) =>
       !q ||
       [
@@ -126,7 +222,10 @@ export default function DistrictDirectoryPage() {
         division(c.division),
         translations.en.divisions[c.division],
         ...c.districts.flatMap((n) => [n, translations.en.districts[n]]),
-        ...c.roles.flatMap((r) => [translations.mr.directory.roles[r], translations.en.directory.roles[r]]),
+        ...c.roles.flatMap((r) => {
+          const role = roles.find((x) => x.id === r);
+          return role ? [role.label_mr, role.label_en] : [r];
+        }),
       ].some((v) => norm(v).includes(q));
 
     return DIVISIONS.map((name) => {
@@ -135,19 +234,18 @@ export default function DistrictDirectoryPage() {
         .sort((a, b) => rank(a) - rank(b));
       return {
         name,
-        leads: people.filter((c) => c.roles.includes('divisionalManager')),
-        team: people.filter((c) => !c.roles.includes('divisionalManager')),
+        leads: people.filter(featured),
+        team: people.filter((c) => !featured(c)),
         count: people.length,
       };
     }).filter((g) => g.count);
-  }, [selected, query, division]);
+  }, [selected, query, division, districtContacts, roles, roleOrder, featuredRoles]);
 
   const count = groups.reduce((n, g) => n + g.count, 0);
 
   // One page of cards, taken from the list in display order (division by
-  // division, divisional manager first), then grouped again under their
-  // division headings. The page is clamped so a shorter list never shows an
-  // empty page.
+  // division, featured first), then grouped again under their division
+  // headings. The page is clamped so a shorter list never shows an empty page.
   const ordered = useMemo(() => groups.flatMap((g) => [...g.leads, ...g.team]), [groups]);
   const pageCount = Math.max(1, Math.ceil(ordered.length / PAGE_SIZE));
   const current = Math.min(Math.max(Number.parseInt(params.get('p'), 10) - 1 || 0, 0), pageCount - 1);
@@ -156,11 +254,7 @@ export default function DistrictDirectoryPage() {
   const pageGroups = groups
     .map((g) => {
       const items = pageItems.filter((c) => c.division === g.name);
-      return {
-        ...g,
-        leads: items.filter((c) => c.roles.includes('divisionalManager')),
-        team: items.filter((c) => !c.roles.includes('divisionalManager')),
-      };
+      return { ...g, leads: items.filter(isFeatured), team: items.filter((c) => !isFeatured(c)) };
     })
     .filter((g) => g.leads.length || g.team.length);
 
@@ -174,25 +268,32 @@ export default function DistrictDirectoryPage() {
     <section className="spage ddir" aria-labelledby="ddir-title">
       <Mandala className="spage__mandala" points={20} />
       <div className="container">
-        <nav className="crumbs" aria-label={d.breadcrumb}>
+        <nav className="crumbs" aria-label={labels.breadcrumb}>
           <Link to="/">{t.nav.home}</Link>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{d.title}</span>
+          <span aria-current="page">{labels.title}</span>
         </nav>
 
         <header className="spage__head">
-          <p className="eyebrow">
-            <span className="eyebrow__dot" aria-hidden="true" />
-            {d.badge}
-          </p>
+          {labels.badge ? (
+            <p className="eyebrow">
+              {labels.showDot ? <span className="eyebrow__dot" aria-hidden="true" /> : null}
+              {labels.badge}
+            </p>
+          ) : null}
           <h1 id="ddir-title" className="section__title">
-            {d.title}
+            {labels.title}
           </h1>
-          <p className="section__lead">{d.lead}</p>
-          {OFFICIAL_LINKS.districtOfficerForm ? (
-            <a className="btn btn--ghost ddir__submit" href={OFFICIAL_LINKS.districtOfficerForm} target="_blank" rel="noopener noreferrer">
+          {labels.lead ? <p className="section__lead">{labels.lead}</p> : null}
+          {links.submit_form_url ? (
+            <a
+              className="btn btn--ghost ddir__submit"
+              href={links.submit_form_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Icon name="file" size={16} />
-              {d.submitInfo}
+              {labels.submitInfo}
               <Icon name="external" size={16} />
               <span className="sr-only"> {t.common.opensNewTab}</span>
             </a>
@@ -202,24 +303,24 @@ export default function DistrictDirectoryPage() {
         <div className="sfilter ddir__filter">
           <div className="sfilter__search">
             <label htmlFor={searchId} className="sr-only">
-              {d.searchLabel}
+              {labels.searchLabel}
             </label>
             <Icon name="search" size={18} />
             <input
               id={searchId}
               type="search"
               value={query}
-              placeholder={d.searchPlaceholder}
+              placeholder={labels.searchPlaceholder}
               onChange={(e) => update('q', e.target.value)}
             />
           </div>
           <div className="ddir__select">
             <label htmlFor={selectId} className="sr-only">
-              {d.districtLabel}
+              {labels.districtLabel}
             </label>
             <Icon name="mapPin" size={18} />
             <select id={selectId} value={selected} onChange={(e) => update('d', e.target.value)}>
-              <option value="">{d.allDistricts}</option>
+              <option value="">{labels.allDistricts}</option>
               {DISTRICTS.map((n) => (
                 <option key={n} value={n}>
                   {district(n)}
@@ -230,7 +331,7 @@ export default function DistrictDirectoryPage() {
         </div>
 
         <p ref={listRef} className="spage__count" aria-live="polite">
-          {d.count(num(count))}
+          {countText(count)}
         </p>
 
         {pageGroups.length ? (
@@ -240,41 +341,41 @@ export default function DistrictDirectoryPage() {
                 <header className="ddir__group-head">
                   <h2 id={`ddir-${g.name}`} className="ddir__district">
                     <Icon name="globe" size={18} />
-                    {d.division(division(g.name))}
+                    {divisionText(division(g.name))}
                   </h2>
-                  <p className="ddir__division">{d.count(num(g.count))}</p>
+                  <p className="ddir__division">{countText(g.count)}</p>
                 </header>
                 {g.leads.length ? (
                   <ul className="ddir__lead">
                     {g.leads.map((c) => (
-                      <ContactCard key={c.id} c={c} featured />
+                      <ContactCard key={c.id} c={c} featured labels={labels} roleLabel={roleLabel} />
                     ))}
                   </ul>
                 ) : null}
                 {g.team.length ? (
                   <ul className="ddir__grid">
                     {g.team.map((c) => (
-                      <ContactCard key={c.id} c={c} />
+                      <ContactCard key={c.id} c={c} labels={labels} roleLabel={roleLabel} />
                     ))}
                   </ul>
                 ) : null}
               </section>
             ))}
             {pageCount > 1 ? (
-              <nav className="results__more" aria-label={d.pagination}>
+              <nav className="results__more" aria-label={labels.pagination}>
                 <div className="results__progress" aria-hidden="true">
                   <span style={{ width: `${((current + 1) / pageCount) * 100}%` }} />
                 </div>
-                <span>{d.showing(`${num(start + 1)}–${num(start + pageItems.length)}`, num(count))}</span>
+                <span>{showingText(`${num(start + 1)}–${num(start + pageItems.length)}`, num(count))}</span>
                 <Pager page={current} pageCount={pageCount} onChange={goToPage} />
               </nav>
             ) : null}
           </div>
         ) : districtContacts.length ? (
           <div className="sempty">
-            <p>{d.noResults}</p>
+            <p>{labels.noResults}</p>
             <button type="button" className="btn btn--ghost" onClick={() => setParams({}, { replace: true })}>
-              {d.clearFilters}
+              {labels.clearFilters}
             </button>
           </div>
         ) : (
@@ -282,23 +383,32 @@ export default function DistrictDirectoryPage() {
             <span className="ddir__pending-icon" aria-hidden="true">
               <Icon name="mapPin" size={22} />
             </span>
-            <h2 className="ddir__pending-title">{d.pendingTitle}</h2>
-            <p>{d.pendingDesc}</p>
-            <a className="btn btn--primary" href={OFFICIAL_LINKS.coordinators} target="_blank" rel="noopener noreferrer">
-              {d.official}
-              <Icon name="external" size={16} />
-              <span className="sr-only"> {t.common.opensNewTab}</span>
-            </a>
+            <h2 className="ddir__pending-title">{labels.pendingTitle}</h2>
+            <p>{labels.pendingDesc}</p>
+            {links.official_url ? (
+              <a className="btn btn--primary" href={links.official_url} target="_blank" rel="noopener noreferrer">
+                {labels.official}
+                <Icon name="external" size={16} />
+                <span className="sr-only"> {t.common.opensNewTab}</span>
+              </a>
+            ) : null}
           </div>
         )}
 
-        <p className="ddir__state">
-          <Icon name="info" size={16} />
-          <span>
-            {d.stateNote} {t.contact.cardTitle} —{' '}
-            <a href={`tel:${STATE_COORDINATOR_PHONE}`}>{num(STATE_COORDINATOR_PHONE)}</a>
-          </span>
-        </p>
+        {labels.stateNote || links.state_phone ? (
+          <p className="ddir__state">
+            <Icon name="info" size={16} />
+            <span>
+              {labels.stateNote} {labels.stateRole}
+              {links.state_phone ? (
+                <>
+                  {' — '}
+                  <a href={`tel:${links.state_phone}`}>{num(links.state_phone)}</a>
+                </>
+              ) : null}
+            </span>
+          </p>
+        ) : null}
       </div>
     </section>
   );

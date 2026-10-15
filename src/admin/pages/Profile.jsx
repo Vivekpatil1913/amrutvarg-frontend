@@ -1,22 +1,23 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Camera, User, Mail, KeyRound, Save, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useAdminAuth } from "../context/AdminAuthContext.jsx";
 import { api } from "../api/client.js";
 import { useToast } from "../components/ui/Toast.jsx";
+import { avatarSrc } from "../avatar.js";
 
 function initials(name = "") {
   return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "A";
 }
 
 export default function Profile() {
-  const { user } = useAdminAuth();
+  const { user, updateUser } = useAdminAuth();
   const toast = useToast();
   const fileRef = useRef(null);
   const [tab, setTab] = useState("info");
 
   /* ── Profile info ── */
-  const [info, setInfo] = useState({ name: user?.name || "", email: user?.email || "" });
-  const [avatar, setAvatar] = useState(user?.avatarUrl || null);
+  const [info, setInfo] = useState({ name: "", email: "" });
+  const [avatar, setAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
   const [savingInfo, setSavingInfo] = useState(false);
 
@@ -25,6 +26,12 @@ export default function Profile() {
   const [showPw, setShowPw] = useState({ current: false, next: false, confirm: false });
   const [savingPw, setSavingPw] = useState(false);
   const [pwErr, setPwErr] = useState("");
+
+  useEffect(() => {
+    if (!user) return;
+    setInfo({ name: user.name || "", email: user.email || "" });
+    setAvatar(avatarSrc(user.avatarUrl));
+  }, [user]);
 
   function onAvatarChange(e) {
     const file = e.target.files?.[0];
@@ -41,10 +48,14 @@ export default function Profile() {
       fd.append("name", info.name);
       fd.append("email", info.email);
       if (avatarFile) fd.append("avatar", avatarFile);
-      await api.patch("/auth/profile", fd, { headers: { "Content-Type": "multipart/form-data" } });
+      const res = await api.patch("/auth/profile", fd);
+      updateUser(res.data);
+      setInfo({ name: res.data.name, email: res.data.email });
+      setAvatar(avatarSrc(res.data.avatarUrl));
+      setAvatarFile(null);
       toast.success("Profile updated successfully");
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to update profile");
+      toast.error(err.message || "Failed to update profile");
     } finally {
       setSavingInfo(false);
     }
@@ -54,14 +65,14 @@ export default function Profile() {
     e.preventDefault();
     setPwErr("");
     if (pw.next !== pw.confirm) { setPwErr("New passwords do not match."); return; }
-    if (pw.next.length < 6) { setPwErr("Password must be at least 6 characters."); return; }
+    if (pw.next.length < 8) { setPwErr("Password must be at least 8 characters."); return; }
     setSavingPw(true);
     try {
       await api.post("/auth/change-password", { currentPassword: pw.current, newPassword: pw.next });
       setPw({ current: "", next: "", confirm: "" });
       toast.success("Password changed successfully");
     } catch (err) {
-      setPwErr(err?.response?.data?.message || "Failed to change password.");
+      setPwErr(err.message || "Failed to change password.");
     } finally {
       setSavingPw(false);
     }
@@ -88,7 +99,7 @@ export default function Profile() {
           {/* Avatar */}
           <div style={{ position: "relative", display: "inline-block", marginTop: "-3rem", marginBottom: "0.75rem" }}>
             {avatar
-              ? <img src={avatar} alt="avatar" style={{
+              ? <img src={avatar} alt="Profile avatar" style={{
                   width: "6rem", height: "6rem", borderRadius: "50%", objectFit: "cover",
                   border: "3px solid white", boxShadow: "0 2px 12px rgba(0,0,0,0.15)"
                 }} />
@@ -120,7 +131,7 @@ export default function Profile() {
                 {info.name || user?.name || "Admin"}
               </div>
               <div style={{ fontSize: "0.8125rem", color: "var(--a-muted)", marginTop: "0.125rem" }}>
-                {user?.email}
+                {info.email || user?.email}
               </div>
               <span className="a-badge a-badge-accent" style={{ marginTop: "0.5rem" }}>
                 {user?.role || "Admin"}
@@ -191,7 +202,7 @@ export default function Profile() {
               </div>
 
               <p className="a-field-help" style={{ marginTop: "1rem" }}>
-                Changes to your name or email will take effect on your next login.
+                Your updated name and email will appear across the admin workspace immediately.
               </p>
             </div>
 
@@ -265,7 +276,7 @@ export default function Profile() {
 
               <div className="a-notice a-notice-info" style={{ fontSize: "0.8125rem" }}>
                 <ShieldCheck size={15} style={{ flexShrink: 0, marginTop: "1px" }} />
-                <span>Use at least 8 characters with a mix of uppercase, numbers and symbols.</span>
+                <span>Use at least 8 characters. A mix of uppercase, numbers and symbols is recommended.</span>
               </div>
             </div>
 

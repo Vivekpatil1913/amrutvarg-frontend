@@ -31,8 +31,12 @@ export function AdminAuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const updateUser = useCallback((updates) => {
+    setUser((current) => current ? { ...current, ...updates } : updates);
+  }, []);
+
   return (
-    <AdminAuthContext.Provider value={{ user, loading, login, logout }}>
+    <AdminAuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
       {children}
     </AdminAuthContext.Provider>
   );

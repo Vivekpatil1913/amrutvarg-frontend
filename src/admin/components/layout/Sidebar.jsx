@@ -3,8 +3,10 @@ import {
   LayoutDashboard, Megaphone, BookOpen, Users, Settings,
   FileText, Image, ChevronRight, LogOut, Sparkles, LayoutTemplate,
   Landmark, Map, MapPin, MapPinned, Milestone, Info, Activity, Clock, Quote,
+  ClipboardList, Contact2, Link2,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
+import { avatarSrc } from "../../avatar.js";
 
 const NAV_GROUPS = [
   {
@@ -20,6 +22,8 @@ const NAV_GROUPS = [
       { to: "/admin/about", icon: Info, label: "About Section" },
       { to: "/admin/activities", icon: Activity, label: "Activities Section" },
       { to: "/admin/session", icon: Clock, label: "Session Section" },
+      { to: "/admin/join", icon: ClipboardList, label: "Join Section" },
+      { to: "/admin/directory", icon: Contact2, label: "Directory Page" },
       { to: "/admin/yashogatha", icon: BookOpen, label: "Yashogatha" },
       { to: "/admin/vargs", icon: MapPin, label: "Amrut Varg Section" },
       // Forms is hidden from the menu; /admin/forms still resolves if opened directly.
@@ -38,10 +42,10 @@ const NAV_GROUPS = [
     label: "Content",
     items: [
       { to: "/admin/announcements", icon: Megaphone, label: "Announcements" },
+      { to: "/admin/footer", icon: Link2, label: "Footer Links & Socials" },
       // Yashogatha Stories is reached through Website > Yashogatha; /admin/stories still resolves.
       // Amrut Vargs is hidden from the menu; /admin/vargs still resolves directly.
       { to: "/admin/contacts", icon: Users, label: "District Contacts" },
-      { to: "/admin/media", icon: Image, label: "Media Library" },
     ],
   },
   {
@@ -60,6 +64,7 @@ function initials(name = "") {
 export function Sidebar({ collapsed, mobileOpen, onMobileClose }) {
   const { user, logout } = useAdminAuth();
   const location = useLocation();
+  const avatar = avatarSrc(user?.avatarUrl);
 
   return (
     <>
@@ -113,7 +118,9 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }) {
         {/* Footer */}
         <div className="a-sidebar-footer">
           <div className="a-sidebar-user">
-            <div className="a-avatar">{initials(user?.name)}</div>
+            <div className="a-avatar">
+              {avatar ? <img src={avatar} alt="" /> : initials(user?.name)}
+            </div>
             {!collapsed && (
               <div className="a-sidebar-user-info" style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: "0.8125rem", fontWeight: 600, color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>

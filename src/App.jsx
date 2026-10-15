@@ -30,6 +30,13 @@ const ActivitiesView = lazy(() => import('./admin/pages/ActivitiesView.jsx'));
 const SessionList = lazy(() => import('./admin/pages/SessionList.jsx'));
 const SessionForm = lazy(() => import('./admin/pages/SessionForm.jsx'));
 const SessionView = lazy(() => import('./admin/pages/SessionView.jsx'));
+const JoinList = lazy(() => import('./admin/pages/JoinList.jsx'));
+const JoinForm = lazy(() => import('./admin/pages/JoinForm.jsx'));
+const JoinView = lazy(() => import('./admin/pages/JoinView.jsx'));
+const DirectoryList = lazy(() => import('./admin/pages/DirectoryList.jsx'));
+const DirectoryForm = lazy(() => import('./admin/pages/DirectoryForm.jsx'));
+const DirectoryView = lazy(() => import('./admin/pages/DirectoryView.jsx'));
+const FooterAdmin = lazy(() => import('./admin/pages/FooterAdmin.jsx'));
 const YashogathaList = lazy(() => import('./admin/pages/YashogathaList.jsx'));
 const YashogathaForm = lazy(() => import('./admin/pages/YashogathaForm.jsx'));
 const YashogathaStoryForm = lazy(() => import('./admin/pages/YashogathaStoryForm.jsx'));
@@ -108,6 +115,13 @@ function AdminRoutes() {
           <Route path="/admin/session" element={<SessionList />} />
           <Route path="/admin/session/edit" element={<SessionForm />} />
           <Route path="/admin/session/view" element={<SessionView />} />
+          <Route path="/admin/join" element={<JoinList />} />
+          <Route path="/admin/join/edit" element={<JoinForm />} />
+          <Route path="/admin/join/view" element={<JoinView />} />
+          <Route path="/admin/directory" element={<DirectoryList />} />
+          <Route path="/admin/footer" element={<FooterAdmin />} />
+          <Route path="/admin/directory/edit" element={<DirectoryForm />} />
+          <Route path="/admin/directory/view" element={<DirectoryView />} />
           <Route path="/admin/yashogatha" element={<YashogathaList />} />
           <Route path="/admin/yashogatha/settings" element={<YashogathaForm />} />
           <Route path="/admin/yashogatha/view" element={<YashogathaView />} />

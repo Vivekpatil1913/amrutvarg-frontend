@@ -34,19 +34,33 @@ export const NAV_ITEMS = [
   { id: 'districts', key: 'districts', to: DIRECTORY_PATH },
 ];
 
+// Anchors that sit on an individual Join card rather than on a section of their
+// own. A card can be hidden from the admin, which takes its anchor off the page
+// with it — falling back to the section keeps the menu item working instead of
+// leaving it to silently do nothing.
+const ANCHOR_FALLBACK = { participant: 'join', organizer: 'join', leader: 'join' };
+
 // Scrolls to a home-page section, navigating home first when needed.
 export function useSectionNav() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (id) => {
-    const go = () => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const go = () => {
+      const fallback = ANCHOR_FALLBACK[id];
+      const node = document.getElementById(id)
+        ?? (fallback ? document.getElementById(fallback) : null);
+      if (!node) return;
+      node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // The hash names where the page actually went, so a copied link never
+      // points at an anchor that is no longer rendered.
+      window.history.replaceState(null, '', `#${node.id}`);
+    };
     if (pathname !== '/') {
       navigate('/');
       window.setTimeout(go, 120);
     } else {
       go();
     }
-    window.history.replaceState(null, '', `#${id}`);
   };
 }
 

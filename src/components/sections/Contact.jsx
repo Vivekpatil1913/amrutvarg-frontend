@@ -6,6 +6,9 @@ import Mandala from '../Mandala';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE } from '../../i18n/translations';
 import { copyText } from '../../services/clipboard';
+import { useJoin } from '../../data/useJoin';
+import { useFooter } from '../../data/useFooter';
+import { pick } from '../../data/useHero';
 
 const INTENTS = [
   { key: 'start', icon: 'flag' },
@@ -26,9 +29,23 @@ function ExternalLink({ href, children, className }) {
 }
 
 export default function Contact({ onOrganizer, onFindVarg }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const c = t.contact;
   const r = t.resources;
+  // The "join" tab restates the student registration card, so it reads from the
+  // same CMS record the Join section does rather than a second copy that would
+  // drift the moment an editor changes the wording there.
+  const cmsJoin = useJoin();
+  const cmsFooter = useFooter();
+  const studentCard = cmsJoin?.cards.find((card) => card.action === 'varg');
+  const studentDesc = studentCard ? pick(studentCard, 'desc', lang) : t.join.paths[0].desc;
+  const studentAction = studentCard ? pick(studentCard, 'action', lang) : t.join.paths[0].action;
+  const officialLinks = cmsFooter
+    ? cmsFooter.links.map((item) => ({ url: item.url, title: pick(item, 'title', lang), desc: pick(item, 'desc', lang), icon: item.icon }))
+    : r.items.filter((item) => item.key !== 'coordinators').map((item) => ({
+        url: OFFICIAL_LINKS[item.key], title: item.title, desc: item.desc,
+        icon: item.key === 'portal' ? 'globe' : 'building',
+      }));
   const [intent, setIntent] = useState('start');
   const [copied, setCopied] = useState(false);
   const tabRefs = useRef({});
@@ -88,11 +105,11 @@ export default function Contact({ onOrganizer, onFindVarg }) {
     ),
     join: (
       <>
-        <p className="desk__text">{t.join.paths[0].desc}</p>
+        <p className="desk__text">{studentDesc}</p>
         <div className="desk__actions">
           <button type="button" className="btn btn--primary" onClick={onFindVarg}>
             <Icon name="search" size={16} />
-            {t.join.paths[0].action}
+            {studentAction}
           </button>
           <ExternalLink className="btn btn--ghost" href={OFFICIAL_LINKS.portal}>
             {r.items[0].title}
@@ -103,22 +120,20 @@ export default function Contact({ onOrganizer, onFindVarg }) {
     ),
     official: (
       <ul className="desk__links">
-        {r.items
-          .filter((item) => item.key !== 'coordinators')
-          .map((item) => (
-            <li key={item.key}>
-              <ExternalLink className="desk__link" href={OFFICIAL_LINKS[item.key]}>
+        {officialLinks.map((item) => (
+            <li key={item.url}>
+              <ExternalLink className="desk__link" href={item.url}>
                 <span className="desk__link-icon">
-                  <Icon name={item.key === 'portal' ? 'globe' : 'building'} size={18} />
+                  <Icon name={item.icon || 'external'} size={18} />
                 </span>
                 <span className="desk__link-text">
                   <span className="desk__link-title">{item.title}</span>
-                  <span className="desk__link-desc">{item.desc}</span>
+                  {item.desc ? <span className="desk__link-desc">{item.desc}</span> : null}
                 </span>
                 <Icon name="external" size={16} className="desk__link-arrow" />
               </ExternalLink>
             </li>
-          ))}
+        ))}
       </ul>
     ),
   };
