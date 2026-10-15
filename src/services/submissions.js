@@ -3,20 +3,19 @@
 // By default the site runs as a static front end: forms validate locally and
 // `submit*` resolves with { sent: false }, so the UI can say plainly that
 // nothing was sent. Setting VITE_ENABLE_LIVE_SUBMIT=true re-enables the
-// existing integration with the AMRUT VARG service — the same endpoints the
-// live portal posts to — and resolves with { sent: true } only on success.
+// existing integration with the AMRUT VARG service.
 
 import { LIVE_SUBMIT } from './config';
 
 export { LIVE_SUBMIT };
 
-// CMS API base URL (Amrutvarg backend)
 const CMS_API = import.meta.env.VITE_CMS_API || 'http://localhost:4000/api/v1';
 
 export class SubmitError extends Error {
-  constructor(kind, message) {
+  constructor(kind, message, details = []) {
     super(message);
     this.kind = kind; // 'network' | 'server'
+    this.details = Array.isArray(details) ? details : [];
   }
 }
 
@@ -33,7 +32,7 @@ async function post(path, body, isForm = false) {
   }
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new SubmitError('server', data?.error?.message || `HTTP ${res.status}`);
+    throw new SubmitError('server', data?.error?.message || `HTTP ${res.status}`, data?.error?.details);
   }
   return res.json();
 }
