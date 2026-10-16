@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Icon from '../components/Icon';
+import ShareButton from '../components/ShareButton';
 import Mandala from '../components/Mandala';
 import StoryCover from '../components/StoryCover';
 import { STORY_CATEGORIES, getStory } from '../data/yashogathaStories';
@@ -162,6 +163,13 @@ export default function StoryPage() {
             </>
           ) : null}
         </article>
+
+        {/* The end of the story is where a reader decides to pass it on, so
+            the share row sits here rather than behind an icon at the top. */}
+        <div className="sstory__share">
+          <p className="sstory__share-label">{t.share.lead}</p>
+          <ShareButton variant="inline" path={`/yashogatha/${story.slug}`} title={text.title} />
+        </div>
 
         <nav className="sstory__nav" aria-label={y.storyNav}>
           {prev ? (

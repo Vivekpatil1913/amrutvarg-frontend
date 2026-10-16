@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SearchSelect } from "./SearchSelect.jsx";
 
 const CMS_API = import.meta.env.VITE_CMS_API || "http://localhost:4000/api/v1";
 
@@ -87,6 +88,12 @@ export function GeoSelect({
   master, parentColumn = null, parentId = null,
   value, onChange, onResolve,
   required, disabled, placeholder = "Select…", id, className = "a-input",
+  // Opt-in, so every existing caller keeps the native <select> it was written
+  // against. Worth turning on where the list is long enough to scan badly —
+  // thirty-six districts, for instance.
+  searchable = false,
+  waitingLabel = "Select the level above first",
+  emptyLabel = "No active records — add one in Master Management.",
 }) {
   const { rows, loading, error, retry } = useGeo(master, parentColumn, parentId);
 
@@ -105,6 +112,43 @@ export function GeoSelect({
         <span>Could not load {master}.</span>
         <button type="button" className="a-btn a-btn-ghost a-btn-sm" onClick={retry}>Retry</button>
       </div>
+    );
+  }
+
+  if (searchable) {
+    const options = rows.map((r) => ({
+      value: r.name_mr,
+      label: r.name_mr,
+      secondary: r.name_en || "",
+    }));
+    // A historic or deactivated value stays selectable, exactly as it does in
+    // the native path below.
+    if (value && !known && !loading) {
+      options.unshift({ value, label: value, secondary: "not in master" });
+    }
+    return (
+      <>
+        <SearchSelect
+          id={id}
+          options={options}
+          value={value || ""}
+          onChange={onChange}
+          required={required}
+          disabled={disabled || waitingOnParent}
+          loading={loading}
+          placeholder={waitingOnParent ? waitingLabel : placeholder}
+          searchPlaceholder="Type to search…"
+          emptyLabel="No matches"
+        />
+        {!loading && !waitingOnParent && rows.length === 0 && (
+          <span className="a-field-help">{emptyLabel}</span>
+        )}
+        {value && !known && !loading && (
+          <span className="a-field-help">
+            This value is not in the master list. It is kept as saved; pick from the list to change it.
+          </span>
+        )}
+      </>
     );
   }
 

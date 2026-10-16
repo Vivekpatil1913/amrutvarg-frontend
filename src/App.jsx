@@ -2,12 +2,14 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-route
 import { lazy, Suspense } from 'react';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import { VargsProvider } from './data/VargsProvider';
-import Header, { DIRECTORY_PATH } from './components/layout/Header';
+import Header, { ANNOUNCEMENTS_PATH, DIRECTORY_PATH, MEDIA_PATH } from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import YashogathaPage from './pages/YashogathaPage';
 import StoryPage from './pages/StoryPage';
 import DistrictDirectoryPage from './pages/DistrictDirectoryPage';
+import MediaPage from './pages/MediaPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
 import NotFound from './pages/NotFound';
 import SceneBackdrop from './components/SceneBackdrop';
 
@@ -44,12 +46,21 @@ const YashogathaStoryView = lazy(() => import('./admin/pages/YashogathaStoryView
 const YashogathaView = lazy(() => import('./admin/pages/YashogathaView.jsx'));
 const FormsAdmin = lazy(() => import('./admin/pages/Forms.jsx'));
 const Masters = lazy(() => import('./admin/pages/Masters.jsx'));
+const MasterForm = lazy(() => import('./admin/pages/MasterForm.jsx'));
 const Announcements = lazy(() => import('./admin/pages/Announcements.jsx'));
+const AnnouncementForm = lazy(() => import('./admin/pages/AnnouncementForm.jsx'));
 const VargsList = lazy(() => import('./admin/pages/VargsList.jsx'));
 const VargsSectionForm = lazy(() => import('./admin/pages/VargsSectionForm.jsx'));
 const VargForm = lazy(() => import('./admin/pages/VargForm.jsx'));
 const VargView = lazy(() => import('./admin/pages/VargView.jsx'));
 const Contacts = lazy(() => import('./admin/pages/Contacts.jsx'));
+const VideosList = lazy(() => import('./admin/pages/VideosList.jsx'));
+const VideoForm = lazy(() => import('./admin/pages/VideoForm.jsx'));
+const PodcastsList = lazy(() => import('./admin/pages/PodcastsList.jsx'));
+const PodcastForm = lazy(() => import('./admin/pages/PodcastForm.jsx'));
+const OfficesList = lazy(() => import('./admin/pages/OfficesList.jsx'));
+const OfficeForm = lazy(() => import('./admin/pages/OfficeForm.jsx'));
+const ContactForm = lazy(() => import('./admin/pages/ContactForm.jsx'));
 const Submissions = lazy(() => import('./admin/pages/Submissions.jsx'));
 const SubmissionDetail = lazy(() => import('./admin/pages/SubmissionDetail.jsx'));
 const Settings = lazy(() => import('./admin/pages/Settings.jsx'));
@@ -86,7 +97,12 @@ function Shell() {
           </Route>
           <Route path="/yashogatha" element={<YashogathaPage />} />
           <Route path="/yashogatha/:slug" element={<StoryPage />} />
+          <Route path={ANNOUNCEMENTS_PATH} element={<AnnouncementsPage />} />
+          <Route path={MEDIA_PATH} element={<MediaPage />} />
           <Route path={DIRECTORY_PATH} element={<DistrictDirectoryPage />} />
+          {/* One district's contacts, directly addressable and shareable. The
+              same page, scoped — not a second copy of it. */}
+          <Route path={`${DIRECTORY_PATH}/:districtSlug`} element={<DistrictDirectoryPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -133,7 +149,12 @@ function AdminRoutes() {
           <Route path="/admin/masters/vibhags" element={<Masters master="vibhags" />} />
           <Route path="/admin/masters/districts" element={<Masters master="districts" />} />
           <Route path="/admin/masters/talukas" element={<Masters master="talukas" />} />
+          {/* Add and edit are pages of their own, not dialogs over the list. */}
+          <Route path="/admin/masters/:master/new" element={<MasterForm />} />
+          <Route path="/admin/masters/:master/:id/edit" element={<MasterForm />} />
           <Route path="/admin/announcements" element={<Announcements />} />
+          <Route path="/admin/announcements/new" element={<AnnouncementForm />} />
+          <Route path="/admin/announcements/:id/edit" element={<AnnouncementForm />} />
           <Route path="/admin/stories" element={<Navigate to="/admin/yashogatha" replace />} />
           <Route path="/admin/vargs" element={<VargsList />} />
           <Route path="/admin/vargs/settings" element={<VargsSectionForm />} />
@@ -141,6 +162,17 @@ function AdminRoutes() {
           <Route path="/admin/vargs/:id/edit" element={<VargForm />} />
           <Route path="/admin/vargs/:id" element={<VargView />} />
           <Route path="/admin/contacts" element={<Contacts />} />
+          <Route path="/admin/contacts/new" element={<ContactForm />} />
+          <Route path="/admin/contacts/:id/edit" element={<ContactForm />} />
+          <Route path="/admin/videos" element={<VideosList />} />
+          <Route path="/admin/videos/new" element={<VideoForm />} />
+          <Route path="/admin/videos/:id/edit" element={<VideoForm />} />
+          <Route path="/admin/podcasts" element={<PodcastsList />} />
+          <Route path="/admin/podcasts/new" element={<PodcastForm />} />
+          <Route path="/admin/podcasts/:id/edit" element={<PodcastForm />} />
+          <Route path="/admin/offices" element={<OfficesList />} />
+          <Route path="/admin/offices/new" element={<OfficeForm />} />
+          <Route path="/admin/offices/:id/edit" element={<OfficeForm />} />
           <Route path="/admin/submissions" element={<Submissions />} />
           <Route path="/admin/submissions/:id" element={<SubmissionDetail />} />
           <Route path="/admin/settings" element={<Settings />} />

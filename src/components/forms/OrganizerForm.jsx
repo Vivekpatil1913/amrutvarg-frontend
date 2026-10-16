@@ -7,13 +7,21 @@ import { useForm } from '../../hooks/useForm';
 import { isMobile } from '../../services/validation';
 import { submitOrganizer } from '../../services/submissions';
 
-const INITIAL = { name: '', place: '', mobile: '', designation: '', district: '' };
-const KEYS = ['name', 'place', 'mobile', 'designation', 'district'];
+// The order a person fills this in: the body organising, then who to speak to,
+// then where. `place` is gone — what the form asks for now is the
+// organisation, which is a different fact rather than a reworded one.
+const KEYS = ['organisation', 'branch', 'name', 'contactPerson', 'designation', 'mobile', 'district'];
+
+// Everything except the branch: a single school or housing society has none to
+// give, and demanding one would only mean inventing it.
+const OPTIONAL = new Set(['branch']);
+
+const INITIAL = Object.fromEntries(KEYS.map((k) => [k, '']));
 
 const validate = (v, t) => {
   const e = {};
   KEYS.forEach((k) => {
-    if (!v[k].trim()) e[k] = t.errors.required;
+    if (!OPTIONAL.has(k) && !v[k].trim()) e[k] = t.errors.required;
   });
   if (v.mobile.trim() && !isMobile(v.mobile)) e.mobile = t.errors.mobile;
   return e;
@@ -63,7 +71,7 @@ export default function OrganizerForm({ open, onClose }) {
                 ...describe(id, error),
               };
               return (
-                <Field key={key} id={id} label={o[key]} required error={error}>
+                <Field key={key} id={id} label={o[key]} required={!OPTIONAL.has(key)} error={error}>
                   {key === 'district' ? (
                     <select {...control}>
                       <DistrictOptions />

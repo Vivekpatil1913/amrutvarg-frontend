@@ -6,6 +6,7 @@ import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
 import { GeoSelect, useGeo } from "../components/ui/GeoSelect.jsx";
+import { isSafeHttpUrl } from "../../services/mediaUrl.js";
 
 // One Amrut Varg, edited on its own page.
 //
@@ -18,13 +19,13 @@ import { GeoSelect, useGeo } from "../components/ui/GeoSelect.jsx";
 // browser catches mistakes early; the server is still what decides, and its
 // field-level errors are shown against the same inputs.
 
-const MAX = { geo: 100, school: 300, varg: 200, coordinator: 200 };
+const MAX = { geo: 100, village: 120, school: 300, varg: 200, coordinator: 200 };
 const LIMITS = { enrollment: 100000 };
 
 const EMPTY = {
   vibhag_mr: "", vibhag_en: "", district_mr: "", district_en: "",
-  taluka: "", school_name: "", varg_name: "", coordinator_name: "",
-  enrollment_count: 0, is_active: true, display_order: 0,
+  taluka: "", village: "", school_name: "", varg_name: "", coordinator_name: "",
+  enrollment_count: 0, is_active: true, display_order: 0, resource_url: "",
 };
 
 const blank = (v) => !String(v ?? "").trim();
@@ -74,6 +75,10 @@ export default function VargForm() {
   const vibhagId = vibhagRows.find((v) => v.name_mr === form.vibhag_mr)?.id ?? null;
   const { rows: districtRows } = useGeo("districts", "vibhag_id", vibhagId);
   const districtId = districtRows.find((d) => d.name_mr === form.district_mr)?.id ?? null;
+  // Loaded here as well as inside the taluka dropdown so the submitted body can
+  // carry the taluka's id. The loader caches per master and parent, so asking
+  // for the same list twice costs one request.
+  const { rows: talukaRows } = useGeo("talukas", "district_id", districtId);
 
   // The same rules the server applies, so a mistake is caught before the request.
   const errors = useMemo(() => {
@@ -81,11 +86,19 @@ export default function VargForm() {
     if (blank(form.vibhag_mr)) e.vibhag_mr = "A division is required";
     if (blank(form.district_mr)) e.district_mr = "A district is required";
     if (blank(form.school_name)) e.school_name = "A school or location name is required";
+    else if (form.school_name.trim().length > MAX.school) e.school_name = `Cannot exceed ${MAX.school} characters`;
+    // Optional, but a value that is present has to fit the column.
+    if (form.village.trim().length > MAX.village) e.village = `Cannot exceed ${MAX.village} characters`;
     const n = Number(form.enrollment_count);
     if (!Number.isInteger(n) || n < 0) e.enrollment_count = "Enter a whole number, zero or more";
     else if (n > LIMITS.enrollment) e.enrollment_count = "That number is too large";
     const order = Number(form.display_order);
     if (!Number.isInteger(order)) e.display_order = "Enter a whole number";
+    // Optional, but a value that is present has to be an address a browser
+    // can open — the public page turns it into a link or a player.
+    if (!blank(form.resource_url) && !isSafeHttpUrl(form.resource_url)) {
+      e.resource_url = "Enter a complete http:// or https:// address";
+    }
     return e;
   }, [form]);
 
@@ -100,10 +113,11 @@ export default function VargForm() {
         setForm({
           vibhag_mr: d.vibhag_mr || "", vibhag_en: d.vibhag_en || "",
           district_mr: d.district_mr || "", district_en: d.district_en || "",
-          taluka: d.taluka || "", school_name: d.school_name || "",
+          taluka: d.taluka || "", village: d.village || "",
+          school_name: d.school_name || "",
           varg_name: d.varg_name || "", coordinator_name: d.coordinator_name || "",
           enrollment_count: d.enrollment_count || 0, is_active: d.is_active ?? true,
-          display_order: d.display_order || 0,
+          display_order: d.display_order || 0, resource_url: d.resource_url || "",
         });
       })
       .catch(() => {
@@ -136,8 +150,15 @@ export default function VargForm() {
       setServerErrors({});
       const body = {
         ...form,
+        school_name: form.school_name.trim(),
+        village: form.village.trim(),
         enrollment_count: Number(form.enrollment_count) || 0,
         display_order: Number(form.display_order) || 0,
+        resource_url: form.resource_url.trim(),
+        // The ids are what the server checks the district -> taluka
+        // relationship against; the names travel with them for display.
+        district_id: districtId,
+        taluka_id: talukaRows.find((t) => t.name_mr === form.taluka)?.id ?? null,
       };
       try {
         if (isNew) {
@@ -227,10 +248,12 @@ export default function VargForm() {
                 <label className="a-label a-label-required">District (Marathi)</label>
                 <GeoSelect master="districts" parentColumn="vibhag_id" parentId={vibhagId}
                            value={form.district_mr} onChange={pickDistrict}
-                           required placeholder="Select district" />
+                           required searchable placeholder="Select district"
+                           waitingLabel="Select a division first"
+                           emptyLabel="No active districts in this division — add one in District Master." />
                 {errFor("district_mr")
                   ? <span className="a-field-error">{errFor("district_mr")}</span>
-                  : <span className="a-field-note">Pick a division first.</span>}
+                  : <span className="a-field-note">Pick a division first. Type to search the list.</span>}
               </div>
               <div className="a-field">
                 <label className="a-label">District (English)</label>
@@ -240,14 +263,43 @@ export default function VargForm() {
             </div>
 
             <div className="a-form-grid a-form-grid-2">
-              <div className="a-field">
+              {/* Dependent on the district above: disabled until one is
+                  chosen, refilled when it changes, and cleared by pickDistrict
+                  so a taluka from the previous district can never be left
+                  selected. The server re-checks the pair by id regardless. */}
+              <div className={`a-field ${errFor("taluka") ? "has-error" : ""}`}>
                 <label className="a-label">Taluka</label>
                 <GeoSelect master="talukas" parentColumn="district_id" parentId={districtId}
                            value={form.taluka}
                            onChange={(v) => setForm((f) => ({ ...f, taluka: v }))}
-                           placeholder="Select taluka" />
-                <span className="a-field-note">Pick a district first.</span>
+                           searchable placeholder="Select taluka"
+                           waitingLabel="Select a district first"
+                           emptyLabel="No talukas recorded for this district yet — add them in Taluka Master." />
+                {errFor("taluka")
+                  ? <span className="a-field-error">{errFor("taluka")}</span>
+                  : <span className="a-field-note">Optional. Pick a district first.</span>}
               </div>
+
+              {/* REQ-09: directly below the taluka. Free text for now — this
+                  database has no village master, and the field is written so
+                  it can become a dependent dropdown later without the record
+                  shape or the API changing. */}
+              <div className={`a-field ${errFor("village") ? "has-error" : ""}`}>
+                <label className="a-label">Village Name</label>
+                <input className="a-input" maxLength={MAX.village}
+                       placeholder="Enter village name"
+                       value={form.village}
+                       onChange={(e) => setForm({ ...form, village: e.target.value })} />
+                {errFor("village")
+                  ? <span className="a-field-error">{errFor("village")}</span>
+                  : <span className="a-field-note">
+                      Optional. The village or locality within the taluka.
+                      {" "}{form.village.trim().length}/{MAX.village}
+                    </span>}
+              </div>
+            </div>
+
+            <div className="a-form-grid a-form-grid-2">
               <div className={`a-field ${errFor("enrollment_count") ? "has-error" : ""}`}>
                 <label className="a-label">Enrollment Count</label>
                 <input className="a-input" type="number" min="0" value={form.enrollment_count}
@@ -271,6 +323,26 @@ export default function VargForm() {
               <TextField label="Coordinator Name" max={MAX.coordinator}
                          value={form.coordinator_name}
                          onChange={(v) => setForm({ ...form, coordinator_name: v })} />
+            </div>
+
+            {/* Optional. Shown on the varg's details panel as a link, or as a
+                player when the address is a video the site can embed. */}
+            <div className={`a-field ${errFor("resource_url") ? "has-error" : ""}`}>
+              <label className="a-label">Video / Resource URL</label>
+              <input
+                className="a-input"
+                type="url"
+                inputMode="url"
+                placeholder="Enter a video or resource URL"
+                value={form.resource_url}
+                onChange={(e) => setForm({ ...form, resource_url: e.target.value })}
+              />
+              {errFor("resource_url")
+                ? <span className="a-field-error">{errFor("resource_url")}</span>
+                : <span className="a-field-note">
+                    Add a school introduction video, website, or other relevant resource.
+                    Leave it empty to show nothing. Clearing the box removes the link.
+                  </span>}
             </div>
           </Section>
         </div>

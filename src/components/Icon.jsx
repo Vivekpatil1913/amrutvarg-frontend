@@ -86,6 +86,29 @@ const PATHS = {
       <circle cx="17.5" cy="16" r="2.5" />
     </>
   ),
+  // Filled, unlike the rest of the set: a play triangle reads as a button at
+  // small sizes only when it is solid.
+  share: (
+    <>
+      <circle cx="18" cy="5" r="2.5" />
+      <circle cx="6" cy="12" r="2.5" />
+      <circle cx="18" cy="19" r="2.5" />
+      <path d="M8.3 10.8l7.4-4.3M8.3 13.2l7.4 4.3" />
+    </>
+  ),
+  play: <path d="M8 5.5v13l11-6.5z" fill="currentColor" />,
+  film: (
+    <>
+      <rect x="3" y="4.5" width="18" height="15" rx="2" />
+      <path d="M8 4.5v15M16 4.5v15M3 12h18M3 8.2h5M3 15.8h5M16 8.2h5M16 15.8h5" />
+    </>
+  ),
+  mic: (
+    <>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3" />
+    </>
+  ),
   sparkle: (
     <path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" />
   ),

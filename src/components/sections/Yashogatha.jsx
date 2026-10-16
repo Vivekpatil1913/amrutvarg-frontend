@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon';
 import StoryCard from '../StoryCard';
+import YashogathaVideos from './YashogathaVideos';
 import { featuredStories } from '../../data/yashogathaStories';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useYashogatha } from '../../data/useYashogatha';
@@ -77,6 +78,11 @@ export default function Yashogatha() {
             ))}
           </div>
         )}
+
+        {/* Video success stories, from the same CMS records the Videos &
+            Reels screen manages. A short strip here; the full set is on the
+            Yashogatha page. Renders nothing when none are published. */}
+        <YashogathaVideos limit={3} />
 
         <div className="yasho__all" data-reveal>
           <Link to={viewAllTarget} className="btn btn--primary">

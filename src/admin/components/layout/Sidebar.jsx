@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Megaphone, BookOpen, Users, Settings,
   FileText, Image, ChevronRight, LogOut, Sparkles, LayoutTemplate,
   Landmark, Map, MapPin, MapPinned, Milestone, Info, Activity, Clock, Quote,
-  ClipboardList, Contact2, Link2,
+  ClipboardList, Contact2, Link2, Clapperboard, Mic, Building2,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 import { avatarSrc } from "../../avatar.js";
@@ -45,7 +45,10 @@ const NAV_GROUPS = [
       { to: "/admin/footer", icon: Link2, label: "Footer Links & Socials" },
       // Yashogatha Stories is reached through Website > Yashogatha; /admin/stories still resolves.
       // Amrut Vargs is hidden from the menu; /admin/vargs still resolves directly.
+      { to: "/admin/videos", icon: Clapperboard, label: "Videos & Reels" },
+      { to: "/admin/podcasts", icon: Mic, label: "Podcasts" },
       { to: "/admin/contacts", icon: Users, label: "District Contacts" },
+      { to: "/admin/offices", icon: Building2, label: "District Offices" },
     ],
   },
   {

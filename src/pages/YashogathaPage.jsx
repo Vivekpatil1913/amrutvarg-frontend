@@ -7,6 +7,7 @@ import { fetchStoryPage, STORIES_PAGE_SIZE } from '../services/stories';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useYashogatha } from '../data/useYashogatha';
 import { pick } from '../data/useHero';
+import YashogathaVideos from '../components/sections/YashogathaVideos';
 
 // All published success stories, paged on the server: each page of 8 cards is
 // requested from GET /api/stories. The page lives in the URL (?p=…) so Back
@@ -145,6 +146,10 @@ export default function YashogathaPage() {
             <p>{noStories}</p>
           </div>
         )}
+
+        {/* Video success stories, from the same CMS records the Videos &
+            Reels screen manages. Renders nothing when none are published. */}
+        <YashogathaVideos />
       </div>
     </section>
   );
