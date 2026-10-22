@@ -4,7 +4,7 @@ import Icon from '../Icon';
 import LanguageSwitch from './LanguageSwitch';
 import logo from '../../assets/amrut-logo.png';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { LIVE_SUBMIT } from '../../services/submissions';
+// import { LIVE_SUBMIT } from '../../services/submissions';  // only used by the commented-out govbar
 
 const TEXT_SCALES = [0.9, 1, 1.125];
 const SCALE_KEY = 'amrut_text_scale';
@@ -22,6 +22,12 @@ const readScale = () => {
 // District Coordinators / Managers directory page.
 export const DIRECTORY_PATH = '/district-directory';
 
+// Every current announcement, in full.
+export const ANNOUNCEMENTS_PATH = '/announcements';
+
+// Published videos, reels and podcast episodes.
+export const MEDIA_PATH = '/media';
+
 export const NAV_ITEMS = [
   { id: 'hero', key: 'home' },
   { id: 'yashogatha', key: 'yashogatha' },
@@ -29,6 +35,7 @@ export const NAV_ITEMS = [
   { id: 'session', key: 'session' },
   { id: 'vargs', key: 'workingVargs' },
   { id: 'leader', key: 'leader' },
+  { id: 'media', key: 'media', to: MEDIA_PATH },
   { id: 'contact', key: 'contact' },
   // A separate page rather than a home-page section.
   { id: 'districts', key: 'districts', to: DIRECTORY_PATH },
@@ -179,6 +186,10 @@ export default function Header() {
       <a className="skip-link" href="#main">
         {t.a11y.skip}
       </a>
+      {/* Government strip — hidden on request. Restore by uncommenting this
+          block (and the LIVE_SUBMIT import above). It also carries the
+          A−/A/A+ text-size controls and the preview-mode badge. */}
+      {/*
       <div className="govbar">
         <div className="container govbar__inner">
           <p className="govbar__id">
@@ -217,6 +228,7 @@ export default function Header() {
           </div>
         </div>
       </div>
+      */}
 
       <header className={`site-header${scrolled ? ' is-scrolled' : ''}${open ? ' is-open' : ''}`}>
         <div className="container site-header__inner">

@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import Modal from './Modal';
-import { DIRECTORY_PATH } from './layout/Header';
+import { districtPath } from '../data/districtLinks';
 import { useLanguage } from '../i18n/LanguageContext';
 import { STATE_COORDINATOR_PHONE } from '../i18n/translations';
 import { useVargsSourceNote } from '../data/VargsProvider';
 import { vargPlaceName } from '../data/vargNamesEn';
 import { vargPath } from '../data/vargLinks';
 import { copyText } from '../services/clipboard';
+import { ResourceLink } from './MediaPlayers';
+import ShareButton from './ShareButton';
+import { isSafeHttpUrl } from '../services/mediaUrl';
 
 // Full details of one Amrut Varg, opened from its shareable /vargs/<slug> link.
 // Shows only what the portal publishes; missing details are stated, not filled in.
@@ -58,6 +61,7 @@ export default function VargDetails({ open, varg, onClose, onEnroll, onSeeAll })
     { key: 'district', icon: 'mapPin', label: v.colDistrict, value: district(varg.district) },
     { key: 'division', icon: 'globe', label: v.colDivision, value: div ? v.division(div) : '' },
     varg.taluka?.trim() ? { key: 'taluka', icon: 'mapPin', label: t.leader.taluka, value: varg.taluka } : null,
+    varg.village?.trim() ? { key: 'village', icon: 'mapPin', label: t.leader.village, value: varg.village } : null,
     { key: 'programme', icon: 'clock', label: v.dProgramme, value: v.programmeValue },
   ].filter((r) => r && r.value);
 
@@ -84,13 +88,37 @@ export default function VargDetails({ open, varg, onClose, onEnroll, onSeeAll })
                 {v.contactState}:{' '}
                 <a href={`tel:${STATE_COORDINATOR_PHONE}`}>{num(STATE_COORDINATOR_PHONE)}</a>
               </span>
-              <Link className="vdet__contact" to={DIRECTORY_PATH}>
+              {/* REQ-10: this is district contact information, so it goes to
+                  THIS varg's district rather than the unfiltered list. An
+                  unknown district name falls back to the full directory — the
+                  general behaviour — rather than to a broken address. */}
+              <Link className="vdet__contact" to={districtPath(varg.district)}>
                 {v.contactDistrict}
                 <Icon name="arrowRight" size={14} />
               </Link>
             </dd>
           </div>
         </dl>
+
+        {/* The school's own video or website, when the record carries one.
+            The heading is gated on the same test ResourceLink uses to decide
+            whether it will render anything: a field that is empty — or holds
+            an address the site refuses to open — must take its label with it,
+            rather than leaving a heading stranded over nothing. */}
+        {isSafeHttpUrl(varg.resourceUrl) ? (
+          <div className="vdet__resource-row">
+            <p className="vdet__resource-label">
+              <Icon name="film" size={15} />
+              {t.media.resource}
+            </p>
+            <ResourceLink
+              url={varg.resourceUrl}
+              label={place}
+              openLabel={t.media.resourceOpen}
+              playLabel={t.media.playLabel(place)}
+            />
+          </div>
+        ) : null}
 
         <p className="vdet__note">
           <Icon name="info" size={16} />
@@ -114,6 +142,12 @@ export default function VargDetails({ open, varg, onClose, onEnroll, onSeeAll })
               <span aria-live="polite">{copied ? v.linkCopied : v.copyLink}</span>
             </button>
           </div>
+        </div>
+
+        {/* The copy box above hands over a link; this hands it straight to the
+            app people here actually send it in. */}
+        <div className="vdet__share-wa">
+          <ShareButton variant="inline" path={vargPath(varg)} title={place} />
         </div>
 
         <div className="vdet__actions">

@@ -1426,10 +1426,16 @@
   .a-detail-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Card with a heading and an explanatory line */
+/* Card with a heading and an explanatory line.
+
+   Deliberately NOT overflow:hidden. It was, and that clipped the searchable
+   district dropdown to the edge of the card — the list was cut off mid-row
+   with no way to reach the rest of it. Nothing inside a panel relies on the
+   clipping: the media thumb and the view preview each carry their own, and
+   the head border sits in the straight part of the card, clear of the
+   rounded corners. */
 .a-panel {
   padding: 0;
-  overflow: hidden;
 }
 
 .a-panel-head {
@@ -2371,4 +2377,230 @@
   .dash-status-content { flex-direction: column; }
   .dash-legend { width: min(100%, 17rem); }
   .dash-content-row { grid-template-columns: minmax(7.5rem, 1fr) minmax(3.2rem, 1fr) 1.7rem 0.8rem; gap: 0.45rem; }
+}
+
+/* ====================================================================
+   VIDEOS, REELS AND PODCASTS
+   Added for the media content screens; reused wherever a row needs a
+   small preview or a form needs a set of radio choices.
+   ==================================================================== */
+
+/* A label styled as a button wraps a hidden file input, so it cannot use
+   the :disabled state a real button would. */
+.a-btn.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Thumbnail / cover cell in a data table. */
+.a-thumb-cell {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 36px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--a-bg, #f3f4f6);
+  color: var(--a-muted, #6b7280);
+}
+.a-thumb-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The upload/URL choice on the video and podcast forms. */
+.a-radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.35rem;
+}
+.a-radio-row .a-checkbox-label { margin: 0; }
+
+/* Player preview inside a View dialog. */
+.a-view-preview {
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111827;
+}
+.a-view-preview:empty { display: none; }
+.a-view-preview video,
+.a-view-preview iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #111827;
+}
+.a-view-preview iframe[style*="152"] { aspect-ratio: auto; }
+.a-view-preview audio { display: block; width: 100%; }
+.a-view-preview p {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  background: var(--a-bg, #f3f4f6);
+}
+
+/* ====================================================================
+   SEARCHABLE SELECT
+   A combobox for lists long enough that a native <select> is hard to
+   scan — the district master, for instance.
+   ==================================================================== */
+
+.a-ssel { position: relative; }
+
+/* Holds the value for native form validation; never shown. */
+.a-ssel__value {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.a-ssel__control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--a-line-strong);
+  border-radius: var(--a-radius-field);
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.a-ssel__control:hover:not(:disabled) { border-color: var(--a-brand, #c2703a); }
+.a-ssel__control:focus-visible {
+  outline: 2px solid var(--a-brand, #c2703a);
+  outline-offset: 1px;
+}
+.a-ssel__control:disabled {
+  background: var(--a-bg, #f3f4f6);
+  color: var(--a-muted);
+  cursor: not-allowed;
+}
+.a-ssel__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.a-ssel__label.is-placeholder { color: var(--a-muted); }
+.a-ssel__caret { flex: none; color: var(--a-muted); }
+.a-ssel__clear {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  color: var(--a-muted);
+}
+.a-ssel__clear:hover { background: var(--a-bg, #f3f4f6); color: inherit; }
+
+.a-ssel__panel {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  border: 1px solid var(--a-line-strong);
+  border-radius: var(--a-radius-field);
+  background: #fff;
+  box-shadow: 0 12px 28px -12px rgba(16, 24, 40, 0.3);
+  overflow: hidden;
+}
+.a-ssel__search {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--a-line);
+  color: var(--a-muted);
+}
+.a-ssel__search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: #111827;
+}
+
+.a-ssel__list {
+  /* An inline fallback; the component measures the room actually available
+     and overrides this, so a field low on the page is not cut off. */
+  max-height: 15rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+}
+.a-ssel__option {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+.a-ssel__option.is-active { background: var(--a-bg, #f3f4f6); }
+.a-ssel__option.is-selected { font-weight: 600; }
+.a-ssel__secondary {
+  margin-left: auto;
+  color: var(--a-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+.a-ssel__empty {
+  padding: 0.75rem 0.6rem;
+  color: var(--a-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* The list opens upwards when there is more room above — a field near the
+   foot of a long form would otherwise drop its options below the fold. */
+.a-ssel__panel.is-above {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+
+/* Narrow screens: these forms are used on phones in the field. Side-by-side
+   field pairs already stack below 640px via .a-form-grid; these are the
+   controls that still needed it. */
+@media (max-width: 640px) {
+  /* A combobox is a touch target first — 44px is the usual floor. */
+  .a-ssel__control { min-height: 2.75rem; }
+  .a-ssel__option { padding: 0.6rem 0.65rem; }
+  /* 16px stops iOS zooming the page when the search box takes focus. */
+  .a-ssel__search input { font-size: 1rem; }
+
+  /* The save bar wraps instead of squeezing its buttons off the edge. */
+  .a-save-bar { flex-wrap: wrap; gap: 0.5rem; }
+  .a-save-bar-state { width: 100%; margin-right: 0; }
+  .a-save-bar .a-flex { width: 100%; }
+  .a-save-bar .a-btn { flex: 1; justify-content: center; }
+
+  /* A list toolbar is a column on a phone, not a cramped row. */
+  .a-toolbar-right { width: 100%; }
+  .a-toolbar-right .a-btn { flex: 1; justify-content: center; }
+
+  /* Upload rows stack rather than shrinking the preview to nothing. */
+  .a-media-row { flex-direction: column; align-items: stretch; }
+  .a-media-thumb { width: 100%; }
+
+  /* The upload/URL choice needs room to breathe once stacked. */
+  .a-radio-row { gap: 0.85rem; }
 }

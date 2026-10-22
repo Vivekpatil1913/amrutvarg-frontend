@@ -50,7 +50,12 @@ const FIELD_LABELS = {
   declarationAccepted: "Declaration accepted",
 
   // Organizer
+  // Kept for organizer submissions made before the form asked for an
+  // organisation instead of a town.
   place: "Place",
+  organisation: "Organization / Institution",
+  branch: "Branch / Department",
+  contactPerson: "Contact person name",
   designation: "Designation",
 
   // Leader
@@ -82,7 +87,10 @@ const GROUPS = {
     { title: "Declaration", keys: ["declarationAccepted"] },
   ],
   organizer: [
-    { title: "Organizer", keys: ["name", "designation", "mobile", "place", "district"] },
+    { title: "Organisation", keys: ["organisation", "branch"] },
+    { title: "Contact", keys: ["name", "contactPerson", "designation", "mobile"] },
+    // `place` only appears on records made before the form changed.
+    { title: "Location", keys: ["district", "place"] },
   ],
   leader: [
     { title: "Leader", keys: ["leaderName", "organizerEnrollment"] },
@@ -97,7 +105,15 @@ const GROUPS = {
 const humanise = (key) =>
   key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").replace(/^./, (c) => c.toUpperCase());
 
-export const labelFor = (key) => FIELD_LABELS[key] ?? humanise(key);
+// A few keys mean different things on different forms. `name` is the student
+// on a participant record and the organiser on an organizer one, so the
+// shared map cannot simply be renamed — the override is per form.
+const FORM_FIELD_LABELS = {
+  organizer: { name: "Organizer name" },
+};
+
+export const labelFor = (key, formType) =>
+  FORM_FIELD_LABELS[formType]?.[key] ?? FIELD_LABELS[key] ?? humanise(key);
 
 // Renders a stored value as text. Returns null when there is nothing to show,
 // so the caller can mark the row as empty rather than printing "null".
@@ -131,14 +147,14 @@ export function groupSubmission(formType, data = {}) {
       .filter((key) => key in data)
       .map((key) => {
         used.add(key);
-        return { key, label: labelFor(key), value: formatValue(key, data[key]) };
+        return { key, label: labelFor(key, formType), value: formatValue(key, data[key]) };
       });
     if (rows.length) sections.push({ title: group.title, rows });
   }
 
   const extra = Object.keys(data)
     .filter((key) => !used.has(key))
-    .map((key) => ({ key, label: labelFor(key), value: formatValue(key, data[key]) }));
+    .map((key) => ({ key, label: labelFor(key, formType), value: formatValue(key, data[key]) }));
   if (extra.length) sections.push({ title: "Other details", rows: extra });
 
   return sections;

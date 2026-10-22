@@ -103,6 +103,7 @@ export default function VargView() {
               </Line>
               <Line label="District (English)" empty={!varg.district_en}>{varg.district_en}</Line>
               <Line label="Taluka" empty={!varg.taluka}>{varg.taluka}</Line>
+              <Line label="Village" empty={!varg.village}>{varg.village}</Line>
             </div>
           </Section>
 

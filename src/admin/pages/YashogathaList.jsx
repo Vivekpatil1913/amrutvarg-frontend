@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Plus, Pencil, Trash2, Search, Eye, Settings, Star } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Plus, Pencil, Trash2, Search, Eye, Settings, Star, Clapperboard } from "lucide-react";
 import { api } from "../api/client.js";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
@@ -131,6 +131,12 @@ export default function YashogathaList() {
         <button className="a-btn a-btn-ghost" onClick={() => navigate("/admin/yashogatha/settings")}>
           <Settings size={16} /> Section settings
         </button>
+        {/* Video stories live in the Videos & Reels module rather than in a
+            second video library of their own. Without this button an editor
+            standing on the Yashogatha screen has no way of knowing that. */}
+        <button className="a-btn a-btn-ghost" onClick={() => navigate("/admin/videos/new?category=success")}>
+          <Clapperboard size={16} /> Add video story
+        </button>
         <button className="a-btn a-btn-primary" onClick={() => navigate("/admin/yashogatha/new")}>
           <Plus size={16} /> Add Yashogatha
         </button>
@@ -146,6 +152,14 @@ export default function YashogathaList() {
           <p className="a-page-desc">
             Each student's story, with its cover, summary and body. Section settings holds
             the heading, labels and disclaimer that wrap them.
+          </p>
+          <p className="a-page-desc">
+            Video stories are managed under{" "}
+            <Link className="a-view-link" to="/admin/videos?category=success">
+              Content › Videos &amp; Reels
+            </Link>{" "}
+            — any video filed under the <strong>Success story</strong> category appears in the
+            Yashogatha section on the website, as an upload or a YouTube link.
           </p>
         </div>
       </div>

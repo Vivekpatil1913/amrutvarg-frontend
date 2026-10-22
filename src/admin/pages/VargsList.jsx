@@ -48,16 +48,24 @@ export default function VargsList() {
     });
   }
 
-  // Active is the one flag worth flipping without opening the whole record. The
-  // record is re-read first so a partial row never overwrites the rest of it.
+  // Active is the one flag worth flipping without opening the whole record.
+  //
+  // PUT replaces the record, so the re-read row is sent back whole with only
+  // is_active changed. Listing the fields individually, as this used to, meant
+  // every field added later was silently blanked by a toggle — the village and
+  // the resource URL were both lost that way.
   async function toggleActive(row) {
     await mutate(async () => {
       const { data: d } = await api.get(`/admin/vargs/${row.id}`);
       await api.put(`/admin/vargs/${row.id}`, {
-        vibhag_mr: d.vibhag_mr, vibhag_en: d.vibhag_en || "",
-        district_mr: d.district_mr, district_en: d.district_en || "",
-        taluka: d.taluka || "", school_name: d.school_name,
+        ...d,
+        // Columns the write schema does not accept.
+        id: undefined, created_at: undefined, updated_at: undefined, deleted_at: undefined,
+        // Nullable columns the schema expects as strings or ids.
+        vibhag_en: d.vibhag_en || "", district_en: d.district_en || "",
+        taluka: d.taluka || "", village: d.village || "",
         varg_name: d.varg_name || "", coordinator_name: d.coordinator_name || "",
+        resource_url: d.resource_url || "",
         enrollment_count: d.enrollment_count || 0,
         display_order: d.display_order || 0,
         is_active: !d.is_active,

@@ -3,6 +3,7 @@ import Icon from './Icon';
 import StoryCover from './StoryCover';
 import { STORY_CATEGORIES } from '../data/yashogathaStories';
 import { useLanguage } from '../i18n/LanguageContext';
+import ShareButton from './ShareButton';
 
 // One success-story card, shared by the home preview and the listing page.
 // Deliberately unnumbered: stories are told apart by cover, theme and title.
@@ -34,6 +35,9 @@ export default function StoryCard({ story, className = '', style, linkState }) {
             {y.readMore}
             <Icon name="arrowRight" size={15} />
           </Link>
+          {/* The story has its own public address already, so sharing one
+              needs no new route — just the slug it is read at. */}
+          <ShareButton path={`/yashogatha/${story.slug}`} title={text.title} compact />
         </div>
       </div>
     </article>

@@ -62,6 +62,16 @@ export function LanguageProvider({ children }) {
           month: 'long',
           year: 'numeric',
         }),
+      // The same date with its weekday in front, for an event where the day
+      // of the week is what a reader actually plans around. Derived rather
+      // than stored, so it can never contradict the date it belongs to.
+      formatDateWithDay: (iso) =>
+        new Date(`${iso}T00:00:00`).toLocaleDateString(locale, {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
     };
   }, [lang, setLang, switching]);
 

@@ -1,11 +1,15 @@
 import { useEffect, useId, useMemo, useRef } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
 import Pager, { PAGE_SIZE } from '../components/Pager';
 import { CONTACT_ROLES } from '../data/districtContacts';
 import { DISTRICTS, DISTRICTS_BY_DIVISION, DIVISION_OF_DISTRICT } from '../data/districts';
 import { useDistrictContacts } from '../data/useDistrictContacts';
+import { districtFromSlug, districtPath } from '../data/districtLinks';
+import { useDistrictOffice } from '../data/useDistrictOffice';
+import { useMaster, findByName } from '../data/useMasters';
+import DistrictOffice from '../components/DistrictOffice';
 import { useDirectory, fill } from '../data/useDirectory';
 import { pick } from '../data/useHero';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -82,6 +86,8 @@ export default function DistrictDirectoryPage() {
   const cms = useDirectory();
   const districtContacts = useDistrictContacts();
   const [params, setParams] = useSearchParams();
+  const { districtSlug } = useParams();
+  const navigate = useNavigate();
 
   const searchId = useId();
   const selectId = useId();
@@ -184,8 +190,26 @@ export default function DistrictDirectoryPage() {
   const divisionText = (name) =>
     cms ? fill(pick(cms.text, 'division_label', lang), { name }) : d.division(name);
 
-  const selected = DISTRICTS.includes(params.get('d')) ? params.get('d') : '';
+  // The district comes from the path when there is one (/district-directory/pune),
+  // falling back to the ?d= filter the dropdown has always written. A slug that
+  // names no district resolves to null, which is shown as a notice rather than
+  // silently becoming "all districts" — a visitor following a district contact
+  // link must never be handed another district's team without being told.
+  const fromPath = districtSlug ? districtFromSlug(districtSlug) : null;
+  const unknownSlug = Boolean(districtSlug) && fromPath === null;
+  const fromQuery = DISTRICTS.includes(params.get('d')) ? params.get('d') : '';
+  const selected = fromPath ?? fromQuery;
   const query = params.get('q') || '';
+
+  // Choosing a district changes the ADDRESS rather than a query parameter, so
+  // the result is a link worth sharing and the Back button returns to the
+  // district the visitor came from. The search term travels with it; the page
+  // number does not, because the new list starts again at the first page.
+  const chooseDistrict = (name) => {
+    const search = params.get('q');
+    const qs = search ? `?q=${encodeURIComponent(search)}` : '';
+    navigate(`${name ? districtPath(name) : '/district-directory'}${qs}`);
+  };
 
   const update = (key, value) => {
     const next = new URLSearchParams(params);
@@ -241,6 +265,13 @@ export default function DistrictDirectoryPage() {
     }).filter((g) => g.count);
   }, [selected, query, division, districtContacts, roles, roleOrder, featuredRoles]);
 
+  // The office is keyed on the district master id, which the site already
+  // loads for its dropdowns — so no new lookup table and no second source of
+  // truth for what a district is.
+  const districtRows = useMaster('districts');
+  const selectedId = selected ? findByName(districtRows, selected)?.id ?? null : null;
+  const { office, status: officeStatus } = useDistrictOffice(selectedId);
+
   const count = groups.reduce((n, g) => n + g.count, 0);
 
   // One page of cards, taken from the list in display order (division by
@@ -271,7 +302,18 @@ export default function DistrictDirectoryPage() {
         <nav className="crumbs" aria-label={labels.breadcrumb}>
           <Link to="/">{t.nav.home}</Link>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{labels.title}</span>
+          {/* Scoped to one district, the trail gains a step back to the whole
+              list — otherwise a visitor arriving from a district contact link
+              has no obvious way out to the other districts. */}
+          {fromPath ? (
+            <>
+              <Link to="/district-directory">{labels.title}</Link>
+              <span aria-hidden="true">/</span>
+              <span aria-current="page">{district(fromPath)}</span>
+            </>
+          ) : (
+            <span aria-current="page">{labels.title}</span>
+          )}
         </nav>
 
         <header className="spage__head">
@@ -282,9 +324,26 @@ export default function DistrictDirectoryPage() {
             </p>
           ) : null}
           <h1 id="ddir-title" className="section__title">
-            {labels.title}
+            {fromPath ? d.districtScope(district(fromPath)) : labels.title}
           </h1>
           {labels.lead ? <p className="section__lead">{labels.lead}</p> : null}
+
+          {/* A slug naming no district is said out loud. Showing the full list
+              silently would look like the district simply has no contacts,
+              and quietly picking a near match would be worse still. */}
+          {unknownSlug ? (
+            <p className="ddir__unknown" role="status">
+              <Icon name="alert" size={16} />
+              {d.unknownDistrict}
+            </p>
+          ) : null}
+
+          {fromPath ? (
+            <Link className="btn btn--ghost ddir__all" to="/district-directory">
+              <Icon name="arrowLeft" size={16} />
+              {d.allDistrictsLink}
+            </Link>
+          ) : null}
           {links.submit_form_url ? (
             <a
               className="btn btn--ghost ddir__submit"
@@ -319,7 +378,7 @@ export default function DistrictDirectoryPage() {
               {labels.districtLabel}
             </label>
             <Icon name="mapPin" size={18} />
-            <select id={selectId} value={selected} onChange={(e) => update('d', e.target.value)}>
+            <select id={selectId} value={selected} onChange={(e) => chooseDistrict(e.target.value)}>
               <option value="">{labels.allDistricts}</option>
               {DISTRICTS.map((n) => (
                 <option key={n} value={n}>
@@ -329,6 +388,14 @@ export default function DistrictDirectoryPage() {
             </select>
           </div>
         </div>
+
+        {/* Shown only for a district that has one. A district with no office
+            recorded looks exactly as it did before this existed. */}
+        {officeStatus === 'loading' ? (
+          <p className="doffice doffice--loading" aria-busy="true">{t.media.loading}</p>
+        ) : officeStatus === 'ready' ? (
+          <DistrictOffice office={office} />
+        ) : null}
 
         <p ref={listRef} className="spage__count" aria-live="polite">
           {countText(count)}
@@ -374,7 +441,7 @@ export default function DistrictDirectoryPage() {
         ) : districtContacts.length ? (
           <div className="sempty">
             <p>{labels.noResults}</p>
-            <button type="button" className="btn btn--ghost" onClick={() => setParams({}, { replace: true })}>
+            <button type="button" className="btn btn--ghost" onClick={() => navigate('/district-directory')}>
               {labels.clearFilters}
             </button>
           </div>

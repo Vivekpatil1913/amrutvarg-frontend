@@ -31,10 +31,14 @@ const fromCms = (row) => ({
   district: row.district_mr || row.district_en || '',
   districtEn: row.district_en || '',
   taluka: row.taluka || '',
+  village: row.village || '',
   schoolName: row.school_name || '',
   vargName: row.varg_name || '',
   coordinatorName: row.coordinator_name || '',
   enrollmentCount: Number.isInteger(row.enrollment_count) ? row.enrollment_count : null,
+  // Optional school introduction video or website. Absent on most records,
+  // and empty rather than null so the details panel can just test for truth.
+  resourceUrl: row.resource_url || '',
   status: 'APPROVED',
 });
 
