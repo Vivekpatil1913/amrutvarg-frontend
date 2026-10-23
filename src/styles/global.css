@@ -989,14 +989,17 @@ select.input {
 .notices__more:hover {
   text-decoration: underline;
 }
-/* Rotating strip: all announcements share one grid cell (height of the
-   tallest), and only the active one is visible. */
+/* Rotating strip: only the active announcement takes up space, so the strip
+   grows or shrinks with its content. The others sit out of the flow. */
 .notices__slides {
-  grid-template-areas: 'slide';
+  position: relative;
 }
 /* The outgoing announcement hides at once; only the incoming one fades in. */
 .notices__slide {
-  grid-area: slide;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   visibility: hidden;
   opacity: 0;
   transform: translateX(14px);
@@ -1006,6 +1009,7 @@ select.input {
   border-top: 0;
 }
 .notices__slide.is-active {
+  position: relative;
   visibility: visible;
   opacity: 1;
   transform: none;
