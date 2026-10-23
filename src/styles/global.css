@@ -559,7 +559,9 @@ select.input {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--s-2);
-  padding-inline: clamp(8px, 1.5vw, 16px);
+  /* Wider than the page container so the full nav fits without clipping. */
+  max-width: 1680px;
+  padding-inline: clamp(12px, 2vw, 32px);
   height: var(--header-h);
   min-width: 0;
 }
