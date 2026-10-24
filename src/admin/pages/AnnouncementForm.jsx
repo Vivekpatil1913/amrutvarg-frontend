@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { GeoSelect, useGeo } from "../components/ui/GeoSelect.jsx";
 
 // One announcement, added or edited on its own page rather than in a dialog.
@@ -199,10 +200,10 @@ export default function AnnouncementForm() {
       try {
         if (isNew) {
           await api.post("/admin/announcements", body);
-          toast.show("Announcement created", "ok");
+          toast.success("Announcement created successfully");
         } else {
           await api.put(`/admin/announcements/${id}`, body);
-          toast.show("Announcement updated", "ok");
+          toast.success("Announcement updated successfully");
         }
         back();
       } catch (err) {
@@ -210,7 +211,7 @@ export default function AnnouncementForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message || "Could not save the announcement", "bad");
+          toast.error(errorMessage(err, "Could not save the announcement"));
         }
         throw err;
       }
@@ -220,8 +221,11 @@ export default function AnnouncementForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/announcements/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Announcement moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that announcement"));
     });
   }
 

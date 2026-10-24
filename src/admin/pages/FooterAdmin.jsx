@@ -6,6 +6,7 @@ import { Modal } from "../components/ui/Modal.jsx";
 import { DataTable } from "../components/ui/DataTable.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import Icon from "../../components/Icon.jsx";
 
 const blank = (v) => !String(v ?? "").trim();
@@ -70,7 +71,7 @@ export default function FooterAdmin() {
         setOptions(opt.data);
         setMeta({ published_at: cfg.data.published_at, has_unpublished_changes: cfg.data.has_unpublished_changes });
       })
-      .catch((err) => toast.show(err.message || "Could not load footer settings", "bad"))
+      .catch((err) => toast.error(errorMessage(err, "Could not load footer settings")))
       .finally(() => setLoading(false));
   }, [toast]);
 
@@ -178,11 +179,11 @@ export default function FooterAdmin() {
         if (publish) {
           const result = await api.post("/admin/footer/publish");
           setMeta({ published_at: result.data.published_at, has_unpublished_changes: false });
-          toast.show("Published — the website is updated", "ok");
+          toast.success("Published — the website is updated");
         } else toast.show("Draft saved — not yet live", "ok");
       } catch (err) {
         if (err.details?.length) setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
-        toast.show(err.details?.[0] ? `${err.details[0].field}: ${err.details[0].message}` : err.message, "bad");
+        toast.error(errorMessage(err));
         throw err;
       }
     }).catch(() => {});
@@ -197,7 +198,7 @@ export default function FooterAdmin() {
         setMeta((m) => ({ ...m, has_unpublished_changes: false }));
         setConfirmDiscard(false);
         toast.show("Draft reset to the published version", "ok");
-      } catch (err) { toast.show(err.message, "bad"); throw err; }
+      } catch (err) { toast.error(errorMessage(err)); throw err; }
     }).catch(() => {});
   }
 

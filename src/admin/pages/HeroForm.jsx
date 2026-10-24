@@ -9,6 +9,7 @@ import { useMutation } from "../hooks/useApi.js";
 import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { BUNDLED } from "../lib/siteImages.js";
 
 // The whole hero configuration on one scrolling page, grouped into cards.
@@ -120,7 +121,7 @@ function ImageSlot({ slot, img, onPatch, onBrowse, maxAlt }) {
       onPatch({ media_id: res.data.id, url: res.data.url });
       toast.show("Image uploaded", "ok");
     } catch (err) {
-      toast.show(err.message || "Upload failed", "bad");
+      toast.error(errorMessage(err, "Upload failed"));
     } finally {
       setUploading(false);
     }
@@ -249,7 +250,7 @@ export default function HeroForm() {
         if (thenPublish) {
           const pub = await api.post("/admin/hero/publish");
           setMeta({ published_at: pub.data.published_at, has_unpublished_changes: false });
-          toast.show("Published — the website is updated", "ok");
+          toast.success("Published — the website is updated");
         } else {
           toast.show("Draft saved — not yet live", "ok");
         }
@@ -257,7 +258,7 @@ export default function HeroForm() {
       } catch (err) {
         // Server-side validation decides; show the field it refused.
         const first = err.details?.[0];
-        toast.show(first ? `${first.field}: ${first.message}` : err.message, "bad");
+        toast.error(errorMessage(err));
         throw err;
       }
     }).catch(() => {});
@@ -271,6 +272,9 @@ export default function HeroForm() {
       setMeta((m) => ({ ...m, has_unpublished_changes: false }));
       setConfirmDiscard(false);
       toast.show("Draft reset to the published version", "ok");
+    }).catch((err) => {
+      setConfirmDiscard(false);
+      toast.error(errorMessage(err, "Could not discard the draft"));
     });
   }
 
@@ -598,6 +602,8 @@ export default function HeroForm() {
         onConfirm={discard}
         loading={saving}
         title="Discard draft"
+        confirmLabel="Discard"
+        loadingLabel="Discarding…"
         message="Throw away the draft and start again from the published version?"
         subMessage="The live website is not affected. Unsaved and saved draft edits are both lost."
       />
@@ -633,7 +639,7 @@ function MediaPicker({ slot, onClose, onPick }) {
       toast.show("Image uploaded", "ok");
       onPick(res.data);
     } catch (err) {
-      toast.show(err.message || "Upload failed", "bad");
+      toast.error(errorMessage(err, "Upload failed"));
     } finally {
       setUploading(false);
       e.target.value = "";

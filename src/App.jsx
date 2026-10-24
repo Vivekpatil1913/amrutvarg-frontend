@@ -16,6 +16,7 @@ import SceneBackdrop from './components/SceneBackdrop';
 // Admin panel (lazy-loaded to keep public site bundle small)
 import { AdminAuthProvider } from './admin/context/AdminAuthContext.jsx';
 import { ToastProvider } from './admin/components/ui/Toast.jsx';
+import { ConfirmProvider } from './admin/components/ui/Modal.jsx';
 import { AdminLayout } from './admin/components/layout/AdminLayout.jsx';
 import './admin/styles/admin.css';
 const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
@@ -192,7 +193,9 @@ function RouterContent() {
     return (
       <AdminAuthProvider>
         <ToastProvider>
-          <AdminRoutes />
+          <ConfirmProvider>
+            <AdminRoutes />
+          </ConfirmProvider>
         </ToastProvider>
       </AdminAuthProvider>
     );

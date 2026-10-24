@@ -7,6 +7,7 @@ import { DataTable } from "../components/ui/DataTable.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 // One office per district. Adding and editing happen on their own page — see
 // OfficeForm.jsx.
@@ -47,11 +48,11 @@ export default function OfficesList() {
     await mutate(async () => {
       try {
         await api.del(`/admin/offices/${confirmId}`);
-        toast.show("Deleted", "ok");
+        toast.success("District office moved to trash");
         setConfirmId(null);
         refetch();
       } catch (err) {
-        toast.show(err.message || "Could not delete that office", "bad");
+        toast.error(errorMessage(err, "Could not delete that office"));
         setConfirmId(null);
         throw err;
       }
@@ -172,7 +173,7 @@ export default function OfficesList() {
         loading={saving}
         title="Delete District Office"
         message="Delete this office record?"
-        subMessage="The district's contact page falls back to showing its Amrut Varg team only."
+        subMessage="It will be moved to the trash and can be restored later. Until then the district's contact page shows its Amrut Varg team only."
       />
     </>
   );

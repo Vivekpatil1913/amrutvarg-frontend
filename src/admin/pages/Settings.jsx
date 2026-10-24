@@ -3,6 +3,7 @@ import { Save } from "lucide-react";
 import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 const GROUP_LABELS = {
   general: "General",
@@ -31,7 +32,9 @@ export default function Settings() {
     e.preventDefault();
     await mutate(async () => {
       await api.post("/admin/settings/bulk", values);
-      toast.show("Settings saved", "ok");
+      toast.success("Settings saved successfully");
+    }).catch((err) => {
+      toast.error(errorMessage(err, "Could not save the settings"));
     });
   }
 

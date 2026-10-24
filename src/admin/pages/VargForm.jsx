@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { GeoSelect, useGeo } from "../components/ui/GeoSelect.jsx";
 import { isSafeHttpUrl } from "../../services/mediaUrl.js";
 
@@ -163,10 +164,10 @@ export default function VargForm() {
       try {
         if (isNew) {
           await api.post("/admin/vargs", body);
-          toast.show("Amrut Varg created", "ok");
+          toast.success("Amrut Varg created successfully");
         } else {
           await api.put(`/admin/vargs/${id}`, body);
-          toast.show("Amrut Varg saved", "ok");
+          toast.success("Amrut Varg updated successfully");
         }
         back();
       } catch (err) {
@@ -174,7 +175,7 @@ export default function VargForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message, "bad");
+          toast.error(errorMessage(err));
         }
         throw err;
       }
@@ -184,8 +185,11 @@ export default function VargForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/vargs/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Amrut Varg moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that varg"));
     });
   }
 
@@ -390,7 +394,7 @@ export default function VargForm() {
         loading={saving}
         title="Delete Amrut Varg"
         message="Delete this varg?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

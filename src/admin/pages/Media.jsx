@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { Pager } from "../components/ui/Pager.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 const API_BASE = import.meta.env.VITE_CMS_API?.replace("/api/v1", "") || "http://localhost:4000";
 
@@ -27,28 +28,35 @@ export default function Media() {
     const files = e.target.files;
     if (!files?.length) return;
     setUploading(true);
+    let uploaded = 0;
     for (const file of files) {
       const fd = new FormData();
       fd.append("file", file);
       fd.append("alt_text", "");
       try {
         await api.upload("/admin/media/upload", fd);
+        uploaded += 1;
       } catch (err) {
-        toast.show(err.message, "bad");
+        toast.error(`${file.name}: ${errorMessage(err, "Upload failed")}`);
       }
     }
     setUploading(false);
     fileRef.current.value = "";
     refetch();
-    toast.show("Upload complete", "ok");
+    if (uploaded) {
+      toast.success(uploaded === 1 ? "File uploaded successfully" : `${uploaded} files uploaded successfully`);
+    }
   }
 
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/media/${confirmId}`);
-      toast.show("Asset removed", "ok");
+      toast.success("Media asset removed from the library");
       setConfirmId(null);
       refetch();
+    }).catch((err) => {
+      setConfirmId(null);
+      toast.error(errorMessage(err, "Could not delete that asset"));
     });
   }
 
@@ -115,7 +123,7 @@ export default function Media() {
         )}
       </div>
 
-      <ConfirmModal open={!!confirmId} onClose={() => setConfirmId(null)} onConfirm={handleDelete} loading={deleting} title="Remove Asset" message="Remove this media asset?" subMessage="The file will be soft-deleted and can be restored." />
+      <ConfirmModal open={!!confirmId} onClose={() => setConfirmId(null)} onConfirm={handleDelete} loading={deleting} title="Remove Asset" message="Remove this media asset?" subMessage="It is hidden from the media library. The file itself is kept, so pages already using it are not affected." />
     </>
   );
 }

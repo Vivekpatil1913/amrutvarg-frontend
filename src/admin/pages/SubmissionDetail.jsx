@@ -6,6 +6,7 @@ import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { FORM_LABELS, groupSubmission } from "../lib/submissionFields.js";
 
 const STATUSES = ["new", "reviewed", "actioned", "archived"];
@@ -69,16 +70,21 @@ export default function SubmissionDetail() {
   async function save() {
     await mutate(async () => {
       await api.put(`/admin/submissions/${id}/status`, form);
-      toast.show("Status updated", "ok");
+      toast.success("Submission status updated");
       load();
+    }).catch((err) => {
+      toast.error(errorMessage(err, "Could not update the status"));
     });
   }
 
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/submissions/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Submission moved to trash");
       navigate("/admin/submissions");
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that submission"));
     });
   }
 
@@ -206,7 +212,7 @@ export default function SubmissionDetail() {
         loading={saving}
         title="Delete Submission"
         message="Delete this submission?"
-        subMessage="This is somebody's registration. It is removed from the list; the record itself is retained."
+        subMessage="This is somebody's registration. It will be moved to the trash and can be restored later."
       />
     </>
   );

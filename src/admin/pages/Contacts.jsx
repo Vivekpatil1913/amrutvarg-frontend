@@ -7,6 +7,7 @@ import { DataTable } from "../components/ui/DataTable.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { useGeo } from "../components/ui/GeoSelect.jsx";
 
 // Every district contact, one row each. Adding and editing happen on their own
@@ -46,9 +47,12 @@ export default function Contacts() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/contacts/${confirmId}`);
-      toast.show("Deleted", "ok");
+      toast.success("Contact moved to trash");
       setConfirmId(null);
       refetch();
+    }).catch((err) => {
+      setConfirmId(null);
+      toast.error(errorMessage(err, "Could not delete that contact"));
     });
   }
 

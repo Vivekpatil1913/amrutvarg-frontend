@@ -6,9 +6,10 @@ import {
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
+import { Modal, ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { CONTENT_TYPES, VIDEO_CATEGORIES, labelOf } from "../lib/mediaContent.js";
 import { mediaSrc, formatDuration, videoEmbed } from "../../services/mediaUrl.js";
 
@@ -59,6 +60,7 @@ export default function VideosList() {
   const [viewRow, setViewRow] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/videos",
@@ -68,28 +70,36 @@ export default function VideosList() {
 
   // Publishing is its own endpoint, so flipping a row never re-sends — and so
   // never re-validates — the whole record.
-  async function togglePublished(row) {
-    await mutate(async () => {
-      try {
-        await api.patch(`/admin/videos/${row.id}/publish`, { published: !row.published });
-        toast.show(row.published ? "Unpublished" : "Published", "ok");
+  function togglePublished(row) {
+    const publishing = !row.published;
+    confirm({
+      title: publishing ? "Publish video" : "Unpublish video",
+      message: publishing
+        ? `Publish "${row.title_mr}" to the website?`
+        : `Take "${row.title_mr}" off the website?`,
+      subMessage: publishing
+        ? "It will be visible to visitors straight away."
+        : "It stays in the admin panel as a draft and can be published again.",
+      tone: publishing ? "primary" : "warning",
+      confirmLabel: publishing ? "Publish" : "Unpublish",
+      errorText: "Could not change the publish status",
+      onConfirm: async () => {
+        await api.patch(`/admin/videos/${row.id}/publish`, { published: publishing });
+        toast.success(publishing ? "Video published — now live on the website" : "Video unpublished — hidden from the website");
         refetch();
-      } catch (err) {
-        toast.show(err.message || "Could not change the publish status", "bad");
-        throw err;
-      }
-    }).catch(() => {});
+      },
+    });
   }
 
   async function handleDelete() {
     await mutate(async () => {
       try {
         await api.del(`/admin/videos/${confirmId}`);
-        toast.show("Deleted", "ok");
+        toast.success("Video moved to trash");
         setConfirmId(null);
         refetch();
       } catch (err) {
-        toast.show(err.message || "Could not delete that video", "bad");
+        toast.error(errorMessage(err, "Could not delete that video"));
         setConfirmId(null);
         throw err;
       }
@@ -295,7 +305,7 @@ export default function VideosList() {
         loading={saving}
         title="Delete Video"
         message="Delete this video?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { MediaUpload } from "../components/ui/MediaUpload.jsx";
 import { SOURCE_TYPES, PODCAST_CATEGORIES } from "../lib/mediaContent.js";
 import { isSafeHttpUrl, audioEmbed, formatDuration } from "../../services/mediaUrl.js";
@@ -172,10 +173,10 @@ export default function PodcastForm() {
       try {
         if (isNew) {
           await api.post("/admin/podcasts", body);
-          toast.show("Podcast created", "ok");
+          toast.success("Podcast created successfully");
         } else {
           await api.put(`/admin/podcasts/${id}`, body);
-          toast.show("Podcast saved", "ok");
+          toast.success("Podcast updated successfully");
         }
         back();
       } catch (err) {
@@ -183,7 +184,7 @@ export default function PodcastForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message || "Could not save the episode", "bad");
+          toast.error(errorMessage(err, "Could not save the episode"));
         }
         throw err;
       }
@@ -193,8 +194,11 @@ export default function PodcastForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/podcasts/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Podcast moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that episode"));
     });
   }
 
@@ -422,7 +426,7 @@ export default function PodcastForm() {
         loading={saving}
         title="Delete Podcast"
         message="Delete this episode?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

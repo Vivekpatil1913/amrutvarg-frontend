@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { GeoSelect, GeoCheckList, useGeo } from "../components/ui/GeoSelect.jsx";
 
 // One district contact, added or edited on its own page rather than in a
@@ -160,7 +161,7 @@ export default function ContactForm() {
       })
       .catch((err) => {
         if (cancelled) return;
-        toast.show(err.message || "Could not open that contact", "bad");
+        toast.error(errorMessage(err, "Could not open that contact"));
         navigate("/admin/contacts");
       })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -202,10 +203,10 @@ export default function ContactForm() {
       try {
         if (isNew) {
           await api.post("/admin/contacts", body);
-          toast.show("Contact created", "ok");
+          toast.success("Contact created successfully");
         } else {
           await api.put(`/admin/contacts/${id}`, body);
-          toast.show("Contact updated", "ok");
+          toast.success("Contact updated successfully");
         }
         back();
       } catch (err) {
@@ -219,7 +220,7 @@ export default function ContactForm() {
           setServerErrors(byField);
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message || "Could not save the contact", "bad");
+          toast.error(errorMessage(err, "Could not save the contact"));
         }
         throw err;
       }
@@ -229,8 +230,11 @@ export default function ContactForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/contacts/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Contact moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that contact"));
     });
   }
 

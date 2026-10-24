@@ -7,6 +7,7 @@ import { DataTable } from "../components/ui/DataTable.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 const FORM_TYPES = ["", "participant", "organizer", "leader"];
 const STATUSES = ["", "new", "reviewed", "actioned", "archived"];
@@ -33,9 +34,12 @@ export default function Submissions() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/submissions/${confirmId}`);
-      toast.show("Deleted", "ok");
+      toast.success("Submission moved to trash");
       setConfirmId(null);
       refetch();
+    }).catch((err) => {
+      setConfirmId(null);
+      toast.error(errorMessage(err, "Could not delete that submission"));
     });
   }
 
@@ -93,7 +97,7 @@ export default function Submissions() {
         loading={saving}
         title="Delete Submission"
         message="Delete this submission?"
-        subMessage="This is somebody's registration. It is removed from the list; the record itself is retained."
+        subMessage="This is somebody's registration. It will be moved to the trash and can be restored later."
       />
     </>
   );

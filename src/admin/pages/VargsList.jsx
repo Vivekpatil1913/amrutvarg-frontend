@@ -4,9 +4,10 @@ import { Plus, Pencil, Trash2, Search, Eye, Settings } from "lucide-react";
 import { api } from "../api/client.js";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { ConfirmModal } from "../components/ui/Modal.jsx";
+import { ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { useGeo } from "../components/ui/GeoSelect.jsx";
 
 // Every Amrut Varg, one row each.
@@ -28,6 +29,7 @@ export default function VargsList() {
   const [confirmId, setConfirmId] = useState(null);
   const debouncedSearch = useDebounce(search);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   // Division options come from the Vibhag master, so the filter cannot offer a
   // division the masters no longer carry.
@@ -42,9 +44,12 @@ export default function VargsList() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/vargs/${confirmId}`);
-      toast.show("Deleted", "ok");
+      toast.success("Amrut Varg moved to trash");
       setConfirmId(null);
       refetch();
+    }).catch((err) => {
+      setConfirmId(null);
+      toast.error(errorMessage(err, "Could not delete that varg"));
     });
   }
 
@@ -54,23 +59,36 @@ export default function VargsList() {
   // is_active changed. Listing the fields individually, as this used to, meant
   // every field added later was silently blanked by a toggle — the village and
   // the resource URL were both lost that way.
-  async function toggleActive(row) {
-    await mutate(async () => {
-      const { data: d } = await api.get(`/admin/vargs/${row.id}`);
-      await api.put(`/admin/vargs/${row.id}`, {
-        ...d,
-        // Columns the write schema does not accept.
-        id: undefined, created_at: undefined, updated_at: undefined, deleted_at: undefined,
-        // Nullable columns the schema expects as strings or ids.
-        vibhag_en: d.vibhag_en || "", district_en: d.district_en || "",
-        taluka: d.taluka || "", village: d.village || "",
-        varg_name: d.varg_name || "", coordinator_name: d.coordinator_name || "",
-        resource_url: d.resource_url || "",
-        enrollment_count: d.enrollment_count || 0,
-        display_order: d.display_order || 0,
-        is_active: !d.is_active,
-      });
-      refetch();
+  function toggleActive(row) {
+    const activating = !row.is_active;
+    const name = row.school_name || row.district_mr;
+    confirm({
+      title: activating ? "Activate Amrut Varg" : "Deactivate Amrut Varg",
+      message: `${activating ? "Activate" : "Deactivate"} "${name}"?`,
+      subMessage: activating
+        ? "It will be listed on the website again."
+        : "It will be hidden from the website. You can activate it again at any time.",
+      tone: activating ? "primary" : "warning",
+      confirmLabel: activating ? "Activate" : "Deactivate",
+      errorText: "Could not change the varg status",
+      onConfirm: async () => {
+        const { data: d } = await api.get(`/admin/vargs/${row.id}`);
+        await api.put(`/admin/vargs/${row.id}`, {
+          ...d,
+          // Columns the write schema does not accept.
+          id: undefined, created_at: undefined, updated_at: undefined, deleted_at: undefined,
+          // Nullable columns the schema expects as strings or ids.
+          vibhag_en: d.vibhag_en || "", district_en: d.district_en || "",
+          taluka: d.taluka || "", village: d.village || "",
+          varg_name: d.varg_name || "", coordinator_name: d.coordinator_name || "",
+          resource_url: d.resource_url || "",
+          enrollment_count: d.enrollment_count || 0,
+          display_order: d.display_order || 0,
+          is_active: activating,
+        });
+        toast.success(`Amrut Varg ${activating ? "activated" : "deactivated"}`);
+        refetch();
+      },
     });
   }
 
@@ -159,7 +177,7 @@ export default function VargsList() {
         loading={saving}
         title="Delete Amrut Varg"
         message="Delete this varg?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

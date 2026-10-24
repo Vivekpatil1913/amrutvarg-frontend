@@ -3,9 +3,10 @@ import { Eye, Pencil, Rocket, Undo2, Search, Save } from "lucide-react";
 import { api } from "../api/client.js";
 import { useMutation, useDebounce } from "../hooks/useApi.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
+import { Modal, ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 // Only the wording around each form and whether it accepts submissions are
 // editable. Fields, validation and endpoints belong to the form components and
@@ -55,6 +56,7 @@ export default function Forms() {
   const [draft, setDraft] = useState(null);
   const [confirmDiscard, setConfirmDiscard] = useState(null);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   const load = useCallback(() => {
     setLoading(true);
@@ -88,17 +90,17 @@ export default function Forms() {
       setDraft(res.data.draft);
       toast.show("Draft saved — not yet live", "ok");
       load();
-    });
+    }).catch((err) => toast.error(errorMessage(err, "Could not save the draft")));
   }
 
-  async function publish(key, body) {
+  async function publish(key, body, successText = "Published — the website is updated") {
     await mutate(async () => {
       if (body) await api.put(`/admin/forms/${key}/draft`, body);
       await api.post(`/admin/forms/${key}/publish`);
-      toast.show("Published — the website is updated", "ok");
+      toast.show(successText, "ok");
       setEditRow(null);
       load();
-    });
+    }).catch((err) => toast.error(errorMessage(err, "Could not publish the form")));
   }
 
   async function discard(key) {
@@ -108,14 +110,35 @@ export default function Forms() {
       setConfirmDiscard(null);
       toast.show("Draft reset to the published version", "ok");
       load();
+    }).catch((err) => {
+      setConfirmDiscard(null);
+      toast.error(errorMessage(err, "Could not discard the draft"));
     });
   }
 
   // Publishing the active flag straight from the list, since that is the one
   // setting an administrator is most likely to flip in a hurry.
-  async function toggleActive(row) {
-    const next = { ...row.published, is_active: row.published.is_active === false };
-    await publish(row.key, next);
+  function toggleActive(row) {
+    const opening = row.published?.is_active === false;
+    const next = { ...row.published, is_active: opening };
+    confirm({
+      title: opening ? "Open form" : "Close form",
+      message: opening
+        ? `Start accepting submissions on "${row.name}"?`
+        : `Stop accepting submissions on "${row.name}"?`,
+      subMessage: opening
+        ? "The form goes live on the website straight away."
+        : "Visitors will see the closed message instead of the form.",
+      tone: opening ? "primary" : "warning",
+      confirmLabel: opening ? "Open form" : "Close form",
+      errorText: "Could not change the form status",
+      onConfirm: async () => {
+        await api.put(`/admin/forms/${row.key}/draft`, next);
+        await api.post(`/admin/forms/${row.key}/publish`);
+        toast.success(opening ? `"${row.name}" is now accepting submissions` : `"${row.name}" is now closed`);
+        load();
+      },
+    });
   }
 
   const columns = [
@@ -300,6 +323,8 @@ export default function Forms() {
         onConfirm={() => discard(confirmDiscard)}
         loading={saving}
         title="Discard draft"
+        confirmLabel="Discard"
+        loadingLabel="Discarding…"
         message="Throw away the draft and start again from the published configuration?"
         subMessage="The live website is not affected."
       />

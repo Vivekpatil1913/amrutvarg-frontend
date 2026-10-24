@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { GeoSelect, useGeo } from "../components/ui/GeoSelect.jsx";
 import { isSafeHttpUrl } from "../../services/mediaUrl.js";
 
@@ -197,10 +198,10 @@ export default function OfficeForm() {
       try {
         if (isNew) {
           await api.post("/admin/offices", body);
-          toast.show("District office created", "ok");
+          toast.success("District office created successfully");
         } else {
           await api.put(`/admin/offices/${id}`, body);
-          toast.show("District office saved", "ok");
+          toast.success("District office updated successfully");
         }
         back();
       } catch (err) {
@@ -208,7 +209,7 @@ export default function OfficeForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message || "Could not save the office", "bad");
+          toast.error(errorMessage(err, "Could not save the office"));
         }
         throw err;
       }
@@ -218,8 +219,11 @@ export default function OfficeForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/offices/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("District office moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that office"));
     });
   }
 
@@ -374,7 +378,7 @@ export default function OfficeForm() {
         loading={saving}
         title="Delete District Office"
         message="Delete this office record?"
-        subMessage="The district's contact page falls back to showing its Amrut Varg team only."
+        subMessage="It will be moved to the trash and can be restored later. Until then the district's contact page shows its Amrut Varg team only."
       />
     </>
   );

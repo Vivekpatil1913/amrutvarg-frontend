@@ -4,9 +4,10 @@ import { Plus, Pencil, Trash2, Search, Eye } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
+import { Modal, ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { MASTER_UI } from "../lib/masters.js";
 
 // The four masters are structurally identical, so one screen serves all of
@@ -31,6 +32,7 @@ export default function Masters({ master }) {
   const [viewRow, setViewRow] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   const { data, meta, loading, error, refetch } = useList(
     `/admin/masters/${cfg.key}`,
@@ -65,33 +67,41 @@ export default function Masters({ master }) {
     await mutate(async () => {
       try {
         await api.del(`/admin/masters/${cfg.key}/${confirmId}`);
-        toast.show("Deleted", "ok");
+        toast.success(`${cfg.label} moved to trash`);
         setConfirmId(null);
         refetch();
       } catch (err) {
         // A dependency refusal is the useful case: say what blocks it.
-        toast.show(err.message, "bad");
+        toast.error(errorMessage(err, `Could not delete that ${cfg.label.toLowerCase()}`));
         setConfirmId(null);
         throw err;
       }
     }).catch(() => {});
   }
 
-  async function toggleActive(row) {
-    await mutate(async () => {
-      try {
+  function toggleActive(row) {
+    const activating = !row.is_active;
+    const label = cfg.label.toLowerCase();
+    confirm({
+      title: `${activating ? "Activate" : "Deactivate"} ${cfg.label}`,
+      message: `${activating ? "Activate" : "Deactivate"} ${label} "${row.name_mr}"?`,
+      subMessage: activating
+        ? "It will be available again in dropdowns and filters."
+        : "It will no longer be offered in dropdowns. Existing records keep it.",
+      tone: activating ? "primary" : "warning",
+      confirmLabel: activating ? "Activate" : "Deactivate",
+      errorText: `Could not change the ${label} status`,
+      onConfirm: async () => {
         await api.put(`/admin/masters/${cfg.key}/${row.id}`, {
           name_mr: row.name_mr, name_en: row.name_en || "", code: row.code || "",
-          former_names: row.former_names || [], is_active: !row.is_active,
+          former_names: row.former_names || [], is_active: activating,
           display_order: row.display_order || 0,
           ...(cfg.parent ? { [cfg.parent.column]: row[cfg.parent.column] } : {}),
         });
+        toast.success(`${cfg.label} "${row.name_mr}" ${activating ? "activated" : "deactivated"}`);
         refetch();
-      } catch (err) {
-        toast.show(err.message, "bad");
-        throw err;
-      }
-    }).catch(() => {});
+      },
+    });
   }
 
   const columns = [
@@ -233,7 +243,7 @@ export default function Masters({ master }) {
         loading={saving}
         title={`Delete ${cfg.label}`}
         message={`Delete this ${cfg.label.toLowerCase()}?`}
-        subMessage={`Refused if anything still references it${cfg.child ? ` or if it has ${cfg.child.toLowerCase()}` : ""}.`}
+        subMessage={`It will be moved to the trash and can be restored later. Refused if anything still references it${cfg.child ? ` or if it has ${cfg.child.toLowerCase()}` : ""}.`}
       />
     </>
   );

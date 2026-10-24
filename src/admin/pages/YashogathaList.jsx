@@ -4,9 +4,10 @@ import { Plus, Pencil, Trash2, Search, Eye, Settings, Star, Clapperboard } from 
 import { api } from "../api/client.js";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { ConfirmModal } from "../components/ui/Modal.jsx";
+import { ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { storyCover } from "../lib/siteImages.js";
 
 // Every yashogatha, one row each.
@@ -33,6 +34,7 @@ export default function YashogathaList() {
   const [confirmId, setConfirmId] = useState(null);
   const debouncedSearch = useDebounce(search);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/stories",
@@ -43,30 +45,66 @@ export default function YashogathaList() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/stories/${confirmId}`);
-      toast.show("Deleted", "ok");
+      toast.success("Yashogatha moved to trash");
       setConfirmId(null);
       refetch();
+    }).catch((err) => {
+      setConfirmId(null);
+      toast.error(errorMessage(err, "Could not delete that story"));
     });
   }
 
   // Published and Featured are the two flags worth flipping without opening the
   // whole story, so they toggle from the row. The record is re-read first so a
   // partial row never overwrites the rest of the story.
-  async function toggle(row, field) {
-    await mutate(async () => {
-      const { data: d } = await api.get(`/admin/stories/${row.id}`);
-      await api.put(`/admin/stories/${row.id}`, {
-        slug: d.slug, category: d.category,
-        title_mr: d.title_mr, title_en: d.title_en || "",
-        short_mr: d.short_mr || "", short_en: d.short_en || "",
-        image_key: d.image_key, image_media_id: d.image_media_id ?? null,
-        image_url: d.image_url || "",
-        content: d.content || {},
-        featured: field === "featured" ? !d.featured : d.featured,
-        published: field === "published" ? !d.published : d.published,
-        display_order: d.display_order || 0,
-      });
-      refetch();
+  //
+  // The target value comes from the row the admin saw and confirmed, so a change
+  // made elsewhere in the meantime is not silently flipped back.
+  const TOGGLE_COPY = {
+    published: {
+      on:  { title: "Publish yashogatha", verb: "Publish", tone: "primary",
+             sub: "It will be visible on the website straight away.",
+             done: "Yashogatha published — now live on the website" },
+      off: { title: "Unpublish yashogatha", verb: "Unpublish", tone: "warning",
+             sub: "It stays in the admin panel as a draft and can be published again.",
+             done: "Yashogatha unpublished — hidden from the website" },
+    },
+    featured: {
+      on:  { title: "Feature yashogatha", verb: "Feature", tone: "primary",
+             sub: "Featured stories are highlighted on the home page.",
+             done: "Yashogatha marked as featured" },
+      off: { title: "Unfeature yashogatha", verb: "Unfeature", tone: "warning",
+             sub: "It stays published but is no longer highlighted.",
+             done: "Yashogatha removed from featured" },
+    },
+  };
+
+  function toggle(row, field) {
+    const target = !row[field];
+    const copy = TOGGLE_COPY[field][target ? "on" : "off"];
+    confirm({
+      title: copy.title,
+      message: `${copy.verb} "${row.title_mr}"?`,
+      subMessage: copy.sub,
+      tone: copy.tone,
+      confirmLabel: copy.verb,
+      errorText: "Could not update the story",
+      onConfirm: async () => {
+        const { data: d } = await api.get(`/admin/stories/${row.id}`);
+        await api.put(`/admin/stories/${row.id}`, {
+          slug: d.slug, category: d.category,
+          title_mr: d.title_mr, title_en: d.title_en || "",
+          short_mr: d.short_mr || "", short_en: d.short_en || "",
+          image_key: d.image_key, image_media_id: d.image_media_id ?? null,
+          image_url: d.image_url || "",
+          content: d.content || {},
+          featured: field === "featured" ? target : d.featured,
+          published: field === "published" ? target : d.published,
+          display_order: d.display_order || 0,
+        });
+        toast.success(copy.done);
+        refetch();
+      },
     });
   }
 
@@ -195,7 +233,7 @@ export default function YashogathaList() {
         loading={saving}
         title="Delete yashogatha"
         message="Delete this story?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

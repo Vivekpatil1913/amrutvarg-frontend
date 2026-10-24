@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { MediaUpload } from "../components/ui/MediaUpload.jsx";
 import { CONTENT_TYPES, SOURCE_TYPES, VIDEO_CATEGORIES } from "../lib/mediaContent.js";
 import { isSafeHttpUrl, videoEmbed, formatDuration } from "../../services/mediaUrl.js";
@@ -193,10 +194,10 @@ export default function VideoForm() {
       try {
         if (isNew) {
           await api.post("/admin/videos", body);
-          toast.show("Video created", "ok");
+          toast.success("Video created successfully");
         } else {
           await api.put(`/admin/videos/${id}`, body);
-          toast.show("Video saved", "ok");
+          toast.success("Video updated successfully");
         }
         back();
       } catch (err) {
@@ -204,7 +205,7 @@ export default function VideoForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message || "Could not save the video", "bad");
+          toast.error(errorMessage(err, "Could not save the video"));
         }
         throw err;
       }
@@ -214,8 +215,11 @@ export default function VideoForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/videos/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Video moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that video"));
     });
   }
 
@@ -469,7 +473,7 @@ export default function VideoForm() {
         loading={saving}
         title="Delete Video"
         message="Delete this video?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

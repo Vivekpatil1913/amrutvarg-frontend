@@ -4,9 +4,10 @@ import { Plus, Pencil, Trash2, Search, Eye, ExternalLink } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
+import { Modal, ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 // Every announcement, one row each. Adding and editing happen on their own
 // page — see AnnouncementForm.jsx.
@@ -56,6 +57,7 @@ export default function Announcements() {
   const [confirmId, setConfirmId] = useState(null);
   const [viewRow, setViewRow] = useState(null);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/announcements",
@@ -72,19 +74,34 @@ export default function Announcements() {
   async function handleDelete() {
     await mutate(async () => {
       await api.del(`/admin/announcements/${confirmId}`);
-      toast.show("Deleted", "ok");
+      toast.success("Announcement moved to trash");
       setConfirmId(null);
       refetch();
+    }).catch((err) => {
+      setConfirmId(null);
+      toast.error(errorMessage(err, "Could not delete that announcement"));
     });
   }
 
-  async function toggleActive(row) {
-    await mutate(async () => {
-      await api.put(`/admin/announcements/${row.id}`, {
-        ...row, is_active: !row.is_active,
-        display_order: row.display_order || 0,
-      });
-      refetch();
+  function toggleActive(row) {
+    const activating = !row.is_active;
+    confirm({
+      title: activating ? "Activate announcement" : "Deactivate announcement",
+      message: `${activating ? "Activate" : "Deactivate"} "${row.title_mr}"?`,
+      subMessage: activating
+        ? "It will be shown on the website again."
+        : "It will be hidden from the website. You can activate it again at any time.",
+      tone: activating ? "primary" : "warning",
+      confirmLabel: activating ? "Activate" : "Deactivate",
+      errorText: "Could not change the announcement status",
+      onConfirm: async () => {
+        await api.put(`/admin/announcements/${row.id}`, {
+          ...row, is_active: activating,
+          display_order: row.display_order || 0,
+        });
+        toast.success(`Announcement ${activating ? "activated" : "deactivated"}`);
+        refetch();
+      },
     });
   }
 

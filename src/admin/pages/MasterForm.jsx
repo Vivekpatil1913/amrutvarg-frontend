@@ -5,6 +5,7 @@ import { api } from "../api/client.js";
 import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { CHAIN, MASTER_UI, emptyMaster } from "../lib/masters.js";
 
 // One master record — a state, vibhag, district or taluka — added or edited on
@@ -227,10 +228,10 @@ function MasterFormInner({ cfg, id }) {
       try {
         if (isNew) {
           await api.post(`/admin/masters/${cfg.key}`, body);
-          toast.show(`${cfg.label} created`, "ok");
+          toast.success(`${cfg.label} created successfully`);
         } else {
           await api.put(`/admin/masters/${cfg.key}/${id}`, body);
-          toast.show(`${cfg.label} updated`, "ok");
+          toast.success(`${cfg.label} updated successfully`);
         }
         back();
       } catch (err) {
@@ -239,7 +240,7 @@ function MasterFormInner({ cfg, id }) {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message, "bad");
+          toast.error(errorMessage(err));
         }
         throw err;
       }
@@ -250,11 +251,11 @@ function MasterFormInner({ cfg, id }) {
     await mutate(async () => {
       try {
         await api.del(`/admin/masters/${cfg.key}/${id}`);
-        toast.show("Deleted", "ok");
+        toast.success(`${cfg.label} moved to trash`);
         back();
       } catch (err) {
         // A dependency refusal is the useful case: say what blocks it.
-        toast.show(err.message, "bad");
+        toast.error(errorMessage(err, `Could not delete that ${cfg.label.toLowerCase()}`));
         setConfirmDelete(false);
         throw err;
       }
@@ -436,7 +437,7 @@ function MasterFormInner({ cfg, id }) {
         loading={saving}
         title={`Delete ${cfg.label}`}
         message={`Delete this ${cfg.label.toLowerCase()}?`}
-        subMessage={`Refused if anything still references it${cfg.child ? ` or if it has ${cfg.child.toLowerCase()}` : ""}.`}
+        subMessage={`It will be moved to the trash and can be restored later. Refused if anything still references it${cfg.child ? ` or if it has ${cfg.child.toLowerCase()}` : ""}.`}
       />
     </>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { UploadCloud, X, FileAudio, FileVideo, ImageOff } from "lucide-react";
 import { api } from "../../api/client.js";
 import { useToast } from "./Toast.jsx";
+import { errorMessage } from "../../lib/errors.js";
 import { ACCEPT, UPLOAD_ENDPOINT } from "../../lib/mediaContent.js";
 import { mediaSrc } from "../../../services/mediaUrl.js";
 
@@ -88,7 +89,7 @@ export function MediaUpload({
       if (seconds && onDuration) onDuration(seconds);
       toast.show(`${label} uploaded`, "ok");
     } catch (err) {
-      toast.show(err.message || "Upload failed", "bad");
+      toast.error(errorMessage(err, "Upload failed"));
     } finally {
       setBusy(false);
     }

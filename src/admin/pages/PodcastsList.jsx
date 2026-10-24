@@ -4,9 +4,10 @@ import { Plus, Pencil, Trash2, Search, Eye, ExternalLink, Mic } from "lucide-rea
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
+import { Modal, ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
 import { Badge, Switch } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { PODCAST_CATEGORIES, labelOf } from "../lib/mediaContent.js";
 import { mediaSrc, formatDuration, audioEmbed } from "../../services/mediaUrl.js";
 
@@ -52,6 +53,7 @@ export default function PodcastsList() {
   const [viewRow, setViewRow] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
   const { mutate, loading: saving } = useMutation();
+  const confirm = useConfirm();
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/podcasts",
@@ -59,28 +61,36 @@ export default function PodcastsList() {
     [page, limit, debouncedSearch, category, published]
   );
 
-  async function togglePublished(row) {
-    await mutate(async () => {
-      try {
-        await api.patch(`/admin/podcasts/${row.id}/publish`, { published: !row.published });
-        toast.show(row.published ? "Unpublished" : "Published", "ok");
+  function togglePublished(row) {
+    const publishing = !row.published;
+    confirm({
+      title: publishing ? "Publish episode" : "Unpublish episode",
+      message: publishing
+        ? `Publish "${row.title_mr}" to the website?`
+        : `Take "${row.title_mr}" off the website?`,
+      subMessage: publishing
+        ? "It will be visible to visitors straight away."
+        : "It stays in the admin panel as a draft and can be published again.",
+      tone: publishing ? "primary" : "warning",
+      confirmLabel: publishing ? "Publish" : "Unpublish",
+      errorText: "Could not change the publish status",
+      onConfirm: async () => {
+        await api.patch(`/admin/podcasts/${row.id}/publish`, { published: publishing });
+        toast.success(publishing ? "Podcast published — now live on the website" : "Podcast unpublished — hidden from the website");
         refetch();
-      } catch (err) {
-        toast.show(err.message || "Could not change the publish status", "bad");
-        throw err;
-      }
-    }).catch(() => {});
+      },
+    });
   }
 
   async function handleDelete() {
     await mutate(async () => {
       try {
         await api.del(`/admin/podcasts/${confirmId}`);
-        toast.show("Deleted", "ok");
+        toast.success("Podcast moved to trash");
         setConfirmId(null);
         refetch();
       } catch (err) {
-        toast.show(err.message || "Could not delete that episode", "bad");
+        toast.error(errorMessage(err, "Could not delete that episode"));
         setConfirmId(null);
         throw err;
       }
@@ -277,7 +287,7 @@ export default function PodcastsList() {
         loading={saving}
         title="Delete Podcast"
         message="Delete this episode?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

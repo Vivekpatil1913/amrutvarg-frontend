@@ -6,6 +6,7 @@ import { useMutation } from "../hooks/useApi.js";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { STORY_PHOTO_OPTIONS, storyCover } from "../lib/siteImages.js";
 
 // One yashogatha, edited on its own page.
@@ -166,7 +167,7 @@ export default function YashogathaStoryForm() {
       setForm((f) => ({ ...f, image_media_id: res.data.id, image_url: res.data.url }));
       toast.show("Image uploaded", "ok");
     } catch (err) {
-      toast.show(err.message || "Upload failed", "bad");
+      toast.error(errorMessage(err, "Upload failed"));
     } finally {
       setUploading(false);
     }
@@ -183,10 +184,10 @@ export default function YashogathaStoryForm() {
       try {
         if (isNew) {
           await api.post("/admin/stories", body);
-          toast.show("Yashogatha created", "ok");
+          toast.success("Yashogatha created successfully");
         } else {
           await api.put(`/admin/stories/${id}`, body);
-          toast.show("Yashogatha saved", "ok");
+          toast.success("Yashogatha updated successfully");
         }
         back();
       } catch (err) {
@@ -194,7 +195,7 @@ export default function YashogathaStoryForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message, "bad");
+          toast.error(errorMessage(err));
         }
         throw err;
       }
@@ -204,8 +205,11 @@ export default function YashogathaStoryForm() {
   async function remove() {
     await mutate(async () => {
       await api.del(`/admin/stories/${id}`);
-      toast.show("Deleted", "ok");
+      toast.success("Yashogatha moved to trash");
       back();
+    }).catch((err) => {
+      setConfirmDelete(false);
+      toast.error(errorMessage(err, "Could not delete that story"));
     });
   }
 
@@ -391,7 +395,7 @@ export default function YashogathaStoryForm() {
         loading={saving}
         title="Delete yashogatha"
         message="Delete this story?"
-        subMessage="It is removed from the list and from the website. The record is retained."
+        subMessage="It is removed from the website and moved to the trash. It can be restored later."
       />
     </>
   );

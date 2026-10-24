@@ -9,6 +9,7 @@ import { useMutation } from "../hooks/useApi.js";
 import { Modal, ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 import { BUNDLED } from "../lib/siteImages.js";
 
 // The whole About section on one page, grouped into cards.
@@ -189,7 +190,7 @@ export default function AboutForm() {
       patch("image", { media_id: res.data.id, url: res.data.url });
       toast.show("Image uploaded", "ok");
     } catch (err) {
-      toast.show(err.message || "Upload failed", "bad");
+      toast.error(errorMessage(err, "Upload failed"));
     } finally {
       setUploading(false);
     }
@@ -211,7 +212,7 @@ export default function AboutForm() {
         if (thenPublish) {
           const pub = await api.post("/admin/about/publish");
           setMeta({ published_at: pub.data.published_at, has_unpublished_changes: false });
-          toast.show("Published — the website is updated", "ok");
+          toast.success("Published — the website is updated");
         } else {
           toast.show("Draft saved — not yet live", "ok");
         }
@@ -222,7 +223,7 @@ export default function AboutForm() {
           setServerErrors(Object.fromEntries(err.details.map((d) => [d.field, d.message])));
           toast.show(`${err.details[0].field}: ${err.details[0].message}`, "bad");
         } else {
-          toast.show(err.message, "bad");
+          toast.error(errorMessage(err));
         }
         throw err;
       }
@@ -237,6 +238,9 @@ export default function AboutForm() {
       setMeta((m) => ({ ...m, has_unpublished_changes: false }));
       setConfirmDiscard(false);
       toast.show("Draft reset to the published version", "ok");
+    }).catch((err) => {
+      setConfirmDiscard(false);
+      toast.error(errorMessage(err, "Could not discard the draft"));
     });
   }
 
@@ -554,6 +558,8 @@ export default function AboutForm() {
         onConfirm={discard}
         loading={saving}
         title="Discard draft"
+        confirmLabel="Discard"
+        loadingLabel="Discarding…"
         message="Throw away the draft and start again from the published version?"
         subMessage="The live website is not affected."
       />

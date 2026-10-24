@@ -7,6 +7,7 @@ import { DataTable } from "../components/ui/DataTable.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
 
 // Listing page for the "अमृत वर्गात सहभागी व्हा" section.
 //
@@ -58,11 +59,11 @@ export default function JoinList() {
     await mutate(async () => {
       try {
         await api.post("/admin/join/publish");
-        toast.show("Published — the website is updated", "ok");
+        toast.success("Published — the website is updated");
         load();
       } catch (err) {
         const first = err.details?.[0];
-        toast.show(first ? `${first.field}: ${first.message}` : err.message, "bad");
+        toast.error(errorMessage(err));
         throw err;
       }
     }).catch(() => {});
@@ -74,6 +75,9 @@ export default function JoinList() {
       toast.show("Draft reset to the published version", "ok");
       setConfirmDiscard(false);
       load();
+    }).catch((err) => {
+      setConfirmDiscard(false);
+      toast.error(errorMessage(err, "Could not discard the draft"));
     });
   }
 
@@ -215,6 +219,8 @@ export default function JoinList() {
         onConfirm={discard}
         loading={saving}
         title="Discard draft"
+        confirmLabel="Discard"
+        loadingLabel="Discarding…"
         message="Throw away the draft and start again from the published version?"
         subMessage="The live website is not affected."
       />
