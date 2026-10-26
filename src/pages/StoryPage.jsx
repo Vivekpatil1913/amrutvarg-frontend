@@ -156,7 +156,8 @@ export default function StoryPage() {
             </div>
           ) : null}
 
-          {text.conclusion ? (
+          {/* समारोप नको - सहभागातून प्रत्येक विद्यार्थ्याचा take away वेगवेगळा असू शकतो */}
+          {false && text.conclusion ? (
             <>
               <h2>{s.conclusion}</h2>
               <p>{text.conclusion}</p>

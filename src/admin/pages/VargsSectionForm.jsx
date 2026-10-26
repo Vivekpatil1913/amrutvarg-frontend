@@ -357,7 +357,7 @@ export default function VargsSectionForm() {
           </Badge>
           <h1 className="a-page-title a-mt-1">Edit Amrut Varg Section</h1>
           <p className="a-page-desc">
-            “कार्यरत अमृत वर्ग” in full. Changes stay in the draft until you publish.
+            “सध्या सुरु असलेले अमृत वर्ग” in full. Changes stay in the draft until you publish.
           </p>
         </div>
         <button className="a-btn a-btn-secondary" onClick={() => navigate("/admin/vargs")}>

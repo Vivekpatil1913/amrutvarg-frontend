@@ -9,7 +9,7 @@ const row = () => ({
   id: 1,
   slug: 'discovering-my-own-voice',
   category: 'confidence',
-  title_mr: 'माझा स्वर शोधताना',
+  title_mr: 'स्वबोध होताना...',
   title_en: 'Discovering My Own Voice',
   short_mr: 'एक अबोल विद्यार्थी बोलू लागतो.',
   short_en: 'A quiet student learns to speak.',
@@ -26,7 +26,7 @@ const row = () => ({
 
 test('both languages come back with a title and a summary', () => {
   const s = storyFromCms(row());
-  assert.equal(s.mr.title, 'माझा स्वर शोधताना');
+  assert.equal(s.mr.title, 'स्वबोध होताना...');
   assert.equal(s.en.title, 'Discovering My Own Voice');
   assert.equal(s.en.short, 'A quiet student learns to speak.');
 });
@@ -73,7 +73,7 @@ test('a story written in one language only still reads in the other', () => {
   r.short_en = '';
   r.content.en = {};
   const s = storyFromCms(r);
-  assert.equal(s.en.title, 'माझा स्वर शोधताना', 'falls back to Marathi rather than blank');
+  assert.equal(s.en.title, 'स्वबोध होताना...', 'falls back to Marathi rather than blank');
   assert.equal(s.en.intro, 'परिचय');
   assert.deepEqual(s.en.lessons, ['धडा एक', 'धडा दोन']);
 });
