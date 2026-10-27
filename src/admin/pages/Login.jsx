@@ -51,7 +51,7 @@ export default function AdminLogin() {
                 id="email"
                 type="email"
                 className="a-input"
-                placeholder="admin@amrutvarg.local"
+                placeholder="admin@amrut.com"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required

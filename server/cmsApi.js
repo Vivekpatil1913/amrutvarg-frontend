@@ -50,7 +50,7 @@ function getSettings() {
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
-const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'admin@amrutvarg.local';
+const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'admin@amrut.com';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const sessions = new Map(); // token → { user, expires }
 
