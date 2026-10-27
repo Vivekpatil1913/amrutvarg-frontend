@@ -1,6 +1,8 @@
 // Run with `npm test` (Node's built-in test runner; no extra dependencies).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 import { storiesMiddleware } from './storiesApi.js';
 import { DEFAULT_PAGE_SIZE, LISTED_SLUGS, MAX_PAGE_SIZE, listedStories as stories, paginateStories } from '../src/data/storyPaging.js';
 import { FEATURED_SLUGS } from '../src/data/yashogathaStories.js';
@@ -78,13 +80,25 @@ test('items are card summaries, not full stories', () => {
   assert.deepEqual(Object.keys(item.en).sort(), ['short', 'title']);
 });
 
+// The endpoint serves the local CMS stories (data/admin/stories.json) when any
+// are published, and the bundled list only as a fallback, so the expected
+// total depends on which source is present.
 test('GET /api/stories answers with one page as JSON', async () => {
+  const cmsFile = fileURLToPath(new URL('../data/admin/stories.json', import.meta.url));
+  const cms = existsSync(cmsFile)
+    ? JSON.parse(readFileSync(cmsFile, 'utf8')).filter((s) => !s.deleted_at && s.published)
+    : [];
   const res = await request('/api/stories?page=1&pageSize=8&lang=en');
   assert.equal(res.status, 200);
   assert.match(res.headers['content-type'], /application\/json/);
   assert.equal(res.body.page, 1);
-  assert.equal(res.body.total, stories.length);
-  assert.deepEqual(res.body, paginateStories({ page: 1, pageSize: 8, lang: 'en' }));
+  if (cms.length) {
+    assert.equal(res.body.total, cms.length);
+    assert.equal(res.body.items.length, Math.min(8, cms.length));
+  } else {
+    assert.equal(res.body.total, stories.length);
+    assert.deepEqual(res.body, paginateStories({ page: 1, pageSize: 8, lang: 'en' }));
+  }
 });
 
 test('other routes pass through; other methods are refused', async () => {

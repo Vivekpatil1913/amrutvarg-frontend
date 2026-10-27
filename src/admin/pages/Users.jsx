@@ -20,7 +20,7 @@ import { errorMessage } from "../lib/errors.js";
 const EMPTY = { name: "", email: "", phone: "", role: "district_manager", vibhag_id: "", district_id: "", password: "", is_active: true };
 const ROLE_TONE = { superadmin: "bad", admin: "bad", state_coordinator: "accent", division_manager: "info", district_manager: "ok" };
 
-function UserForm({ initial, onClose, onSaved, self }) {
+function UserForm({ initial, onClose, onSaved, self, canSuperadmin }) {
   const toast = useToast();
   const [form, setForm] = useState(initial);
   const [errors, setErrors] = useState({});
@@ -84,7 +84,9 @@ function UserForm({ initial, onClose, onSaved, self }) {
         </Field>
         <Field label="Role" required error={errors.role} hint={self ? "You cannot change your own role" : null}>
           <select className="a-input" value={form.role} disabled={self} onChange={(e) => set({ role: e.target.value, vibhag_id: "", district_id: "" })}>
-            {ASSIGNABLE_ROLES.map((r) => <option key={r} value={r}>{ROLE_LABELS[r]}</option>)}
+            {ASSIGNABLE_ROLES
+              .filter((r) => r !== "superadmin" || canSuperadmin)
+              .map((r) => <option key={r} value={r}>{ROLE_LABELS[r]}</option>)}
           </select>
         </Field>
         <Field label="Status">
@@ -175,19 +177,20 @@ export default function Users() {
         onPage={setPage}
         onPageSize={(n) => { setLimit(n); setPage(1); }}
         toolbar={toolbar}
-        actions={(row) => (
+        actions={(row) => (row.role === "superadmin" && me?.role !== "superadmin" ? null : (
           <button className="a-action-btn" title="Edit" onClick={() => setEditing({
             ...EMPTY, ...row, phone: row.phone || "", password: "",
             vibhag_id: row.vibhag_id ?? "", district_id: row.district_id ?? "",
           })}>
             <Pencil size={15} />
           </button>
-        )}
+        ))}
       />
       {editing && (
         <UserForm
           initial={editing}
           self={editing.id === me?.id}
+          canSuperadmin={me?.role === "superadmin"}
           onClose={() => setEditing(null)}
           onSaved={() => { setEditing(null); refetch(); }}
         />

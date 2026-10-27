@@ -1,11 +1,24 @@
 import { useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { ShieldAlert } from "lucide-react";
 import { Sidebar } from "./Sidebar.jsx";
 import { Topbar } from "./Topbar.jsx";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
+import { isStateRole, roleLabel } from "../../lib/roles.js";
+
+// Screens division and district managers may open. Everything else is state
+// level; the CMS refuses it anyway, and this says so plainly instead of
+// loading a page that can only fail.
+const STAFF_PATHS = [
+  "/admin/dashboard", "/admin/grievances", "/admin/melawa", "/admin/vargs",
+  "/admin/register-student", "/admin/submissions", "/admin/profile",
+];
+const staffMayOpen = (path) =>
+  STAFF_PATHS.some((p) => path === p || path.startsWith(`${p}/`)) && path !== "/admin/vargs/settings";
 
 export function AdminLayout() {
   const { user, loading } = useAdminAuth();
+  const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem("av_sidebar_collapsed") === "true"
   );
@@ -46,7 +59,15 @@ export function AdminLayout() {
           onMobileMenu={() => setMobileOpen(true)}
         />
         <main className="a-main">
-          <Outlet />
+          {isStateRole(user.role) || staffMayOpen(pathname) ? <Outlet /> : (
+            <div className="a-card">
+              <div className="a-empty-state">
+                <ShieldAlert className="a-empty-icon" />
+                <p className="a-empty-title">This page is for State-level administrators</p>
+                <p className="a-text-muted a-text-sm">Your role ({roleLabel(user.role)}) does not include it. Use the menu to reach your jurisdiction&apos;s screens.</p>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
