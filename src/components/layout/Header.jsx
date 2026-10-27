@@ -28,6 +28,9 @@ export const ANNOUNCEMENTS_PATH = '/announcements';
 // Published videos, reels and podcast episodes.
 export const MEDIA_PATH = '/media';
 
+// The public suggestion / complaint form. Kept in step with GrievancePage.
+export const GRIEVANCE_PATH = '/suggestion-complaint';
+
 export const NAV_ITEMS = [
   { id: 'hero', key: 'home' },
   { id: 'yashogatha', key: 'yashogatha' },
@@ -274,6 +277,10 @@ export default function Header() {
 
           <div className="site-header__actions">
             <LanguageSwitch />
+            <Link to={GRIEVANCE_PATH} className="btn btn--ghost btn--sm site-header__grievance" title={t.grievance.title}>
+              <Icon name="chat" size={15} />
+              <span className="site-header__grievance-text">{t.nav.grievance}</span>
+            </Link>
             <a href="#join" className="btn btn--primary btn--sm site-header__cta" onClick={(e) => onNav(e, 'join')}>
               {t.nav.cta}
               <Icon name="arrowRight" size={15} />
@@ -312,6 +319,10 @@ export default function Header() {
               ))}
             </ul>
             <div className="mobile-menu__foot">
+              <Link to={GRIEVANCE_PATH} className="btn btn--ghost" onClick={() => setOpen(false)}>
+                <Icon name="chat" size={16} />
+                {t.nav.grievance}
+              </Link>
               <a href="#join" className="btn btn--primary" onClick={(e) => onNav(e, 'join')}>
                 {t.nav.cta}
               </a>

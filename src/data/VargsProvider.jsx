@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { LIVE_CONTENT } from '../services/config';
 import { fetchActiveVargs } from '../services/content';
@@ -24,7 +24,7 @@ const today = () => {
 // `vibhag`/`district` per record, as src/data/vargs.js and normalizeVargs both
 // produce. Without this the division count came out as zero, because every
 // record carried `vibhag_mr` and nothing read it.
-const fromCms = (row) => ({
+export const fromCms = (row) => ({
   id: row.id,
   vibhag: row.vibhag_mr || row.vibhag_en || '',
   vibhagEn: row.vibhag_en || '',
@@ -48,6 +48,11 @@ export function VargsProvider({ children }) {
     asOf: VARGS_SNAPSHOT_DATE,
     status: 'loading',
   });
+
+  // Bumped to re-read the list, e.g. right after an organiser's registration
+  // has published a new varg, so its deep link resolves without a reload.
+  const [version, setVersion] = useState(0);
+  const refresh = useCallback(() => setVersion((n) => n + 1), []);
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -77,9 +82,9 @@ export function VargsProvider({ children }) {
       });
 
     return () => ctrl.abort();
-  }, []);
+  }, [version]);
 
-  return <VargsContext.Provider value={state}>{children}</VargsContext.Provider>;
+  return <VargsContext.Provider value={{ ...state, refresh }}>{children}</VargsContext.Provider>;
 }
 
 export function useVargs() {

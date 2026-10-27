@@ -1,4 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Icon from '../Icon';
 import Modal from '../Modal';
 import { DistrictOptions, Field, describe, FormActions, FormError, PreviewResult, SuccessResult, ClosedResult, focusFirstInvalid } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -6,6 +8,8 @@ import { useFormConfig } from '../../data/useFormConfig';
 import { useForm } from '../../hooks/useForm';
 import { isMobile } from '../../services/validation';
 import { submitOrganizer } from '../../services/submissions';
+import { fromCms, useVargs } from '../../data/VargsProvider';
+import { vargPath } from '../../data/vargLinks';
 
 // The order a person fills this in: the body organising, then who to speak to,
 // then where. `place` is gone — what the form asks for now is the
@@ -27,23 +31,64 @@ const validate = (v, t) => {
   return e;
 };
 
+// The confirmation for a listing that is already live: where it was filed and
+// a direct link to it on the public directory.
+function LiveResult({ varg, onClose }) {
+  const { t, lang, district, division } = useLanguage();
+  const o = t.organizer;
+  const place = [
+    lang === 'en' && varg.vibhagEn ? varg.vibhagEn : division(varg.vibhag),
+    lang === 'en' && varg.districtEn ? varg.districtEn : district(varg.district),
+  ].filter(Boolean).join(' › ');
+  return (
+    <div className="result result--success" role="status">
+      <span className="result__icon">
+        <Icon name="checkCircle" size={28} />
+      </span>
+      <h3 className="result__title">{o.liveTitle}</h3>
+      <p className="result__desc">{o.liveDesc(place)}</p>
+      <p className="result__live">
+        <span className="result__live-dot" aria-hidden="true" />
+        {varg.schoolName}
+      </p>
+      <div className="result__actions">
+        <button type="button" className="btn btn--ghost" onClick={onClose}>
+          {t.common.close}
+        </button>
+        <Link to={vargPath(varg)} className="btn btn--primary" onClick={onClose}>
+          {o.viewListing}
+          <Icon name="arrowRight" size={16} />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function OrganizerForm({ open, onClose }) {
   const { t } = useLanguage();
   const o = t.organizer;
   const formRef = useRef(null);
   const form = useForm(INITIAL, validate, t);
   const cfg = useFormConfig('organizer');
+  const { refresh } = useVargs();
+  const [live, setLive] = useState(null);
 
   const close = () => {
     form.reset();
+    setLive(null);
     onClose();
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const ok = await form.run(() =>
-      submitOrganizer(Object.fromEntries(KEYS.map((k) => [k, form.values[k].trim()]))),
-    );
+    const ok = await form.run(async () => {
+      const result = await submitOrganizer(Object.fromEntries(KEYS.map((k) => [k, form.values[k].trim()])));
+      if (result.varg) {
+        setLive(fromCms(result.varg));
+        refresh();
+      }
+      return result;
+    });
     if (!ok) focusFirstInvalid(formRef.current);
   };
 
@@ -54,7 +99,8 @@ export default function OrganizerForm({ open, onClose }) {
       {form.status === 'preview' ? <PreviewResult onClose={close} /> : null}
       {!cfg.isActive && form.status !== 'sent' && form.status !== 'preview'
         ? <ClosedResult message={cfg.closedMessage} onClose={close} /> : null}
-      {form.status === 'sent' ? <SuccessResult title={cfg.successTitle || o.successTitle} desc={cfg.successDesc || o.successDesc} onClose={close} /> : null}
+      {form.status === 'sent' && live ? <LiveResult varg={live} onClose={close} /> : null}
+      {form.status === 'sent' && !live ? <SuccessResult title={cfg.successTitle || o.successTitle} desc={cfg.successDesc || o.successDesc} onClose={close} /> : null}
       {!done ? (
         <form ref={formRef} onSubmit={onSubmit} noValidate className="form">
           <div className="form-grid">

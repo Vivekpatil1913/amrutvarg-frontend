@@ -27,3 +27,19 @@ test('photo validator enforces type and size', () => {
   assert.equal(checkPhoto({ type: 'image/gif', size: 12 }, errors), 'type');
   assert.equal(checkPhoto({ type: 'image/png', size: PHOTO_MAX_BYTES + 1 }, errors), 'size');
 });
+test('suggestion/complaint form: RFC 5322 email, letters-only names, file rules', async () => {
+  const v = await import('./validation.js');
+  assert.equal(v.isRfcEmail('first.last+tag@sub.example.org'), true);
+  assert.equal(v.isRfcEmail('a@b..co'), false);
+  assert.equal(v.isRfcEmail('a b@c.co'), false);
+  assert.equal(v.isPersonName('राम पाटील'), true);
+  assert.equal(v.isPersonName('R. K. Patil'), true);
+  assert.equal(v.isPersonName('Ram 2'), false);
+  const errors = { photoType: 'type', photoSize: 'size', videoType: 'vtype', videoSize: 'vsize' };
+  assert.equal(v.checkGrievancePhoto({ type: 'image/png', name: 'a.png', size: 1024 }, errors), null);
+  assert.equal(v.checkGrievancePhoto({ type: 'image/gif', name: 'a.gif', size: 1024 }, errors), 'type');
+  assert.equal(v.checkGrievancePhoto({ type: 'image/jpeg', name: 'a.jpg', size: 4 * 1024 * 1024 }, errors), 'size');
+  assert.equal(v.checkGrievanceVideo({ type: 'video/quicktime', name: 'clip.MOV', size: 1024 }, errors), null);
+  assert.equal(v.checkGrievanceVideo({ type: 'video/x-msvideo', name: 'clip.avi', size: 1024 }, errors), 'vtype');
+  assert.equal(v.checkGrievanceVideo({ type: 'video/mp4', name: 'clip.mp4', size: 21 * 1024 * 1024 }, errors), 'vsize');
+});

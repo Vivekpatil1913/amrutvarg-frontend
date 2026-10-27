@@ -3,6 +3,8 @@ import { PanelLeftClose, PanelLeftOpen, ExternalLink, UserCircle, LogOut, Menu, 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 import { avatarSrc } from "../../avatar.js";
+import { roleLabel } from "../../lib/roles.js";
+import { NotificationBell } from "./NotificationBell.jsx";
 
 // Breadcrumb trail per route: the sidebar group it sits under, then the page.
 // Routes added after this map was written fell through to "Admin", which is why
@@ -30,7 +32,12 @@ const ROUTE_LABELS = {
   "/admin/offices": ["Content", "District Offices"],
   "/admin/media": ["Content", "Media Library"],
   "/admin/submissions": ["Operations", "Form Submissions"],
-  "/admin/settings": ["Operations", "Website Settings"],
+  "/admin/grievances": ["Operations", "Grievances"],
+  "/admin/melawa": ["Operations", "Melawa Announcements"],
+  "/admin/register-student": ["Operations", "Register Student"],
+  "/admin/users": ["Governance", "Users & Roles"],
+  "/admin/audit-logs": ["Governance", "Audit Log"],
+  "/admin/settings": ["Governance", "Website Settings"],
   "/admin/profile": ["Account", "My Profile"],
 };
 
@@ -73,7 +80,7 @@ function ProfileDropdown({ user, logout }) {
           <Avatar user={user} style={{ width: "2.25rem", height: "2.25rem", fontSize: "0.8125rem" }} />
           <div className="a-profile-info">
             <span className="a-profile-name">{user?.name || "Admin"}</span>
-            <span className="a-profile-role">{user?.role || "Admin"}</span>
+            <span className="a-profile-role">{roleLabel(user?.role)}</span>
           </div>
           <ChevronDown size={14} className={`a-profile-chevron${open ? " open" : ""}`} />
         </button>
@@ -86,7 +93,7 @@ function ProfileDropdown({ user, logout }) {
               <Avatar user={user} style={{ width: "2.5rem", height: "2.5rem", fontSize: "0.875rem", flexShrink: 0 }} />
               <div style={{ minWidth: 0 }}>
                 <div className="a-pd-name">{user?.name || "Admin"}</div>
-                <div className="a-pd-role">{user?.role || "Admin"}</div>
+                <div className="a-pd-role">{roleLabel(user?.role)}</div>
               </div>
             </div>
 
@@ -151,6 +158,7 @@ export function Topbar({ collapsed, onToggle, onMobileMenu }) {
           View Site
         </a>
 
+        <NotificationBell />
         <ProfileDropdown user={user} logout={logout} />
       </div>
 

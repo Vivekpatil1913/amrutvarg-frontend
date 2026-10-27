@@ -25,3 +25,35 @@ export function checkPhoto(file, errors) {
   if (file.size > PHOTO_MAX_BYTES) return errors.photoTooLarge;
   return null;
 }
+
+// ── Suggestion / complaint form ─────────────────────────────────────────────
+// Mirrors the CMS's grievances.schema.js so the browser and the server agree.
+
+// RFC 5322 addr-spec: dot-atom or quoted local part; hostname or IP literal.
+export const EMAIL_RFC5322 =
+  /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
+export const isRfcEmail = (v) => EMAIL_RFC5322.test(v.trim());
+
+// Letters in any script (Devanagari included), words separated by spaces or
+// initials' dots. Digits and symbols are rejected.
+export const isPersonName = (v) => /^[\p{L}\p{M}]+(?:(?:\.\s*|\s+)[\p{L}\p{M}]+)*\.?$/u.test(v.trim());
+
+export const GRIEVANCE_PHOTO_EXTS = ['.jpg', '.jpeg', '.png', '.webp'];
+export const GRIEVANCE_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm'];
+export const GRIEVANCE_VIDEO_EXTS = ['.mp4', '.mov', '.webm'];
+export const GRIEVANCE_VIDEO_MAX_BYTES = 20 * 1024 * 1024;
+export const GRIEVANCE_MAX_PHOTOS = 5;
+
+const extOf = (name) => (name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
+
+export function checkGrievancePhoto(file, errors) {
+  if (!PHOTO_TYPES.includes(file.type) || !GRIEVANCE_PHOTO_EXTS.includes(extOf(file.name))) return errors.photoType;
+  if (file.size > PHOTO_MAX_BYTES) return errors.photoSize;
+  return null;
+}
+
+export function checkGrievanceVideo(file, errors) {
+  if (!GRIEVANCE_VIDEO_TYPES.includes(file.type) || !GRIEVANCE_VIDEO_EXTS.includes(extOf(file.name))) return errors.videoType;
+  if (file.size > GRIEVANCE_VIDEO_MAX_BYTES) return errors.videoSize;
+  return null;
+}

@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-route
 import { lazy, Suspense } from 'react';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import { VargsProvider } from './data/VargsProvider';
-import Header, { ANNOUNCEMENTS_PATH, DIRECTORY_PATH, MEDIA_PATH } from './components/layout/Header';
+import Header, { ANNOUNCEMENTS_PATH, DIRECTORY_PATH, GRIEVANCE_PATH, MEDIA_PATH } from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import YashogathaPage from './pages/YashogathaPage';
@@ -12,6 +12,10 @@ import MediaPage from './pages/MediaPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import NotFound from './pages/NotFound';
 import SceneBackdrop from './components/SceneBackdrop';
+import MelawaTicker, { MELAWA_PATH } from './components/MelawaTicker';
+import MelawaPage from './pages/MelawaPage';
+import GrievancePage from './pages/GrievancePage';
+import GrievanceFeedbackPage from './pages/GrievanceFeedbackPage';
 
 // Admin panel (lazy-loaded to keep public site bundle small)
 import { AdminAuthProvider } from './admin/context/AdminAuthContext.jsx';
@@ -65,6 +69,13 @@ const ContactForm = lazy(() => import('./admin/pages/ContactForm.jsx'));
 const Submissions = lazy(() => import('./admin/pages/Submissions.jsx'));
 const SubmissionDetail = lazy(() => import('./admin/pages/SubmissionDetail.jsx'));
 const Settings = lazy(() => import('./admin/pages/Settings.jsx'));
+const Grievances = lazy(() => import('./admin/pages/Grievances.jsx'));
+const GrievanceDetail = lazy(() => import('./admin/pages/GrievanceDetail.jsx'));
+const MelawaList = lazy(() => import('./admin/pages/MelawaList.jsx'));
+const MelawaForm = lazy(() => import('./admin/pages/MelawaForm.jsx'));
+const Users = lazy(() => import('./admin/pages/Users.jsx'));
+const AuditLogs = lazy(() => import('./admin/pages/AuditLogs.jsx'));
+const RegisterStudent = lazy(() => import('./admin/pages/RegisterStudent.jsx'));
 const Media = lazy(() => import('./admin/pages/Media.jsx'));
 const AdminProfile = lazy(() => import('./admin/pages/Profile.jsx'));
 
@@ -89,6 +100,7 @@ function Shell() {
   return (
     <div className={`app lang-${lang}${switching ? ' is-switching' : ''}`}>
       <SceneBackdrop />
+      <MelawaTicker />
       <Header />
       <main id="main" tabIndex={-1}>
         <Routes>
@@ -100,6 +112,9 @@ function Shell() {
           <Route path="/yashogatha/:slug" element={<StoryPage />} />
           <Route path={ANNOUNCEMENTS_PATH} element={<AnnouncementsPage />} />
           <Route path={MEDIA_PATH} element={<MediaPage />} />
+          <Route path={MELAWA_PATH} element={<MelawaPage />} />
+          <Route path={GRIEVANCE_PATH} element={<GrievancePage />} />
+          <Route path="/grievance/feedback/:token" element={<GrievanceFeedbackPage />} />
           <Route path={DIRECTORY_PATH} element={<DistrictDirectoryPage />} />
           {/* One district's contacts, directly addressable and shareable. The
               same page, scoped — not a second copy of it. */}
@@ -177,6 +192,14 @@ function AdminRoutes() {
           <Route path="/admin/submissions" element={<Submissions />} />
           <Route path="/admin/submissions/:id" element={<SubmissionDetail />} />
           <Route path="/admin/settings" element={<Settings />} />
+          <Route path="/admin/grievances" element={<Grievances />} />
+          <Route path="/admin/grievances/:id" element={<GrievanceDetail />} />
+          <Route path="/admin/melawa" element={<MelawaList />} />
+          <Route path="/admin/melawa/new" element={<MelawaForm />} />
+          <Route path="/admin/melawa/:id/edit" element={<MelawaForm />} />
+          <Route path="/admin/users" element={<Users />} />
+          <Route path="/admin/audit-logs" element={<AuditLogs />} />
+          <Route path="/admin/register-student" element={<RegisterStudent />} />
           <Route path="/admin/media" element={<Media />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
         </Route>

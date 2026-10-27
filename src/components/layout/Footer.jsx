@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import Icon from '../Icon';
 import Mandala from '../Mandala';
 import logo from '../../assets/amrut-logo.png';
-import { NAV_ITEMS, useSectionNav } from './Header';
+import { GRIEVANCE_PATH, NAV_ITEMS, useSectionNav } from './Header';
+import { MELAWA_PATH } from '../MelawaTicker';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { OFFICIAL_LINKS, STATE_COORDINATOR_PHONE } from '../../i18n/translations';
 import { useFooter } from '../../data/useFooter';
@@ -73,6 +74,12 @@ export default function Footer() {
                 )}
               </li>
             ))}
+            <li>
+              <Link to={MELAWA_PATH}>{t.nav.melawa}</Link>
+            </li>
+            <li>
+              <Link to={GRIEVANCE_PATH}>{t.nav.grievance}</Link>
+            </li>
             <li>
               <Link to="/admin/login">{t.nav.admin}</Link>
             </li>

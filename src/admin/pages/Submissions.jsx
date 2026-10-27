@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Eye, Search, Trash2 } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
@@ -19,7 +19,9 @@ export default function Submissions() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [formType, setFormType] = useState("");
+  const [params] = useSearchParams();
+  // Dashboard tiles link here pre-filtered, e.g. ?form_type=participant.
+  const [formType, setFormType] = useState(() => (FORM_TYPES.includes(params.get("form_type")) ? params.get("form_type") : ""));
   const [status, setStatus] = useState("");
   const [confirmId, setConfirmId] = useState(null);
   const debouncedSearch = useDebounce(search);

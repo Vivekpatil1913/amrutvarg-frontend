@@ -5,6 +5,9 @@ import {
   FileText, MapPin, Megaphone, RefreshCw,
 } from "lucide-react";
 import { api } from "../api/client.js";
+import { useAdminAuth } from "../context/AdminAuthContext.jsx";
+import { isStateRole } from "../lib/roles.js";
+import { JurisdictionOverview } from "../components/JurisdictionOverview.jsx";
 
 const STATUS_META = {
   new: { label: "New", color: "#d96922" },
@@ -174,7 +177,21 @@ function MonthlySparkline({ months }) {
   </svg>;
 }
 
+// State-level administrators see the content dashboard followed by the
+// state-wide operations overview; division and district managers, who do not
+// manage website content, see only their own jurisdiction's overview.
 export default function Dashboard() {
+  const { user } = useAdminAuth();
+  if (!isStateRole(user?.role)) return <JurisdictionOverview withHeader />;
+  return (
+    <>
+      <ContentDashboard />
+      <JurisdictionOverview />
+    </>
+  );
+}
+
+function ContentDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

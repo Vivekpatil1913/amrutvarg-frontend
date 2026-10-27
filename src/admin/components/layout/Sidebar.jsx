@@ -4,15 +4,30 @@ import {
   FileText, Image, ChevronRight, LogOut, Sparkles, LayoutTemplate,
   Landmark, Map, MapPin, MapPinned, Milestone, Info, Activity, Clock, Quote,
   ClipboardList, Contact2, Link2, Clapperboard, Mic, Building2,
+  MessageSquareWarning, PartyPopper, UserCog, ScrollText, School, GraduationCap,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 import { avatarSrc } from "../../avatar.js";
+import { isStateRole, roleLabel } from "../../lib/roles.js";
 
+// `staff: true` marks what division and district managers may open; every
+// other item is state level only. The CMS enforces the same split, so this is
+// about not offering screens that would only answer "access denied".
 const NAV_GROUPS = [
   {
     label: "Overview",
     items: [
-      { to: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+      { to: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard", staff: true },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { to: "/admin/grievances", icon: MessageSquareWarning, label: "Grievances", staff: true },
+      { to: "/admin/melawa", icon: PartyPopper, label: "Melawa Announcements", staff: true },
+      { to: "/admin/vargs", icon: School, label: "Amrut Vargs", staff: true, managersOnly: true },
+      { to: "/admin/register-student", icon: GraduationCap, label: "Register Student", staff: true },
+      { to: "/admin/submissions", icon: FileText, label: "Form Submissions", staff: true },
     ],
   },
   {
@@ -52,13 +67,27 @@ const NAV_GROUPS = [
     ],
   },
   {
-    label: "Operations",
+    label: "Governance",
     items: [
-      { to: "/admin/submissions", icon: FileText, label: "Form Submissions" },
+      { to: "/admin/users", icon: UserCog, label: "Users & Roles" },
+      { to: "/admin/audit-logs", icon: ScrollText, label: "Audit Log" },
       { to: "/admin/settings", icon: Settings, label: "Website Settings" },
     ],
   },
 ];
+
+// The groups this user should see. A state administrator already reaches the
+// vargs through Website > Amrut Varg Section, so the Operations shortcut is
+// for managers only.
+function groupsFor(role) {
+  const state = isStateRole(role);
+  return NAV_GROUPS
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => (state ? !item.managersOnly : item.staff)),
+    }))
+    .filter((group) => group.items.length);
+}
 
 function initials(name = "") {
   return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "A";
@@ -68,6 +97,7 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }) {
   const { user, logout } = useAdminAuth();
   const location = useLocation();
   const avatar = avatarSrc(user?.avatarUrl);
+  const groups = groupsFor(user?.role);
 
   return (
     <>
@@ -92,7 +122,7 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }) {
 
         {/* Navigation */}
         <nav className="a-sidebar-nav">
-          {NAV_GROUPS.map((group) => (
+          {groups.map((group) => (
             <div key={group.label} className="a-nav-group">
               {!collapsed && (
                 <div className="a-nav-group-label">{group.label}</div>
@@ -130,7 +160,7 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }) {
                   {user?.name}
                 </div>
                 <div style={{ fontSize: "0.6875rem", color: "var(--a-nav-fg-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {user?.email}
+                  {roleLabel(user?.role)}
                 </div>
               </div>
             )}

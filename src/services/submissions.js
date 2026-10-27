@@ -43,10 +43,12 @@ export async function submitParticipant(payload) {
   return { sent: true };
 }
 
+// The listing is published as part of the same request, and comes back with
+// the response so the form can link straight to it.
 export async function submitOrganizer(payload) {
   if (!LIVE_SUBMIT) return { sent: false };
-  await post('/forms/organizers', payload);
-  return { sent: true };
+  const { data } = await post('/forms/organizers', payload);
+  return { sent: true, varg: data?.varg ?? null };
 }
 
 export async function submitLeader(payload, photo) {

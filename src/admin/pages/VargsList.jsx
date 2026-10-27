@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Pencil, Trash2, Search, Eye, Settings } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Eye, Settings, Flag, EyeOff, CheckCircle2 } from "lucide-react";
 import { api } from "../api/client.js";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
-import { ConfirmModal, useConfirm } from "../components/ui/Modal.jsx";
-import { Switch } from "../components/ui/Badge.jsx";
+import { ConfirmModal, Modal, useConfirm } from "../components/ui/Modal.jsx";
+import { Badge, Switch } from "../components/ui/Badge.jsx";
+import { useAdminAuth } from "../context/AdminAuthContext.jsx";
+import { isStateRole } from "../lib/roles.js";
 import { useToast } from "../components/ui/Toast.jsx";
 import { errorMessage } from "../lib/errors.js";
 import { useGeo } from "../components/ui/GeoSelect.jsx";
@@ -19,6 +21,19 @@ import { useGeo } from "../components/ui/GeoSelect.jsx";
 
 const fmtStamp = (v) => (v ? new Date(v).toLocaleDateString("en-IN") : "—");
 
+// Organiser registrations publish themselves; this is the post-publication
+// moderation that replaced the old approval queue.
+const LISTING = {
+  PUBLISHED: { label: "Live", tone: "ok" },
+  UNPUBLISHED: { label: "Unpublished", tone: "neutral" },
+  FLAGGED: { label: "Flagged", tone: "bad" },
+};
+const MODERATE_COPY = {
+  publish: { title: "Publish listing", verb: "Publish", done: "Listing published" },
+  unpublish: { title: "Unpublish listing", verb: "Unpublish", done: "Listing taken down" },
+  flag: { title: "Flag listing", verb: "Flag", done: "Listing flagged and hidden" },
+};
+
 export default function VargsList() {
   const navigate = useNavigate();
   const toast = useToast();
@@ -27,6 +42,13 @@ export default function VargsList() {
   const [search, setSearch] = useState("");
   const [vibhag, setVibhag] = useState("");
   const [confirmId, setConfirmId] = useState(null);
+  const [status, setStatus] = useState("");
+  const [source, setSource] = useState("");
+  const [moderating, setModerating] = useState(null); // { row, action }
+  const [reason, setReason] = useState("");
+  const [reasonError, setReasonError] = useState("");
+  const { user } = useAdminAuth();
+  const state = isStateRole(user?.role);
   const debouncedSearch = useDebounce(search);
   const { mutate, loading: saving } = useMutation();
   const confirm = useConfirm();
@@ -37,9 +59,29 @@ export default function VargsList() {
 
   const { data, meta, loading, error, refetch } = useList(
     "/admin/vargs",
-    { page, limit, search: debouncedSearch, vibhag },
-    [page, limit, debouncedSearch, vibhag]
+    { page, limit, search: debouncedSearch, vibhag, status, source },
+    [page, limit, debouncedSearch, vibhag, status, source]
   );
+
+  function startModeration(row, action) {
+    setReason(action === "flag" ? "" : row.flag_reason || "");
+    setReasonError("");
+    setModerating({ row, action });
+  }
+
+  async function moderate() {
+    const { row, action } = moderating;
+    if (action === "flag" && reason.trim().length < 5) {
+      setReasonError("Give a reason of at least 5 characters");
+      return;
+    }
+    await mutate(async () => {
+      await api.post(`/admin/vargs/${row.id}/moderate`, { action, reason: reason.trim() });
+      toast.success(MODERATE_COPY[action].done);
+      setModerating(null);
+      refetch();
+    }).catch((err) => toast.error(errorMessage(err, "Could not update the listing")));
+  }
 
   async function handleDelete() {
     await mutate(async () => {
@@ -106,6 +148,16 @@ export default function VargsList() {
     { key: "taluka", label: "Taluka", render: (v) => v || <span className="td-muted">—</span> },
     { key: "enrollment_count", label: "Enrolled", className: "td-muted a-tabular" },
     {
+      key: "status", label: "Listing",
+      render: (v, row) => (
+        <>
+          <Badge tone={LISTING[v]?.tone}>{LISTING[v]?.label || v}</Badge>
+          {row.source === "organizer" && <span className="a-row-sub">Self-published</span>}
+          {v === "FLAGGED" && row.flag_reason && <span className="a-row-sub" title={row.flag_reason}>{row.flag_reason}</span>}
+        </>
+      ),
+    },
+    {
       key: "is_active", label: "Active",
       render: (v, row) => <Switch on={v} onToggle={() => toggleActive(row)} />,
     },
@@ -123,10 +175,23 @@ export default function VargsList() {
         <option value="">All divisions</option>
         {vibhagRows.map((v) => <option key={v.id} value={v.name_mr}>{v.name_mr}</option>)}
       </select>
+      <select className="a-select" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
+        <option value="">All listings</option>
+        <option value="PUBLISHED">Live</option>
+        <option value="FLAGGED">Flagged</option>
+        <option value="UNPUBLISHED">Unpublished</option>
+      </select>
+      <select className="a-select" value={source} onChange={(e) => { setSource(e.target.value); setPage(1); }}>
+        <option value="">Any source</option>
+        <option value="organizer">Self-published by organisers</option>
+        <option value="admin">Added by staff</option>
+      </select>
       <div className="a-toolbar-right">
-        <button className="a-btn a-btn-ghost" onClick={() => navigate("/admin/vargs/settings")}>
-          <Settings size={16} /> Section settings
-        </button>
+        {state && (
+          <button className="a-btn a-btn-ghost" onClick={() => navigate("/admin/vargs/settings")}>
+            <Settings size={16} /> Section settings
+          </button>
+        )}
         <button className="a-btn a-btn-primary" onClick={() => navigate("/admin/vargs/new")}>
           <Plus size={16} /> Add Amrut Varg
         </button>
@@ -163,12 +228,60 @@ export default function VargsList() {
             <button className="a-action-btn" onClick={() => navigate(`/admin/vargs/${row.id}/edit`)} title="Edit">
               <Pencil size={15} />
             </button>
+            {row.status === "PUBLISHED" ? (
+              <>
+                <button className="a-action-btn" onClick={() => startModeration(row, "flag")} title="Flag for correction">
+                  <Flag size={15} />
+                </button>
+                <button className="a-action-btn" onClick={() => startModeration(row, "unpublish")} title="Unpublish">
+                  <EyeOff size={15} />
+                </button>
+              </>
+            ) : (
+              <button className="a-action-btn" onClick={() => startModeration(row, "publish")} title="Publish">
+                <CheckCircle2 size={15} />
+              </button>
+            )}
             <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete">
               <Trash2 size={15} />
             </button>
           </>
         )}
       />
+
+      <Modal
+        open={!!moderating}
+        onClose={() => setModerating(null)}
+        title={moderating ? MODERATE_COPY[moderating.action].title : ""}
+        footer={
+          <>
+            <button className="a-btn a-btn-ghost" onClick={() => setModerating(null)}>Cancel</button>
+            <button className="a-btn a-btn-primary" onClick={moderate} disabled={saving}>
+              {moderating ? MODERATE_COPY[moderating.action].verb : ""}
+            </button>
+          </>
+        }
+      >
+        {moderating && (
+          <>
+            <p><strong>{moderating.row.school_name}</strong> · {moderating.row.district_mr}</p>
+            <p className="a-text-muted a-text-sm">
+              {moderating.action === "publish"
+                ? "It will be listed on the public directory again."
+                : "It will be removed from the public directory straight away. Nothing is deleted."}
+            </p>
+            {moderating.action === "flag" && (
+              <div className={`a-field ${reasonError ? "has-error" : ""}`}>
+                <label className="a-label a-label-required">Reason</label>
+                <textarea className="a-input a-textarea" rows={3} maxLength={500} value={reason}
+                          placeholder="e.g. Venue address is incomplete"
+                          onChange={(e) => { setReason(e.target.value); setReasonError(""); }} />
+                {reasonError && <span className="a-field-error">{reasonError}</span>}
+              </div>
+            )}
+          </>
+        )}
+      </Modal>
 
       <ConfirmModal
         open={!!confirmId}
