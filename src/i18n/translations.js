@@ -349,7 +349,10 @@ const mr = {
   organizer: {
     title: 'आयोजक नोंदणी',
     desc: 'विद्यार्थ्यांसाठी अमृत वर्ग उपक्रम आयोजित करू इच्छिणाऱ्या गृहनिर्माण संस्था, शाळा व इतर पात्र संस्थांचे प्रतिनिधी किंवा समन्वयक यांच्यासाठी ही नोंदणी आहे. येथे संस्था / उपक्रमाची नोंदणी होते, वैयक्तिक विद्यार्थ्याची नाही. नोंदणी होताच आपला वर्ग सार्वजनिक यादीत दिसेल.',
-    organisation: 'संस्था / संघटना',
+    vargName: 'वर्गाचे नाव',
+    vargNamePlaceholder: 'उदा. एकात्म विद्यालय अमृत वर्ग',
+    vargNameRequired: 'वर्गाचे नाव आवश्यक आहे.',
+    vargNameTooLong: (n) => `वर्गाचे नाव ${n} अक्षरांपेक्षा जास्त असू शकत नाही.`,
     branch: 'विभाग / शाखा',
     name: 'आयोजकाचे नाव',
     contactPerson: 'संपर्क व्यक्तीचे नाव',
@@ -1025,7 +1028,10 @@ const en = {
   organizer: {
     title: 'Organizer Registration',
     desc: 'For representatives or coordinators of Housing Societies, Schools and other eligible organizations who want to organize Amrut Varg activities for students. This registers the organization / activity, not an individual student. Your listing goes live on the public list as soon as you register.',
-    organisation: 'Organization / Institution',
+    vargName: 'Varg Name',
+    vargNamePlaceholder: 'e.g. Ekatm Vidyalaya Amrut Varg',
+    vargNameRequired: 'A Varg name is required',
+    vargNameTooLong: (n) => `Varg name cannot exceed ${n} characters`,
     branch: 'Branch / Department',
     name: 'Organizer name',
     contactPerson: 'Contact person name',

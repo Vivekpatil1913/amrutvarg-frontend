@@ -10,11 +10,12 @@ import { isMobile } from '../../services/validation';
 import { submitOrganizer } from '../../services/submissions';
 import { fromCms, useVargs } from '../../data/VargsProvider';
 import { vargPath } from '../../data/vargLinks';
+import { vargPlaceName } from '../../data/vargNamesEn';
 
-// The order a person fills this in: the body organising, then who to speak to,
-// then where. `place` is gone — what the form asks for now is the
-// organisation, which is a different fact rather than a reworded one.
-const KEYS = ['organisation', 'branch', 'name', 'contactPerson', 'designation', 'mobile', 'district'];
+// The order a person fills this in: the varg, then who to speak to, then
+// where. `vargName` is the admin form's "Varg Name" (vargs.varg_name), so a
+// listing reads the same on the public cards whichever side created it.
+const KEYS = ['vargName', 'branch', 'name', 'contactPerson', 'designation', 'mobile', 'district'];
 
 // Everything except the branch: a single school or housing society has none to
 // give, and demanding one would only mean inventing it.
@@ -22,11 +23,16 @@ const OPTIONAL = new Set(['branch']);
 
 const INITIAL = Object.fromEntries(KEYS.map((k) => [k, '']));
 
+// Same cap as the admin form and the API (MAX.varg / VARG_NAME_MAX).
+const VARG_NAME_MAX = 200;
+
 const validate = (v, t) => {
   const e = {};
   KEYS.forEach((k) => {
     if (!OPTIONAL.has(k) && !v[k].trim()) e[k] = t.errors.required;
   });
+  if (!v.vargName.trim()) e.vargName = t.organizer.vargNameRequired;
+  else if (v.vargName.trim().length > VARG_NAME_MAX) e.vargName = t.organizer.vargNameTooLong(VARG_NAME_MAX);
   if (v.mobile.trim() && !isMobile(v.mobile)) e.mobile = t.errors.mobile;
   return e;
 };
@@ -49,7 +55,7 @@ function LiveResult({ varg, onClose }) {
       <p className="result__desc">{o.liveDesc(place)}</p>
       <p className="result__live">
         <span className="result__live-dot" aria-hidden="true" />
-        {varg.schoolName}
+        {vargPlaceName(varg, lang)}
       </p>
       <div className="result__actions">
         <button type="button" className="btn btn--ghost" onClick={onClose}>
@@ -127,7 +133,9 @@ export default function OrganizerForm({ open, onClose }) {
                     {...control}
                     {...(mobile
                       ? { type: 'tel', inputMode: 'numeric', maxLength: 10, placeholder: o.mobilePlaceholder, autoComplete: 'tel-national' }
-                      : { maxLength: 255 })}
+                      : key === 'vargName'
+                        ? { maxLength: VARG_NAME_MAX, placeholder: o.vargNamePlaceholder }
+                        : { maxLength: 255 })}
                   />
                   )}
                 </Field>

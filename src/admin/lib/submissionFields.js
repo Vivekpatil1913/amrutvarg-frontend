@@ -53,7 +53,9 @@ const FIELD_LABELS = {
   // Kept for organizer submissions made before the form asked for an
   // organisation instead of a town.
   place: "Place",
-  organisation: "Organization / Institution",
+  vargName: "Varg Name",
+  // Submissions made before the field became the Varg Name.
+  organisation: "Varg Name (legacy: Organization / Institution)",
   branch: "Branch / Department",
   contactPerson: "Contact person name",
   designation: "Designation",
@@ -87,7 +89,7 @@ const GROUPS = {
     { title: "Declaration", keys: ["declarationAccepted"] },
   ],
   organizer: [
-    { title: "Organisation", keys: ["organisation", "branch"] },
+    { title: "Varg", keys: ["vargName", "organisation", "branch"] },
     { title: "Contact", keys: ["name", "contactPerson", "designation", "mobile"] },
     // `place` only appears on records made before the form changed.
     { title: "Location", keys: ["district", "place"] },
