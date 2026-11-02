@@ -7,8 +7,9 @@ import { SubmitError } from './submissions';
 
 const CMS_API = import.meta.env.VITE_CMS_API || 'http://localhost:4000/api/v1';
 
-export const ACTIVITY_PHOTO_MIN = 3;
-export const ACTIVITY_PHOTO_MAX = 10;
+// One photograph is required; up to two more are optional.
+export const ACTIVITY_PHOTO_MIN = 1;
+export const ACTIVITY_PHOTO_MAX = 3;
 export const ACTIVITY_PHOTO_MAX_BYTES = 5 * 1024 * 1024;
 export const ACTIVITY_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 export const ACTIVITY_PHOTO_EXTS = ['.jpg', '.jpeg', '.png', '.webp'];

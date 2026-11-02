@@ -92,6 +92,7 @@ export default function HomePage() {
         open={form === 'report'}
         onClose={() => setForm(null)}
         icon="camera"
+        className="modal__panel--report"
         title={t.vargPortal.reportCard.subtitle}
         subtitle={t.common.requiredNote}
       >

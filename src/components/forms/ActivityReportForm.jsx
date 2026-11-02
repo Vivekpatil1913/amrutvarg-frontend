@@ -297,7 +297,7 @@ export default function ActivityReportForm({ onRecorded = () => {}, onClose, onS
         </button>
         {photos.length ? (
           <>
-            <p className="field__hint">{p.photoCount(num(photos.length))}</p>
+            <p className="field__hint">{p.photoCount(num(photos.length), num(ACTIVITY_PHOTO_MAX))}</p>
             <ul className="avp__previews">
               {photos.map((ph, i) => (
                 <li key={ph.url}>

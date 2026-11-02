@@ -6954,8 +6954,8 @@ body {
 /* ====================================================================
    JOIN — FOURTH CARD: AMRUT VARG ACTIVITY REPORT
    Only when the report card is present (.paths--four): two by two on
-   tablets and small laptops, four across on wide screens. The whole card
-   is clickable through a stretched button over it.
+   tablets and small laptops, four across on wide screens. A click anywhere
+   on the card, or on its emerald button, opens the report form.
    ==================================================================== */
 @media (min-width: 640px) and (max-width: 1199px) {
   .paths--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -6972,41 +6972,47 @@ body {
   border-color: var(--brand-line);
 }
 .path--report .path__icon { background: var(--brand-ink); color: #fff; }
-.path__stretch {
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.path__stretch::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-radius: inherit;
-}
-.path__stretch:focus-visible { outline: none; }
-.path--report:has(.path__stretch:focus-visible) { outline: 2px solid var(--brand); outline-offset: 3px; }
 .path__subtitle {
   margin: 0 0 var(--s-2);
   color: var(--brand-ink);
   font-weight: 700;
   font-size: 0.95rem;
 }
-.path__open {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: var(--s-4);
-  color: var(--brand-ink);
-  font-weight: 700;
-  transition: gap 0.25s ease;
+/* The same .btn--primary .path__action button as the other cards, in emerald. */
+.path__action--report {
+  --btn-bg: #10B981;
+  --btn-fg: #fff;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 20px -12px rgba(16, 185, 129, 0.8);
+  transition: background-color 0.25s ease, filter 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
-.path--report:hover .path__open { gap: 10px; }
+.path__action--report:hover,
+.path__action--report:focus-visible {
+  --btn-bg: #10B981;
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px -12px rgba(16, 185, 129, 0.9);
+}
+
+/* The report dialog's entrance: the backdrop fades in (.modal) while the
+   panel rises and settles, eased out over 260ms. */
+.modal__panel--report {
+  animation: report-modal-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes report-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .path--report:hover,
-  .path--report:focus-within { transform: none; }
+  .path--report:focus-within,
+  .path__action--report:hover { transform: none; }
+  .modal__panel--report { animation: none; }
 }

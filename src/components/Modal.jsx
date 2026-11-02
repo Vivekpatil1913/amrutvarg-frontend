@@ -7,7 +7,8 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 // Accessible dialog: focus trap, Escape to close, scroll lock, focus restore.
-export default function Modal({ open, title, subtitle, icon, onClose, children, size = 'md' }) {
+// `className` is added to the panel, for a dialog that needs its own styling.
+export default function Modal({ open, title, subtitle, icon, onClose, children, size = 'md', className = '' }) {
   const { t } = useLanguage();
   const panelRef = useRef(null);
   const titleId = useId();
@@ -64,7 +65,7 @@ export default function Modal({ open, title, subtitle, icon, onClose, children, 
     >
       <div
         ref={panelRef}
-        className={`modal__panel modal__panel--${size}`}
+        className={`modal__panel modal__panel--${size}${className ? ` ${className}` : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

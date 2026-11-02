@@ -60,13 +60,14 @@ function bundled(t) {
 
 // The fourth card, the Amrut Varg activity report ("अमृत वर्ग कार्य अहवाल"),
 // is not a CMS card: it is always added after the configured ones when the
-// page passes `onReport`. The whole card is the control — a stretched button
-// over it opens the 10-field form — so it has no separate bottom button.
+// page passes `onReport`. A click anywhere on the card opens the 10-field
+// form; the bottom button, styled like its neighbours' but in emerald, is the
+// keyboard and screen-reader control for the same action.
 function ReportCard({ index, onReport }) {
   const { t, num } = useLanguage();
   const r = t.vargPortal.reportCard;
   return (
-    <li id="varg-report" className="path path--report" data-reveal style={{ '--d': index }}>
+    <li id="varg-report" className="path path--report" data-reveal style={{ '--d': index }} onClick={onReport}>
       <div className="path__top">
         <span className="path__icon">
           <Icon name="camera" size={22} />
@@ -75,11 +76,7 @@ function ReportCard({ index, onReport }) {
           {num(`0${index + 1}`)}
         </span>
       </div>
-      <h3 className="path__title">
-        <button type="button" className="path__stretch" onClick={onReport}>
-          {r.title}
-        </button>
-      </h3>
+      <h3 className="path__title">{r.title}</h3>
       <p className="path__subtitle">{r.subtitle}</p>
       <p className="path__desc">{r.desc}</p>
       <div className="path__needs">
@@ -87,10 +84,18 @@ function ReportCard({ index, onReport }) {
           {r.needs.map((need) => <li key={need}>{need}</li>)}
         </ul>
       </div>
-      <p className="path__open" aria-hidden="true">
-        {r.open}
-        <Icon name="arrowRight" size={16} />
-      </p>
+      <button
+        type="button"
+        className="btn btn--primary path__action path__action--report"
+        onClick={(e) => {
+          // The card's own click would open the form a second time.
+          e.stopPropagation();
+          onReport();
+        }}
+      >
+        <Icon name="file" size={18} />
+        {r.action}
+      </button>
     </li>
   );
 }
