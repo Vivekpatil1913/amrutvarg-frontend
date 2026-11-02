@@ -12,7 +12,9 @@ import MediaPage from './pages/MediaPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import NotFound from './pages/NotFound';
 import SceneBackdrop from './components/SceneBackdrop';
-import MelawaTicker, { MELAWA_PATH } from './components/MelawaTicker';
+// The flashing ticker bar is no longer shown; melawas are announced by the
+// Melawa banner on the home page. The module still owns MELAWA_PATH.
+import { MELAWA_PATH } from './components/MelawaTicker';
 import MelawaPage from './pages/MelawaPage';
 import GrievancePage from './pages/GrievancePage';
 import GrievanceFeedbackPage from './pages/GrievanceFeedbackPage';
@@ -102,7 +104,6 @@ function Shell() {
   return (
     <div className={`app lang-${lang}${switching ? ' is-switching' : ''}`}>
       <SceneBackdrop />
-      <MelawaTicker />
       <Header />
       <main id="main" tabIndex={-1}>
         <Routes>

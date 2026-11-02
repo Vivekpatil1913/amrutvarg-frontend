@@ -14,6 +14,8 @@ import Contact from '../components/sections/Contact';
 import ParticipantForm from '../components/forms/ParticipantForm';
 import OrganizerForm from '../components/forms/OrganizerForm';
 import LeaderForm from '../components/forms/LeaderForm';
+import Modal from '../components/Modal';
+import ActivityReportForm from '../components/forms/ActivityReportForm';
 import VargDetails from '../components/VargDetails';
 import { useSectionNav } from '../components/layout/Header';
 import { useReveal } from '../hooks/useReveal';
@@ -25,9 +27,9 @@ import { findVargBySlug } from '../data/vargLinks';
 export default function HomePage() {
   const goTo = useSectionNav();
   const [enrollVarg, setEnrollVarg] = useState(null);
-  const [form, setForm] = useState(null); // 'organizer' | 'leader' | null
+  const [form, setForm] = useState(null); // 'organizer' | 'leader' | 'report' | null
 
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const { vargs } = useVargs();
   const { vargSlug } = useParams();
   useReveal([lang]);
@@ -74,13 +76,33 @@ export default function HomePage() {
       <Session />
       <Growth />
       <Yashogatha />
-      <Join onFindVarg={() => goTo('vargs')} onOrganizer={() => setForm('organizer')} onLeader={() => setForm('leader')} />
+      <Join
+        onFindVarg={() => goTo('vargs')}
+        onOrganizer={() => setForm('organizer')}
+        onLeader={() => setForm('leader')}
+        onReport={() => setForm('report')}
+      />
       <Vargs vargs={vargs} onEnroll={setEnrollVarg} />
       <Contact onOrganizer={() => setForm('organizer')} onFindVarg={() => goTo('vargs')} />
 
       <ParticipantForm varg={enrollVarg} onClose={() => setEnrollVarg(null)} />
       <OrganizerForm open={form === 'organizer'} onClose={() => setForm(null)} />
       <LeaderForm open={form === 'leader'} onClose={() => setForm(null)} />
+      <Modal
+        open={form === 'report'}
+        onClose={() => setForm(null)}
+        icon="camera"
+        title={t.vargPortal.reportCard.subtitle}
+        subtitle={t.common.requiredNote}
+      >
+        <ActivityReportForm
+          onClose={() => setForm(null)}
+          onSeeListing={() => {
+            setForm(null);
+            goTo('vargs');
+          }}
+        />
+      </Modal>
       <VargDetails
         open={Boolean(vargSlug)}
         varg={detailVarg}

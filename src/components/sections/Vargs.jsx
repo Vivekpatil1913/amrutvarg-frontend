@@ -287,8 +287,23 @@ export default function Vargs({ vargs, onEnroll }) {
   // The statistics strip. Each figure is counted by the CMS — active vargs,
   // districts and vibhags in the masters — so it cannot drift from the data;
   // without the CMS the page counts what it has.
+  //
+  // The figures that count listed vargs are taken from the live list itself,
+  // so a varg published from this page (an organiser registration or an
+  // activity report) moves them at once rather than after the CMS's cache
+  // expires. Master totals and manual values stay as the CMS sends them.
+  const liveCounts = {
+    vargs_count: vargs.length,
+    listed_districts_count: new Set(vargs.map((x) => x.district).filter(Boolean)).size,
+    listed_divisions_count: new Set(vargs.map((x) => x.vibhag).filter(Boolean)).size,
+  };
   const stats = copy.statItems
-    ? copy.statItems.map((s) => ({ key: s.key, icon: s.icon, label: pick(s, 'label', lang), value: s.value }))
+    ? copy.statItems.map((s) => ({
+        key: s.key,
+        icon: s.icon,
+        label: pick(s, 'label', lang),
+        value: s.source in liveCounts ? liveCounts[s.source] : s.value,
+      }))
     : [
         { key: 'vargs', icon: 'building', label: v.statVargs, value: vargs.length },
         { key: 'districts', icon: 'mapPin', label: v.statDistricts, value: copy.districtTotal },

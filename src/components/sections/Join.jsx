@@ -58,7 +58,44 @@ function bundled(t) {
   ];
 }
 
-export default function Join({ onFindVarg, onOrganizer, onLeader }) {
+// The fourth card, the Amrut Varg activity report ("अमृत वर्ग कार्य अहवाल"),
+// is not a CMS card: it is always added after the configured ones when the
+// page passes `onReport`. The whole card is the control — a stretched button
+// over it opens the 10-field form — so it has no separate bottom button.
+function ReportCard({ index, onReport }) {
+  const { t, num } = useLanguage();
+  const r = t.vargPortal.reportCard;
+  return (
+    <li id="varg-report" className="path path--report" data-reveal style={{ '--d': index }}>
+      <div className="path__top">
+        <span className="path__icon">
+          <Icon name="camera" size={22} />
+        </span>
+        <span className="path__step" aria-hidden="true">
+          {num(`0${index + 1}`)}
+        </span>
+      </div>
+      <h3 className="path__title">
+        <button type="button" className="path__stretch" onClick={onReport}>
+          {r.title}
+        </button>
+      </h3>
+      <p className="path__subtitle">{r.subtitle}</p>
+      <p className="path__desc">{r.desc}</p>
+      <div className="path__needs">
+        <ul className="path__chips">
+          {r.needs.map((need) => <li key={need}>{need}</li>)}
+        </ul>
+      </div>
+      <p className="path__open" aria-hidden="true">
+        {r.open}
+        <Icon name="arrowRight" size={16} />
+      </p>
+    </li>
+  );
+}
+
+export default function Join({ onFindVarg, onOrganizer, onLeader, onReport }) {
   const { t, num, lang } = useLanguage();
   const j = t.join;
   const cms = useJoin();
@@ -105,8 +142,8 @@ export default function Join({ onFindVarg, onOrganizer, onLeader }) {
           {lead ? <p className="section__lead">{lead}</p> : null}
         </header>
 
-        {cards.length ? (
-          <ol className="paths">
+        {cards.length || onReport ? (
+          <ol className={`paths${onReport ? ' paths--four' : ''}`}>
             {cards.map((card, i) => (
               <li
                 key={cardKey(card, i)}
@@ -163,6 +200,7 @@ export default function Join({ onFindVarg, onOrganizer, onLeader }) {
                 </button>
               </li>
             ))}
+            {onReport ? <ReportCard index={cards.length} onReport={onReport} /> : null}
           </ol>
         ) : null}
       </div>

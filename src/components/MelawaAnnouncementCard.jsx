@@ -5,8 +5,10 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { cachedMelawas, fetchActiveMelawas, formatTiming, pickLang } from '../services/melawa';
 import { MELAWA_PATH } from './MelawaTicker';
 
-// Interactive 'Amrut Varg Melawa' announcement cards: the live melawas, newest
-// announcement first, in the terracotta theme. A melawa announced within the
+// Interactive 'Amrut Varg Melawa' announcement banners: the live melawas,
+// newest announcement first, in the terracotta theme. Each is one horizontal
+// strip — badges and title on the left, date / time / place in the middle,
+// the call to action on the right — stacking on narrow screens. A melawa announced within the
 // last seven days wears an animated 'NEW' star-burst; after that the badge
 // retires on its own. Renders nothing when no melawa is live.
 
@@ -64,13 +66,15 @@ export default function MelawaAnnouncementCard({ framed = false }) {
         const title = pickLang(row, 'title', lang);
         return (
           <article key={row.id} className="mcard" aria-label={`${p.melawaEyebrow}: ${title}`}>
-            <p className="mcard__eyebrow">
-              <span className="mcard__chip">{m.scope[row.jurisdiction_scope] || p.melawaEyebrow}</span>
-              <span>{p.melawaEyebrow}</span>
-            </p>
-            <div className="mcard__head">
-              <h3 className="mcard__title">{title}</h3>
-              {isNewMelawa(row) ? <NewBadge label={p.melawaNew} /> : null}
+            <div className="mcard__lead">
+              <p className="mcard__eyebrow">
+                <span className="mcard__chip">{m.scope[row.jurisdiction_scope] || p.melawaEyebrow}</span>
+                <span className="mcard__chip mcard__chip--soft">{p.melawaEyebrow}</span>
+              </p>
+              <div className="mcard__head">
+                <h3 className="mcard__title">{title}</h3>
+                {isNewMelawa(row) ? <NewBadge label={p.melawaNew} /> : null}
+              </div>
             </div>
             <ul className="mcard__meta">
               <li><Icon name="calendar" size={15} />{formatDate(String(row.event_date).slice(0, 10))}</li>

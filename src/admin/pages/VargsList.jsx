@@ -153,6 +153,7 @@ export default function VargsList() {
         <>
           <Badge tone={LISTING[v]?.tone}>{LISTING[v]?.label || v}</Badge>
           {row.source === "organizer" && <span className="a-row-sub">Self-published</span>}
+          {row.source === "activity" && <span className="a-row-sub">From activity report</span>}
           {v === "FLAGGED" && row.flag_reason && <span className="a-row-sub" title={row.flag_reason}>{row.flag_reason}</span>}
         </>
       ),
@@ -184,6 +185,7 @@ export default function VargsList() {
       <select className="a-select" value={source} onChange={(e) => { setSource(e.target.value); setPage(1); }}>
         <option value="">Any source</option>
         <option value="organizer">Self-published by organisers</option>
+        <option value="activity">From Amrut Varg activity reports</option>
         <option value="admin">Added by staff</option>
       </select>
       <div className="a-toolbar-right">
