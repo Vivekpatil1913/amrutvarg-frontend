@@ -31,10 +31,16 @@ export const MEDIA_PATH = '/media';
 // The public suggestion / complaint form. Kept in step with GrievancePage.
 export const GRIEVANCE_PATH = '/suggestion-complaint';
 
+// The Amrut Varg activity portal and digital repository. Kept in step with
+// VARG_PORTAL_PATH in AmrutVargPage.
+export const VARG_PORTAL_PATH = '/amrut-varg';
+
 export const NAV_ITEMS = [
   { id: 'hero', key: 'home' },
   { id: 'yashogatha', key: 'yashogatha' },
   { id: 'about', key: 'amrutVarg' },
+  // The activity recording portal — a page of its own.
+  { id: 'vargPortal', key: 'vargPortal', to: VARG_PORTAL_PATH },
   { id: 'session', key: 'session' },
   { id: 'vargs', key: 'workingVargs' },
   { id: 'leader', key: 'leader' },

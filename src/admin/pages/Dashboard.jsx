@@ -2,12 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Activity, ArrowDownRight, ArrowRight, ArrowUpRight,
-  FileText, MapPin, Megaphone, RefreshCw,
+  Download, FileText, MapPin, Megaphone, RefreshCw,
 } from "lucide-react";
 import { api } from "../api/client.js";
 import { useAdminAuth } from "../context/AdminAuthContext.jsx";
 import { isStateRole } from "../lib/roles.js";
 import { JurisdictionOverview } from "../components/JurisdictionOverview.jsx";
+import { useToast } from "../components/ui/Toast.jsx";
+import { errorMessage } from "../lib/errors.js";
+import { exportFileName } from "../lib/vargActivities.js";
 
 const STATUS_META = {
   new: { label: "New", color: "#d96922" },
@@ -196,6 +199,21 @@ function ContentDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updatedAt, setUpdatedAt] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const toast = useToast();
+
+  // Card 4 exports the live Amrut Varg activity records, confined by the CMS
+  // to the signed-in officer's jurisdiction.
+  const exportVargCsv = async () => {
+    setExporting(true);
+    try {
+      await api.download("/admin/varg-activities/export.csv", exportFileName());
+    } catch (err) {
+      toast.error(errorMessage(err, "Could not export the CSV"));
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const loadDashboard = useCallback(async () => {
     setLoading(true);
@@ -232,7 +250,7 @@ function ContentDashboard() {
     { label: "Total submissions", value: stats.totalSubmissions, icon: FileText, color: "#7441e8", to: "/admin/submissions" },
     { label: "Awaiting review", value: stats.newSubmissions, icon: Activity, color: "#0eaa8a", to: "/admin/submissions" },
     { label: "Active announcements", value: stats.activeAnnouncements, icon: Megaphone, color: "#fa8756", to: "/admin/announcements" },
-    { label: "Active Amrut Vargs", value: stats.activeVargs, icon: MapPin, color: "#ec4c76", to: "/admin/vargs" },
+    { label: "Active Amrut Vargs", value: stats.activeVargs, icon: MapPin, color: "#ec4c76", to: "/admin/vargs", exportCsv: true },
   ];
 
   return (
@@ -256,13 +274,24 @@ function ContentDashboard() {
       <div className="a-stat-grid dash-stat-grid">
         {cards.map((card) => {
           const Icon = card.icon;
-          return <Link key={card.label} to={card.to} className="a-stat-tile dash-stat-tile">
+          const body = <>
             <div className="dash-stat-top">
               <span className="a-stat-label">{card.label}</span>
               <span className="dash-stat-icon" style={{ color: card.color, background: `${card.color}14` }}><Icon size={17} /></span>
             </div>
             <strong className="a-stat-value">{loading ? "—" : NUMBER_FORMAT.format(card.value ?? 0)}</strong>
-          </Link>;
+          </>;
+          // A button cannot sit inside a link, so the export card keeps its
+          // link and adds the button beside it.
+          if (card.exportCsv) {
+            return <div key={card.label} className="a-stat-tile dash-stat-tile dash-stat-tile--export">
+              <Link to={card.to} className="dash-stat-link">{body}</Link>
+              <button type="button" className="a-btn a-btn-secondary a-btn-sm dash-export-btn" onClick={exportVargCsv} disabled={exporting} title="Download live Amrut Varg activity data as CSV">
+                <Download size={14} /> {exporting ? "Exporting…" : "Export to CSV"}
+              </button>
+            </div>;
+          }
+          return <Link key={card.label} to={card.to} className="a-stat-tile dash-stat-tile">{body}</Link>;
         })}
       </div>
 

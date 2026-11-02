@@ -41,6 +41,31 @@ export const api = {
   patch: (path, body, opts) => request("PATCH", path, body, opts),
   del: (path, opts) => request("DELETE", path, undefined, opts),
 
+  // Authenticated file download (CSV exports): fetches the body as a blob and
+  // hands it to the browser under the server's suggested filename.
+  download: async (path, fallbackName = "export.csv") => {
+    const token = getToken();
+    const headers = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    const res = await fetch(`${BASE}${path}`, { headers, credentials: "include" });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      const err = new Error(data?.error?.message || `HTTP ${res.status}`);
+      err.status = res.status;
+      throw err;
+    }
+    const blob = await res.blob();
+    const match = /filename="?([^";]+)"?/i.exec(res.headers.get("Content-Disposition") || "");
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = match?.[1] || fallbackName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  },
+
   // Multipart upload
   upload: async (path, formData) => {
     const token = getToken();

@@ -16,6 +16,7 @@ import MelawaTicker, { MELAWA_PATH } from './components/MelawaTicker';
 import MelawaPage from './pages/MelawaPage';
 import GrievancePage from './pages/GrievancePage';
 import GrievanceFeedbackPage from './pages/GrievanceFeedbackPage';
+import AmrutVargPage, { VARG_PORTAL_PATH } from './pages/AmrutVargPage';
 
 // Admin panel (lazy-loaded to keep public site bundle small)
 import { AdminAuthProvider } from './admin/context/AdminAuthContext.jsx';
@@ -73,6 +74,7 @@ const Grievances = lazy(() => import('./admin/pages/Grievances.jsx'));
 const GrievanceDetail = lazy(() => import('./admin/pages/GrievanceDetail.jsx'));
 const MelawaList = lazy(() => import('./admin/pages/MelawaList.jsx'));
 const MelawaForm = lazy(() => import('./admin/pages/MelawaForm.jsx'));
+const VargActivitiesList = lazy(() => import('./admin/pages/VargActivitiesList.jsx'));
 const Users = lazy(() => import('./admin/pages/Users.jsx'));
 const AuditLogs = lazy(() => import('./admin/pages/AuditLogs.jsx'));
 const RegisterStudent = lazy(() => import('./admin/pages/RegisterStudent.jsx'));
@@ -114,6 +116,7 @@ function Shell() {
           <Route path={MEDIA_PATH} element={<MediaPage />} />
           <Route path={MELAWA_PATH} element={<MelawaPage />} />
           <Route path={GRIEVANCE_PATH} element={<GrievancePage />} />
+          <Route path={VARG_PORTAL_PATH} element={<AmrutVargPage />} />
           <Route path="/grievance/feedback/:token" element={<GrievanceFeedbackPage />} />
           <Route path={DIRECTORY_PATH} element={<DistrictDirectoryPage />} />
           {/* One district's contacts, directly addressable and shareable. The
@@ -197,6 +200,7 @@ function AdminRoutes() {
           <Route path="/admin/melawa" element={<MelawaList />} />
           <Route path="/admin/melawa/new" element={<MelawaForm />} />
           <Route path="/admin/melawa/:id/edit" element={<MelawaForm />} />
+          <Route path="/admin/varg-activities" element={<VargActivitiesList />} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/audit-logs" element={<AuditLogs />} />
           <Route path="/admin/register-student" element={<RegisterStudent />} />

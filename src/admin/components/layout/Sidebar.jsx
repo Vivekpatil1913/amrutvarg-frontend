@@ -5,6 +5,7 @@ import {
   Landmark, Map, MapPin, MapPinned, Milestone, Info, Activity, Clock, Quote,
   ClipboardList, Contact2, Link2, Clapperboard, Mic, Building2,
   MessageSquareWarning, PartyPopper, UserCog, ScrollText, School, GraduationCap,
+  CalendarCheck,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
 import { avatarSrc } from "../../avatar.js";
@@ -26,6 +27,7 @@ const NAV_GROUPS = [
       { to: "/admin/grievances", icon: MessageSquareWarning, label: "Grievances", staff: true },
       { to: "/admin/melawa", icon: PartyPopper, label: "Melawa Announcements", staff: true },
       { to: "/admin/vargs", icon: School, label: "Amrut Vargs", staff: true, managersOnly: true },
+      { to: "/admin/varg-activities", icon: CalendarCheck, label: "Amrut Varg Activities", staff: true },
       { to: "/admin/register-student", icon: GraduationCap, label: "Register Student", staff: true },
       { to: "/admin/submissions", icon: FileText, label: "Form Submissions", staff: true },
     ],
