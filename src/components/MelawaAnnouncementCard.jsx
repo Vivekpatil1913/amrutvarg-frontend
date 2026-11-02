@@ -36,7 +36,9 @@ function NewBadge({ label }) {
   );
 }
 
-export default function MelawaAnnouncementCard() {
+// `framed` wraps the cards in a page container, for placing them directly in
+// a full-width page such as the home page.
+export default function MelawaAnnouncementCard({ framed = false }) {
   const { t, lang, formatDate } = useLanguage();
   const m = t.melawa;
   const p = t.vargPortal;
@@ -56,18 +58,20 @@ export default function MelawaAnnouncementCard() {
     .sort((a, b) => (Date.parse(b.created_at) || 0) - (Date.parse(a.created_at) || 0))
     .slice(0, MAX_CARDS);
 
-  return (
+  const list = (
     <div className="mcards">
       {cards.map((row) => {
         const title = pickLang(row, 'title', lang);
         return (
           <article key={row.id} className="mcard" aria-label={`${p.melawaEyebrow}: ${title}`}>
-            {isNewMelawa(row) ? <NewBadge label={p.melawaNew} /> : null}
             <p className="mcard__eyebrow">
               <span className="mcard__chip">{m.scope[row.jurisdiction_scope] || p.melawaEyebrow}</span>
               <span>{p.melawaEyebrow}</span>
             </p>
-            <h3 className="mcard__title">{title}</h3>
+            <div className="mcard__head">
+              <h3 className="mcard__title">{title}</h3>
+              {isNewMelawa(row) ? <NewBadge label={p.melawaNew} /> : null}
+            </div>
             <ul className="mcard__meta">
               <li><Icon name="calendar" size={15} />{formatDate(String(row.event_date).slice(0, 10))}</li>
               <li><Icon name="clock" size={15} />{formatTiming(row, lang, m)}</li>
@@ -84,4 +88,6 @@ export default function MelawaAnnouncementCard() {
       })}
     </div>
   );
+
+  return framed ? <section className="container mcards-frame" aria-label={p.melawaEyebrow}>{list}</section> : list;
 }

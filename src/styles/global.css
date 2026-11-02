@@ -6773,10 +6773,12 @@ body {
 
 /* ====================================================================
    AMRUT VARG MELAWA ANNOUNCEMENT CARD
-   Terracotta / rust ochre theme. At rest the card is a warm light panel
-   with terracotta type; on hover it lifts 3px with a warm glow and inverts
-   to a solid terracotta field with white text. The NEW star-burst pulses
-   for seven days after the melawa is announced.
+   Terracotta / rust ochre theme. At rest the card is crisp white with
+   dark text and a terracotta accent; on hover it lifts 3px with a warm
+   glow and inverts to a solid terracotta field with white text. Only
+   colour, shadow and transform change, so nothing reflows. The NEW
+   star-burst beside the title pulses for seven days after the melawa is
+   announced.
    ==================================================================== */
 .mcards {
   --mc-terracotta: #A3501E;
@@ -6795,13 +6797,13 @@ body {
   flex-direction: column;
   gap: var(--s-3);
   padding: var(--card-pad);
-  padding-right: calc(var(--card-pad) + 44px);
-  border: 1px solid rgba(163, 80, 30, 0.3);
+  border: 1px solid rgba(163, 80, 30, 0.22);
   border-left: 5px solid var(--mc-terracotta);
   border-radius: var(--radius-lg);
-  background: #FFF6EE;
-  color: var(--mc-terracotta);
+  background: var(--mc-white);
+  color: var(--ink);
   box-shadow: 0 2px 8px rgba(163, 80, 30, 0.08);
+  will-change: transform;
   transition: transform 250ms ease, box-shadow 250ms ease, background-color 250ms ease, color 250ms ease, border-color 250ms ease;
 }
 .mcard:hover,
@@ -6810,8 +6812,14 @@ body {
   background: var(--mc-terracotta);
   border-color: var(--mc-terracotta);
   color: var(--mc-white);
-  box-shadow: 0 14px 30px rgba(163, 80, 30, 0.28);
+  box-shadow: 0 10px 25px rgba(163, 80, 30, 0.28);
 }
+.mcard__eyebrow > span:last-child { color: var(--mc-terracotta); transition: color 250ms ease; }
+.mcard:hover .mcard__eyebrow > span:last-child,
+.mcard:focus-within .mcard__eyebrow > span:last-child { color: var(--mc-white); }
+.mcard__head { display: flex; align-items: center; gap: var(--s-3); }
+.mcards-frame { padding-block: var(--s-5) 0; }
+.mcards-frame .mcards { margin-top: 0; }
 .mcard__eyebrow {
   display: flex;
   flex-wrap: wrap;
@@ -6868,13 +6876,12 @@ body {
 .mcard__cta:focus-visible { outline: 2px solid var(--mc-white); outline-offset: 3px; }
 
 .mcard__new {
-  position: absolute;
-  top: -14px;
-  right: -10px;
+  position: relative;
+  flex: none;
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 54px;
+  height: 54px;
   animation: mcard-new-pulse 1.5s ease-in-out infinite;
 }
 .mcard__new svg {
@@ -6893,12 +6900,14 @@ body {
   letter-spacing: 0.04em;
 }
 @keyframes mcard-new-pulse {
+  /* The glow is a drop-shadow so it follows the star's outline; a
+     box-shadow would draw a square around it. */
   0%, 100% {
-    transform: scale(1) rotate(0deg);
+    transform: scale(1);
     filter: drop-shadow(0 0 2px rgba(220, 38, 38, 0.45));
   }
   50% {
-    transform: scale(1.12) rotate(8deg);
+    transform: scale(1.08);
     filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.85));
   }
 }

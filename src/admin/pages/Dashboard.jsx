@@ -8,6 +8,7 @@ import { api } from "../api/client.js";
 import { useAdminAuth } from "../context/AdminAuthContext.jsx";
 import { isStateRole } from "../lib/roles.js";
 import { JurisdictionOverview } from "../components/JurisdictionOverview.jsx";
+import { PramukhLeadersCard } from "../components/PramukhLeadersCard.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
 import { errorMessage } from "../lib/errors.js";
 import { exportFileName } from "../lib/vargActivities.js";
@@ -185,10 +186,19 @@ function MonthlySparkline({ months }) {
 // manage website content, see only their own jurisdiction's overview.
 export default function Dashboard() {
   const { user } = useAdminAuth();
-  if (!isStateRole(user?.role)) return <JurisdictionOverview withHeader />;
+  // The Amrut Varg leaders card is for every tier; the CMS scopes its rows.
+  if (!isStateRole(user?.role)) {
+    return (
+      <>
+        <JurisdictionOverview withHeader />
+        <PramukhLeadersCard />
+      </>
+    );
+  }
   return (
     <>
       <ContentDashboard />
+      <PramukhLeadersCard />
       <JurisdictionOverview />
     </>
   );

@@ -7,7 +7,6 @@ import { Field, describe, FormError, focusFirstInvalid } from '../components/For
 import { useLanguage } from '../i18n/LanguageContext';
 import { useForm } from '../hooks/useForm';
 import { useMaster } from '../data/useMasters';
-import { isMobile } from '../services/validation';
 import { mediaSrc } from '../services/mediaUrl';
 import {
   submitActivity, fetchActivities, checkActivityPhoto, cmsApiBase, FREQUENCIES,
@@ -36,6 +35,9 @@ const INITIAL = {
   photos: 0,
 };
 
+// The PRD's rule for the Pramukh's contact number: exactly ten digits.
+const isTenDigits = (v) => /^[0-9]{10}$/.test(v.trim());
+
 const REQUIRED = ['division_id', 'district_id', 'taluka', 'institution_name', 'incharge_name', 'participant_count', 'frequency'];
 
 const validate = (v, t) => {
@@ -44,7 +46,7 @@ const validate = (v, t) => {
   REQUIRED.forEach((k) => {
     if (!String(v[k]).trim()) e[k] = t.errors.required;
   });
-  if (v.incharge_mobile.trim() && !isMobile(v.incharge_mobile)) e.incharge_mobile = p.mobile;
+  if (v.incharge_mobile.trim() && !isTenDigits(v.incharge_mobile)) e.incharge_mobile = p.mobile;
   const count = v.participant_count.trim();
   if (count && (!/^\d+$/.test(count) || Number(count) < 1 || Number(count) > 100000)) e.participant_count = p.participants;
   if (v.photos < ACTIVITY_PHOTO_MIN) e.photos = p.photoMin;

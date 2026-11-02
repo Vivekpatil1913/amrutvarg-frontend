@@ -2758,3 +2758,21 @@
 .dash-stat-tile--export { display: flex; flex-direction: column; gap: 0.6rem; }
 .dash-stat-link { display: block; color: inherit; text-decoration: none; }
 .dash-export-btn { align-self: flex-start; }
+
+/* Amrut Varg leaders (Pramukh) dashboard card: names, role label and count
+   badges in red so leaders stand apart from participants and students. */
+.av-leaders { margin-top: 1rem; }
+.av-red { color: #DC2626; }
+.av-leaders-tools { display: flex; align-items: center; gap: 0.5rem; }
+.av-leaders-counts { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.85rem; }
+.av-count-badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.28rem 0.65rem; border-radius: 99px; background: #DC2626; color: #fff; font-size: 0.75rem; font-weight: 750; }
+.av-count-badge--soft { background: #FEE2E2; color: #DC2626; }
+.av-count-badge--xs { margin-left: 0.35rem; padding: 0.1rem 0.45rem; font-size: 0.68rem; background: #FEE2E2; color: #DC2626; }
+.av-leaders-table td { vertical-align: top; }
+.av-leaders-phone { display: inline-flex; align-items: center; gap: 0.25rem; color: inherit; white-space: nowrap; }
+.av-leaders-source { display: block; margin-top: 0.2rem; }
+.av-leaders-empty { padding: 1rem 0; }
+.av-leaders-links { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 0.6rem; }
+@media (max-width: 640px) {
+  .av-leaders .dash-panel-header { flex-direction: column; }
+}
