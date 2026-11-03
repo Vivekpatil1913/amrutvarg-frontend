@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../Icon';
-import { Field, describe, FormError, focusFirstInvalid } from '../FormControls';
+import { Field, describe, FormActions, FormError, focusFirstInvalid } from '../FormControls';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useForm } from '../../hooks/useForm';
 import { useMaster } from '../../data/useMasters';
@@ -318,11 +318,17 @@ export default function ActivityReportForm({ onRecorded = () => {}, onClose, onS
       })}
 
       <FormError message={form.formError} />
-      <div className="form-actions">
-        <button type="submit" className="btn btn--primary" disabled={form.status === 'busy'} aria-busy={form.status === 'busy' || undefined}>
-          {form.status === 'busy' ? t.common.submitting : p.submit}
-        </button>
-      </div>
+      {/* In the modal the footer matches the other registration forms: Cancel
+          beside Submit. On the page there is nothing to close, so Submit only. */}
+      {inModal ? (
+        <FormActions onCancel={onClose} busy={form.status === 'busy'} submitLabel={p.submit} />
+      ) : (
+        <div className="form-actions">
+          <button type="submit" className="btn btn--primary" disabled={form.status === 'busy'} aria-busy={form.status === 'busy' || undefined}>
+            {form.status === 'busy' ? t.common.submitting : p.submit}
+          </button>
+        </div>
+      )}
     </form>
   );
 }
