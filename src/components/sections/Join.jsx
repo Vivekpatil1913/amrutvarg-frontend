@@ -61,7 +61,7 @@ function bundled(t) {
 // The fourth card, the Amrut Varg activity report ("अमृत वर्ग कार्य अहवाल"),
 // is not a CMS card: it is always added after the configured ones when the
 // page passes `onReport`. A click anywhere on the card opens the 10-field
-// form; the bottom button, styled like its neighbours' but in emerald, is the
+// form; the bottom button, styled like its neighbours', is the
 // keyboard and screen-reader control for the same action.
 function ReportCard({ index, onReport }) {
   const { t, num } = useLanguage();
@@ -93,7 +93,7 @@ function ReportCard({ index, onReport }) {
           onReport();
         }}
       >
-        <Icon name="file" size={18} />
+        <Icon name="userPlus" size={18} />
         {r.action}
       </button>
     </li>

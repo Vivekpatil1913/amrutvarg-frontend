@@ -6978,21 +6978,11 @@ body {
   font-weight: 700;
   font-size: 0.95rem;
 }
-/* The same .btn--primary .path__action button as the other cards, in emerald. */
+/* The same .btn--primary .path__action button as the other cards; it only
+   needs to sit above the card so its own click is the one that fires. */
 .path__action--report {
-  --btn-bg: #10B981;
-  --btn-fg: #fff;
   position: relative;
   z-index: 1;
-  box-shadow: 0 8px 20px -12px rgba(16, 185, 129, 0.8);
-  transition: background-color 0.25s ease, filter 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-}
-.path__action--report:hover,
-.path__action--report:focus-visible {
-  --btn-bg: #10B981;
-  filter: brightness(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px -12px rgba(16, 185, 129, 0.9);
 }
 
 /* The report dialog's entrance: the backdrop fades in (.modal) while the
@@ -7012,7 +7002,6 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .path--report:hover,
-  .path--report:focus-within,
-  .path__action--report:hover { transform: none; }
+  .path--report:focus-within { transform: none; }
   .modal__panel--report { animation: none; }
 }
