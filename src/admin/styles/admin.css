@@ -2776,3 +2776,59 @@
 @media (max-width: 640px) {
   .av-leaders .dash-panel-header { flex-direction: column; }
 }
+
+/* Amrut Varg activities: Excel import and the add-photos dialog.
+   Imported records wait for photographs ("Photo pending") before going public. */
+.a-badge svg { margin-right: 0.25rem; }
+.av-pending-note { align-items: center; margin-bottom: 1rem; }
+.av-pending-note > .a-btn { margin-left: auto; flex-shrink: 0; }
+.av-import { display: grid; gap: 1rem; min-width: 0; }
+.av-import p { margin: 0; }
+.av-import-steps { list-style: none; counter-reset: av-step; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.av-import-steps li { counter-increment: av-step; display: flex; align-items: flex-start; gap: 0.75rem; }
+.av-import-steps li::before {
+  content: counter(av-step); flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  display: grid; place-items: center; background: var(--a-accent-soft); color: var(--a-accent);
+  font-weight: 700; font-size: 0.8rem;
+}
+.av-import-steps li > div { flex: 1; min-width: 0; }
+.av-import-steps li > div p { margin-top: 0.15rem; }
+.av-import-steps li > .a-btn { flex: none; }
+.av-dropzone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem;
+  padding: 1.5rem 1rem; border: 2px dashed var(--a-line-strong); border-radius: var(--a-radius-card);
+  background: var(--a-canvas-subtle); color: var(--a-content-soft); text-align: center; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.av-dropzone:hover, .av-dropzone.is-dragging { border-color: var(--a-accent); background: var(--a-accent-soft); }
+.av-dropzone:focus-within { outline: 2px solid var(--a-accent-ring); outline-offset: 2px; }
+.av-dropzone.is-invalid { border-color: var(--a-bad); }
+.av-dropzone-file { display: inline-flex; align-items: center; gap: 0.75rem; max-width: 100%; text-align: left; color: var(--a-content); }
+.av-dropzone-file > span { display: grid; min-width: 0; overflow-wrap: anywhere; }
+.av-import-file-error { display: flex; align-items: flex-start; gap: 0.4rem; color: var(--a-bad); font-size: 0.8125rem; }
+.av-import-file-error svg { flex: none; margin-top: 0.15rem; }
+.av-import-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.av-import-file { display: inline-flex; align-items: center; gap: 0.4rem; min-width: 0; font-size: 0.875rem; color: var(--a-content-soft); overflow-wrap: anywhere; }
+.av-import-chips { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; }
+.av-import-report { margin-top: 0.5rem; }
+.av-import-table { max-height: 22rem; overflow: auto; border: 1px solid var(--a-line); border-radius: var(--a-radius-field); }
+.av-import-table .a-table th { position: sticky; top: 0; z-index: 1; background: var(--a-canvas-subtle); }
+.av-import-table .a-table td { vertical-align: top; font-size: 0.8125rem; }
+.av-import-table tr.is-invalid td:first-child { box-shadow: inset 3px 0 0 var(--a-bad); }
+.av-import-errors { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.2rem; min-width: 14rem; color: var(--a-bad); font-size: 0.75rem; }
+.av-import-back { margin-right: auto; }
+.av-photo-picks { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.av-photo-picks li { position: relative; display: grid; gap: 0.2rem; justify-items: center; }
+.av-photo-picks img { width: 5.5rem; height: 5.5rem; object-fit: cover; border-radius: 0.5rem; border: 1px solid var(--a-line); }
+.av-photo-picks button {
+  position: absolute; top: -0.4rem; right: -0.4rem; width: 1.4rem; height: 1.4rem; border-radius: 50%;
+  border: none; background: var(--a-bad); color: #fff; display: grid; place-items: center; cursor: pointer;
+}
+/* Three toolbar actions (public page, import, export) wrap on a phone. */
+.av-toolbar-actions { flex-wrap: wrap; }
+@media (max-width: 640px) {
+  .av-toolbar-actions .a-btn { min-width: 9rem; }
+  .av-import-steps li { flex-wrap: wrap; }
+  .av-pending-note { flex-wrap: wrap; }
+  .av-pending-note > .a-btn { margin-left: 0; }
+}

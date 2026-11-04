@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
-import { Download, Eye, EyeOff, Search, Trash2, ExternalLink, Image as ImageIcon } from "lucide-react";
+import { Download, Eye, EyeOff, Search, Trash2, ExternalLink, FileSpreadsheet, ImagePlus, Image as ImageIcon } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api, buildQuery } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
 import { Badge } from "../components/ui/Badge.jsx";
 import { useToast } from "../components/ui/Toast.jsx";
+import VargActivityImport from "../components/VargActivityImport.jsx";
+import VargActivityPhotos from "../components/VargActivityPhotos.jsx";
 import { errorMessage } from "../lib/errors.js";
 import { fmtStamp } from "../lib/roles.js";
 import { useMaster } from "../../data/useMasters.js";
 import { mediaSrc } from "../../services/mediaUrl.js";
+import { ACTIVITY_PHOTO_MAX } from "../../services/vargActivities.js";
 import { FREQUENCY, exportFileName } from "../lib/vargActivities.js";
 
-// Amrut Varg activity records filed from the public 'Amrut Varg' portal,
-// confined by the CMS to the signed-in officer's jurisdiction. The export
-// uses the same filters as the table, so the CSV holds exactly what is listed
-// (every page of it).
+// Amrut Varg activity records filed from the public 'Amrut Varg' portal or
+// imported from Excel, confined by the CMS to the signed-in officer's
+// jurisdiction. The export uses the same filters as the table, so the CSV
+// holds exactly what is listed (every page of it).
+//
+// An imported record has no photographs and stays hidden until one is added
+// ("Photo pending"); it cannot be shown before that.
 
 const CMS_API = import.meta.env.VITE_CMS_API || "http://localhost:4000/api/v1";
 const NUMBER_FORMAT = new Intl.NumberFormat("en-IN");
@@ -38,19 +44,22 @@ export default function VargActivitiesList() {
   const [divisionId, setDivisionId] = useState("");
   const [districtId, setDistrictId] = useState("");
   const [frequency, setFrequency] = useState("");
+  const [photoStatus, setPhotoStatus] = useState("");
   const [confirmId, setConfirmId] = useState(null);
   const [exporting, setExporting] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [photoRecord, setPhotoRecord] = useState(null);
   const debounced = useDebounce(search);
   const { mutate, loading: saving } = useMutation();
 
   const divisions = useMaster("vibhags");
   const districts = useMaster("districts", "vibhag_id", divisionId ? Number(divisionId) : null);
 
-  const filters = { search: debounced, division_id: divisionId, district_id: districtId, frequency };
+  const filters = { search: debounced, division_id: divisionId, district_id: districtId, frequency, photo_status: photoStatus };
   const { data, meta, loading, error, refetch } = useList(
     "/admin/varg-activities",
     { page, limit, ...filters },
-    [page, limit, debounced, divisionId, districtId, frequency]
+    [page, limit, debounced, divisionId, districtId, frequency, photoStatus]
   );
   // useList keeps only data and meta; the filtered totals are read alongside.
   const [summary, setSummary] = useState(null);
@@ -131,13 +140,24 @@ export default function VargActivitiesList() {
             ) : null;
           })}
           {Array.isArray(v) && v.length > 3 ? <span className="a-text-muted a-text-sm">+{v.length - 3}</span> : null}
-          {!Array.isArray(v) || !v.length ? <ImageIcon size={14} /> : null}
+          {!Array.isArray(v) || !v.length ? <Badge tone="warn"><ImageIcon size={12} /> Photo pending</Badge> : null}
         </span>
       ),
     },
     { key: "is_active", label: "Public", render: (v) => (v ? <Badge tone="ok">Shown</Badge> : <Badge tone="neutral">Hidden</Badge>) },
-    { key: "created_at", label: "Submitted", render: (v) => fmtStamp(v) },
+    {
+      key: "created_at",
+      label: "Submitted",
+      render: (v, row) => (
+        <span>
+          {fmtStamp(v)}
+          {row.source === "import" ? <span className="a-text-muted a-text-xs" style={{ display: "block" }}>Excel import</span> : null}
+        </span>
+      ),
+    },
   ];
+
+  const hasPhotos = (row) => Array.isArray(row.photos) && row.photos.length > 0;
 
   const reset = (fn) => (e) => { fn(e.target.value); setPage(1); };
 
@@ -159,8 +179,16 @@ export default function VargActivitiesList() {
         <option value="">Any frequency</option>
         {Object.entries(FREQUENCY).map(([value, f]) => <option key={value} value={value}>{f.label}</option>)}
       </select>
-      <div className="a-toolbar-right">
+      <select className="a-select" value={photoStatus} onChange={reset(setPhotoStatus)}>
+        <option value="">Any photo status</option>
+        <option value="pending">Photo pending</option>
+        <option value="added">Has photos</option>
+      </select>
+      <div className="a-toolbar-right av-toolbar-actions">
         <a className="a-btn a-btn-secondary" href="/amrut-varg" target="_blank" rel="noopener noreferrer"><ExternalLink size={15} /> Public page</a>
+        <button className="a-btn a-btn-secondary" onClick={() => setImporting(true)}>
+          <FileSpreadsheet size={15} /> Import Excel
+        </button>
         <button className="a-btn a-btn-primary" onClick={exportCsv} disabled={exporting}>
           <Download size={15} /> {exporting ? "Exporting…" : "Export to CSV"}
         </button>
@@ -173,9 +201,22 @@ export default function VargActivitiesList() {
       <div className="a-page-header">
         <div>
           <h1 className="a-page-title">Amrut Varg Activities</h1>
-          <p className="a-page-desc">Activity records filed from the public “Amrut Varg” portal. The export follows the filters below.</p>
+          <p className="a-page-desc">Activity records filed from the public “Amrut Varg” portal or imported from Excel. The export follows the filters below.</p>
         </div>
       </div>
+
+      {summary?.photo_pending > 0 && photoStatus !== "pending" && (
+        <div className="a-notice a-notice-warn av-pending-note">
+          <ImagePlus size={18} aria-hidden="true" />
+          <div className="a-notice-body">
+            <p className="a-notice-title">
+              {NUMBER_FORMAT.format(summary.photo_pending)} record{summary.photo_pending === 1 ? " is" : "s are"} waiting for photographs
+            </p>
+            <p>Imported records stay hidden until a photo is added.</p>
+          </div>
+          <button className="a-btn a-btn-secondary a-btn-sm" onClick={() => { setPhotoStatus("pending"); setPage(1); }}>Show them</button>
+        </div>
+      )}
 
       {summary && (
         <div className="a-stat-grid av-summary">
@@ -200,12 +241,34 @@ export default function VargActivitiesList() {
         toolbar={toolbar}
         actions={(row) => (
           <>
-            <button className="a-action-btn" onClick={() => toggleActive(row)} disabled={saving} title={row.is_active ? "Hide from public repository" : "Show in public repository"}>
+            {(row.photos?.length ?? 0) < ACTIVITY_PHOTO_MAX && (
+              <button className="a-action-btn" onClick={() => setPhotoRecord(row)} title="Add photos" aria-label="Add photos">
+                <ImagePlus size={15} />
+              </button>
+            )}
+            <button
+              className="a-action-btn"
+              onClick={() => toggleActive(row)}
+              disabled={saving || (!row.is_active && !hasPhotos(row))}
+              title={row.is_active ? "Hide from public repository" : hasPhotos(row) ? "Show in public repository" : "Add a photo before showing this record"}
+              aria-label={row.is_active ? "Hide from public repository" : "Show in public repository"}
+            >
               {row.is_active ? <EyeOff size={15} /> : <Eye size={15} />}
             </button>
-            <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete"><Trash2 size={15} /></button>
+            <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete" aria-label="Delete"><Trash2 size={15} /></button>
           </>
         )}
+      />
+      <VargActivityImport
+        open={importing}
+        onClose={() => setImporting(false)}
+        onImported={refetch}
+        onShowPending={() => { setImporting(false); setPhotoStatus("pending"); setPage(1); }}
+      />
+      <VargActivityPhotos
+        record={photoRecord}
+        onClose={() => setPhotoRecord(null)}
+        onSaved={() => { setPhotoRecord(null); refetch(); }}
       />
       <ConfirmModal
         open={!!confirmId}
