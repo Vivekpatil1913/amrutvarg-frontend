@@ -63,13 +63,13 @@ function RowsTable({ rows }) {
         <tbody>
           {rows.map((r) => (
             <tr key={r.row} className={r.errors.length ? "is-invalid" : ""}>
-              <td className="td-muted">{r.row}</td>
-              <td className="td-bold">{r.values.institution_name || "—"}</td>
-              <td className="a-text-sm">{[r.values.taluka, r.values.district, r.values.division].filter(Boolean).join(", ") || "—"}</td>
-              <td><span className="av-pramukh-name">{r.values.incharge_name || "—"}</span></td>
-              <td>{r.values.participant_count || "—"}</td>
-              <td>{r.values.frequency || "—"}</td>
-              <td>{r.errors.length ? <RowErrors errors={r.errors} /> : <Badge tone="ok">Ready</Badge>}</td>
+              <td className="td-muted" data-label="Sheet row">{r.row}</td>
+              <td className="td-bold av-import-school">{r.values.institution_name || "—"}</td>
+              <td className="a-text-sm" data-label="Location">{[r.values.taluka, r.values.district, r.values.division].filter(Boolean).join(", ") || "—"}</td>
+              <td data-label="Pramukh"><span className="av-pramukh-name">{r.values.incharge_name || "—"}</span></td>
+              <td data-label="Students">{r.values.participant_count || "—"}</td>
+              <td data-label="Frequency">{r.values.frequency || "—"}</td>
+              <td className="av-import-status">{r.errors.length ? <RowErrors errors={r.errors} /> : <Badge tone="ok">Ready</Badge>}</td>
             </tr>
           ))}
         </tbody>
@@ -247,7 +247,8 @@ export default function VargActivityImport({ open, onClose, onImported, onShowPe
         ) : (
           <>
             <UploadCloud size={26} aria-hidden="true" />
-            <strong>Drop the Excel file here, or click to choose</strong>
+            <strong className="av-on-pointer">Drop the Excel file here, or click to choose</strong>
+            <strong className="av-on-touch">Tap to choose the Excel file</strong>
             <span className="a-text-muted a-text-xs">
               .xlsx only · up to {mb(IMPORT.maxBytes)} · up to {NUMBER.format(IMPORT.maxRows)} rows
             </span>
@@ -379,7 +380,7 @@ export default function VargActivityImport({ open, onClose, onImported, onShowPe
     );
 
   return (
-    <Modal open={open} onClose={close} title="Import activities from Excel" size={step === "choose" ? "lg" : "xl"} footer={footer}>
+    <Modal open={open} onClose={close} title="Import activities from Excel" size={step === "choose" ? "lg" : "xl"} className="av-sheet" footer={footer}>
       {step === "choose" ? chooseBody : step === "review" ? reviewBody : doneBody}
     </Modal>
   );

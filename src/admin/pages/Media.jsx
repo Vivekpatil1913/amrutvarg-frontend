@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Upload, Trash2, Search, Image } from "lucide-react";
-import { useList, useMutation } from "../hooks/useApi.js";
+import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api } from "../api/client.js";
 import { Pager } from "../components/ui/Pager.jsx";
 import { ConfirmModal } from "../components/ui/Modal.jsx";
@@ -14,14 +14,15 @@ export default function Media() {
   const fileRef = useRef();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search);
   const [uploading, setUploading] = useState(false);
   const [confirmId, setConfirmId] = useState(null);
   const { mutate, loading: deleting } = useMutation();
 
   const { data, meta, loading, refetch } = useList(
     "/admin/media",
-    { page, limit: 25, search },
-    [page, search]
+    { page, limit: 25, search: debouncedSearch },
+    [page, debouncedSearch]
   );
 
   async function handleUpload(e) {

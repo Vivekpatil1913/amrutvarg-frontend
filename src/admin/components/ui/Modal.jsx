@@ -3,7 +3,7 @@ import { X, Trash2, AlertTriangle, Power, Info } from "lucide-react";
 import { useToast } from "./Toast.jsx";
 import { errorMessage } from "../../lib/errors.js";
 
-export function Modal({ open, onClose, title, children, footer, size = "" }) {
+export function Modal({ open, onClose, title, children, footer, size = "", className = "" }) {
   useEffect(() => {
     if (!open) return;
     const handler = (e) => { if (e.key === "Escape") onClose(); };
@@ -16,7 +16,7 @@ export function Modal({ open, onClose, title, children, footer, size = "" }) {
   return (
     <div className="a-modal-overlay">
       <div className="a-modal-backdrop" onClick={onClose} />
-      <div className={`a-modal ${size === "lg" ? "a-modal-lg" : size === "xl" ? "a-modal-xl" : ""}`}
+      <div className={`a-modal ${size === "lg" ? "a-modal-lg" : size === "xl" ? "a-modal-xl" : ""} ${className}`}
            role="dialog" aria-modal="true">
         <div className="a-modal-band">
           <span className="a-modal-title">{title}</span>

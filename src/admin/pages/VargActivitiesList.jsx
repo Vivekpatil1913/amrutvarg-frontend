@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Download, Eye, EyeOff, Search, Trash2, ExternalLink, FileSpreadsheet, ImagePlus, Image as ImageIcon } from "lucide-react";
+import { Download, Eye, EyeOff, Search, Trash2, ExternalLink, FileSpreadsheet, ImagePlus, SlidersHorizontal, Image as ImageIcon } from "lucide-react";
 import { useList, useMutation, useDebounce } from "../hooks/useApi.js";
 import { api, buildQuery } from "../api/client.js";
 import { DataTable } from "../components/ui/DataTable.jsx";
@@ -45,6 +45,7 @@ export default function VargActivitiesList() {
   const [districtId, setDistrictId] = useState("");
   const [frequency, setFrequency] = useState("");
   const [photoStatus, setPhotoStatus] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [confirmId, setConfirmId] = useState(null);
   const [exporting, setExporting] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -107,6 +108,7 @@ export default function VargActivitiesList() {
     {
       key: "institution_name",
       label: "School / Institution",
+      className: "av-cell-school",
       render: (v, row) => (
         <span>
           <span className="td-bold td-truncate" title={v}>{v}</span>
@@ -160,30 +162,44 @@ export default function VargActivitiesList() {
   const hasPhotos = (row) => Array.isArray(row.photos) && row.photos.length > 0;
 
   const reset = (fn) => (e) => { fn(e.target.value); setPage(1); };
+  const activeFilters = [divisionId, districtId, frequency, photoStatus].filter(Boolean).length;
 
+  // On a phone the filters fold away behind one button, so the records are not
+  // pushed off the screen; its count keeps a folded filter from going unseen.
   const toolbar = (
     <>
       <div className="a-search-wrap">
         <Search className="a-search-icon" size={16} />
         <input className="a-search" placeholder="School, Pramukh, taluka…" value={search} onChange={reset(setSearch)} />
       </div>
-      <select className="a-select" value={divisionId} onChange={(e) => { setDivisionId(e.target.value); setDistrictId(""); setPage(1); }}>
-        <option value="">All divisions</option>
-        {divisions.map((d) => <option key={d.id} value={d.id}>{d.name_en || d.name_mr}</option>)}
-      </select>
-      <select className="a-select" value={districtId} onChange={reset(setDistrictId)} disabled={!divisionId}>
-        <option value="">All districts</option>
-        {districts.map((d) => <option key={d.id} value={d.id}>{d.name_en || d.name_mr}</option>)}
-      </select>
-      <select className="a-select" value={frequency} onChange={reset(setFrequency)}>
-        <option value="">Any frequency</option>
-        {Object.entries(FREQUENCY).map(([value, f]) => <option key={value} value={value}>{f.label}</option>)}
-      </select>
-      <select className="a-select" value={photoStatus} onChange={reset(setPhotoStatus)}>
-        <option value="">Any photo status</option>
-        <option value="pending">Photo pending</option>
-        <option value="added">Has photos</option>
-      </select>
+      <button
+        type="button"
+        className="a-btn a-btn-secondary av-filter-toggle"
+        aria-expanded={filtersOpen}
+        aria-controls="av-filters"
+        onClick={() => setFiltersOpen((open) => !open)}
+      >
+        <SlidersHorizontal size={15} /> Filters{activeFilters ? ` (${activeFilters})` : ""}
+      </button>
+      <div id="av-filters" className={`av-filters${filtersOpen ? " is-open" : ""}`}>
+        <select className="a-select" aria-label="Division" value={divisionId} onChange={(e) => { setDivisionId(e.target.value); setDistrictId(""); setPage(1); }}>
+          <option value="">All divisions</option>
+          {divisions.map((d) => <option key={d.id} value={d.id}>{d.name_en || d.name_mr}</option>)}
+        </select>
+        <select className="a-select" aria-label="District" value={districtId} onChange={reset(setDistrictId)} disabled={!divisionId}>
+          <option value="">All districts</option>
+          {districts.map((d) => <option key={d.id} value={d.id}>{d.name_en || d.name_mr}</option>)}
+        </select>
+        <select className="a-select" aria-label="Frequency" value={frequency} onChange={reset(setFrequency)}>
+          <option value="">Any frequency</option>
+          {Object.entries(FREQUENCY).map(([value, f]) => <option key={value} value={value}>{f.label}</option>)}
+        </select>
+        <select className="a-select" aria-label="Photo status" value={photoStatus} onChange={reset(setPhotoStatus)}>
+          <option value="">All photos</option>
+          <option value="pending">Photo pending</option>
+          <option value="added">Has photos</option>
+        </select>
+      </div>
       <div className="a-toolbar-right av-toolbar-actions">
         <a className="a-btn a-btn-secondary" href="/amrut-varg" target="_blank" rel="noopener noreferrer"><ExternalLink size={15} /> Public page</a>
         <button className="a-btn a-btn-secondary" onClick={() => setImporting(true)}>
@@ -223,42 +239,49 @@ export default function VargActivitiesList() {
           <div className="a-stat-tile"><span className="a-stat-label">Records</span><strong className="a-stat-value">{NUMBER_FORMAT.format(summary.records)}</strong></div>
           <div className="a-stat-tile"><span className="a-stat-label">Students / participants</span><strong className="a-stat-value">{NUMBER_FORMAT.format(summary.participants)}</strong></div>
           <div className="a-stat-tile"><span className="a-stat-label">Districts covered</span><strong className="a-stat-value">{NUMBER_FORMAT.format(summary.districts)}</strong></div>
-          <div className="a-stat-tile">
+          <div className="a-stat-tile av-stat-triple">
             <span className="a-stat-label">Daily · Weekly · Monthly</span>
             <strong className="a-stat-value">{summary.daily} · {summary.weekly} · {summary.monthly}</strong>
           </div>
         </div>
       )}
 
-      <DataTable
-        columns={columns}
-        rows={data}
-        loading={loading}
-        error={error}
-        meta={meta}
-        onPage={setPage}
-        onPageSize={(n) => { setLimit(n); setPage(1); }}
-        toolbar={toolbar}
-        actions={(row) => (
-          <>
-            {(row.photos?.length ?? 0) < ACTIVITY_PHOTO_MAX && (
-              <button className="a-action-btn" onClick={() => setPhotoRecord(row)} title="Add photos" aria-label="Add photos">
-                <ImagePlus size={15} />
+      {/* Below 1280px each row reads as a card; the buttons then carry their
+          text, because a touch screen has no tooltip to explain an icon. */}
+      <div className="av-activities">
+        <DataTable
+          columns={columns}
+          rows={data}
+          loading={loading}
+          error={error}
+          meta={meta}
+          onPage={setPage}
+          onPageSize={(n) => { setLimit(n); setPage(1); }}
+          toolbar={toolbar}
+          actions={(row) => (
+            <>
+              {(row.photos?.length ?? 0) < ACTIVITY_PHOTO_MAX && (
+                <button className="a-action-btn" onClick={() => setPhotoRecord(row)} title="Add photos" aria-label="Add photos">
+                  <ImagePlus size={15} /><span className="av-action-text">Photos</span>
+                </button>
+              )}
+              <button
+                className="a-action-btn"
+                onClick={() => toggleActive(row)}
+                disabled={saving || (!row.is_active && !hasPhotos(row))}
+                title={row.is_active ? "Hide from public repository" : hasPhotos(row) ? "Show in public repository" : "Add a photo before showing this record"}
+                aria-label={row.is_active ? "Hide from public repository" : "Show in public repository"}
+              >
+                {row.is_active ? <EyeOff size={15} /> : <Eye size={15} />}
+                <span className="av-action-text">{row.is_active ? "Hide" : "Show"}</span>
               </button>
-            )}
-            <button
-              className="a-action-btn"
-              onClick={() => toggleActive(row)}
-              disabled={saving || (!row.is_active && !hasPhotos(row))}
-              title={row.is_active ? "Hide from public repository" : hasPhotos(row) ? "Show in public repository" : "Add a photo before showing this record"}
-              aria-label={row.is_active ? "Hide from public repository" : "Show in public repository"}
-            >
-              {row.is_active ? <EyeOff size={15} /> : <Eye size={15} />}
-            </button>
-            <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete" aria-label="Delete"><Trash2 size={15} /></button>
-          </>
-        )}
-      />
+              <button className="a-action-btn danger" onClick={() => setConfirmId(row.id)} title="Delete" aria-label="Delete">
+                <Trash2 size={15} /><span className="av-action-text">Delete</span>
+              </button>
+            </>
+          )}
+        />
+      </div>
       <VargActivityImport
         open={importing}
         onClose={() => setImporting(false)}

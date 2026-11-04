@@ -101,6 +101,7 @@ export default function VargActivityPhotos({ record, onClose, onSaved }) {
       onClose={close}
       title="Add photos"
       size="lg"
+      className="av-sheet"
       footer={
         <>
           <button type="button" className="a-btn a-btn-ghost" onClick={close} disabled={busy}>Cancel</button>

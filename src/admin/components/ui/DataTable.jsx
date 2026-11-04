@@ -69,7 +69,7 @@ export function DataTable({
                       <td className="td-sno">{(page - 1) * pageSize + i + 1}</td>
                     )}
                     {columns.map((col) => (
-                      <td key={col.key} className={col.className || ""}>
+                      <td key={col.key} className={col.className || ""} data-label={col.label}>
                         {col.render ? col.render(row[col.key], row) : (row[col.key] ?? "—")}
                       </td>
                     ))}
