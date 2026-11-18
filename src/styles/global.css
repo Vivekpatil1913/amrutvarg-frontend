@@ -780,23 +780,68 @@ select.input {
     display: none;
   }
 }
+/* Desktop header: every nav item must fit on one row, in both languages, at
+   every width from 1200px up. The English labels are about a third wider than
+   the Marathi ones, so English gets tighter padding and a slightly smaller
+   size at each step. Below 1600px the Suggestion / Complaint button shows its
+   icon only (see .site-header__grievance), and below 1700px the header
+   padding is trimmed. */
+@media (min-width: 1200px) and (max-width: 1699px) {
+  .site-header__inner {
+    padding-inline: 16px;
+  }
+  .lang-switch {
+    --w: 56px;
+  }
+  .nav__list {
+    gap: 0;
+  }
+}
 @media (min-width: 1200px) and (max-width: 1439px) {
   .brand__divider,
   .brand__name {
     display: none;
   }
   .nav__link {
-    padding-inline: 9px;
+    padding-inline: 8px;
+    font-size: 0.8rem;
   }
-  .lang-en .nav__list {
-    gap: 0;
+  .lang-en .nav__link {
+    padding-inline: 5px;
+    font-size: 0.75rem;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1699px) {
+  .nav__link {
+    padding-inline: 9px;
+    font-size: 0.82rem;
   }
   .lang-en .nav__link {
     padding-inline: 5px;
     font-size: 0.78rem;
   }
 }
-@media (min-width: 1440px) and (max-width: 1699px) {
+/* Below 1280px the nine English labels do not fit on one row at a readable
+   size, so English keeps the menu button there (Marathi still fits). */
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .lang-en .site-header__inner {
+    grid-template-columns: auto auto;
+  }
+  .lang-en .nav,
+  .lang-en .site-header__cta {
+    display: none;
+  }
+  .lang-en .menu-toggle {
+    display: inline-grid;
+  }
+  .lang-en .site-header__actions {
+    margin-left: auto;
+  }
+  .lang-en .mobile-menu:not([hidden]) {
+    display: block;
+  }
+}
+@media (min-width: 1700px) {
   .lang-en .nav__list {
     gap: 0;
   }
@@ -6509,6 +6554,16 @@ body {
 }
 @media (max-width: 1199px) {
   .site-header__grievance {
+    display: none;
+  }
+}
+/* Icon only until the header is wide enough for its label; the link keeps the
+   label as its accessible name (aria-label) and tooltip (title). */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .site-header__grievance {
+    padding-inline: 10px;
+  }
+  .site-header__grievance-text {
     display: none;
   }
 }

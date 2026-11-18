@@ -87,6 +87,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const progressRef = useRef(null);
+  const toggleRef = useRef(null);
   const [active, setActive] = useState('hero');
   const [scale, setScale] = useState(readScale);
 
@@ -167,7 +168,14 @@ export default function Header() {
   useEffect(() => {
     if (!open) return undefined;
     const onKey = (e) => e.key === 'Escape' && setOpen(false);
-    const onResize = () => window.innerWidth >= 1200 && setOpen(false);
+    // Close once the header has room for the full nav, i.e. once the menu
+    // button is hidden. Its breakpoint differs by language (see global.css).
+    const onResize = () => {
+      const toggle = toggleRef.current;
+      if (toggle && getComputedStyle(toggle).display === 'none') setOpen(false);
+    };
+    // A language switch can also hide the button (English keeps it to 1279px).
+    onResize();
     document.addEventListener('keydown', onKey);
     window.addEventListener('resize', onResize);
     document.body.classList.add('menu-open');
@@ -176,7 +184,7 @@ export default function Header() {
       window.removeEventListener('resize', onResize);
       document.body.classList.remove('menu-open');
     };
-  }, [open]);
+  }, [open, t]);
 
   const onNav = (e, id) => {
     e.preventDefault();
@@ -283,7 +291,7 @@ export default function Header() {
 
           <div className="site-header__actions">
             <LanguageSwitch />
-            <Link to={GRIEVANCE_PATH} className="btn btn--ghost btn--sm site-header__grievance" title={t.grievance.title}>
+            <Link to={GRIEVANCE_PATH} className="btn btn--ghost btn--sm site-header__grievance" title={t.grievance.title} aria-label={t.nav.grievance}>
               <Icon name="chat" size={15} />
               <span className="site-header__grievance-text">{t.nav.grievance}</span>
             </Link>
@@ -292,6 +300,7 @@ export default function Header() {
               <Icon name="arrowRight" size={15} />
             </a>
             <button
+              ref={toggleRef}
               type="button"
               className="icon-btn menu-toggle"
               aria-expanded={open}

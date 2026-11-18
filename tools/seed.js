@@ -23,7 +23,6 @@ const base = { created_at: now, updated_at: now, deleted_at: null };
 
 const { vargs }            = await import('../src/data/vargs.js');
 const { VARG_NAMES_EN }    = await import('../src/data/vargNamesEn.js');
-const { announcements }    = await import('../src/data/announcements.js');
 const { districtContacts } = await import('../src/data/districtContacts.js');
 const { stories, FEATURED_SLUGS } = await import('../src/data/yashogathaStories.js');
 
@@ -79,23 +78,8 @@ save('contacts', districtContacts.map((c, i) => ({
 
 // ── Announcements ─────────────────────────────────────────────────────────────
 
-save('announcements', announcements.map((a, i) => ({
-  id:            randomUUID(),
-  source_id:     a.id,
-  title_mr:      a.title?.mr || '',
-  title_en:      a.title?.en || '',
-  desc_mr:       a.desc?.mr  || '',
-  desc_en:       a.desc?.en  || '',
-  link:          a.link?.href || null,
-  link_label:    a.link?.label?.mr || null,
-  date:          a.date || null,
-  until_date:    a.until || null,
-  status:        a.status || 'info',
-  pinned:        a.pinned || false,
-  is_active:     true,
-  display_order: i,
-  ...base,
-})));
+// Announcements are created only in the CMS; none are bundled with the site.
+save('announcements', []);
 
 // ── Stories ───────────────────────────────────────────────────────────────────
 
