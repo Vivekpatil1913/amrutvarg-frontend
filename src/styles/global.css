@@ -1087,6 +1087,238 @@ select.input {
     transition: none;
   }
 }
+/* ---- Unified strip: Announcements | Amrut Varg Melawa ----
+   One panel per kind. With both live they sit side by side from 1024px up
+   (announcements left, melawa right) with a divider; otherwise the one panel
+   takes the full width. Each shows a single item at a time. */
+.notices__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 1024px) {
+  .notices__grid.is-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .notices__grid.is-split .npanel + .npanel {
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--brand-line);
+  }
+  .notices__grid.is-split .npanel:first-child {
+    padding-right: var(--s-5);
+  }
+}
+@media (max-width: 1023px) {
+  .notices__grid .npanel + .npanel {
+    border-top: 1px dashed var(--brand-line);
+  }
+}
+.npanel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  min-width: 0;
+  padding-block: 10px 12px;
+}
+.npanel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px var(--s-3);
+  min-width: 0;
+}
+.npanel .notices__label {
+  padding: 3px 12px 3px 4px;
+  font-size: 0.92rem;
+}
+.npanel .notices__icon {
+  width: 24px;
+  height: 24px;
+}
+.notices__label--mel {
+  background: #a3501e;
+}
+.npanel__pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.npanel__pos {
+  min-width: 3.2em;
+  text-align: center;
+  white-space: nowrap;
+}
+.npanel__step {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--brand-line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--brand-ink);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.npanel__step:hover {
+  background: var(--brand-soft);
+}
+.npanel__all {
+  margin-left: auto;
+  white-space: nowrap;
+}
+/* Every slide shares one grid cell, so the panel is as tall as its tallest
+   item and the page below never moves when the item changes. */
+.npanel__slides {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.npanel__slides > .notices__slide {
+  grid-area: 1 / 1;
+  position: relative;
+  min-width: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.npanel .notices__timer {
+  height: 2px;
+}
+.npanel--mel .notices__timer {
+  background: #a3501e;
+}
+/* One melawa: tags, title and when / where on the left, Register on the right */
+.mslide {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+}
+.mslide__lead {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 3px;
+  min-width: 0;
+}
+.mslide__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+.mslide__scope,
+.mslide__new {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.mslide__scope {
+  background: hsl(22 70% 38% / 0.12);
+  color: #a3501e;
+}
+.mslide__new {
+  background: #dc2626;
+  color: #fff;
+}
+.mslide__title {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mslide__meta {
+  display: flex;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  gap: 2px var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+.mslide__meta li {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  white-space: nowrap;
+}
+.mslide__meta li.mslide__where {
+  flex: 0 1 auto;
+}
+.mslide__meta span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mslide__meta svg {
+  flex: none;
+  color: #a3501e;
+}
+.mslide__cta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: #047857;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.mslide__cta:hover,
+.mslide__cta:focus-visible {
+  background: #065f46;
+}
+/* Sized by the panel, not the screen: a half-width column on a small laptop
+   is as narrow as a phone. Below ~520px the button drops under the details
+   and date / time / place may take a line each (each still one line). */
+.npanel--mel {
+  container-type: inline-size;
+}
+@container (max-width: 520px) {
+  .mslide {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .mslide__lead {
+    flex-basis: 100%;
+  }
+  .mslide__meta {
+    flex-wrap: wrap;
+  }
+  .mslide__meta li {
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  .mslide__cta {
+    padding: 5px 14px;
+    font-size: 0.84rem;
+  }
+}
+
 /* Every announcement, in full, inside the "View all" dialog */
 .notices__all {
   margin: 0;

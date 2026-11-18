@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Announcements from '../components/sections/Announcements';
-import MelawaAnnouncementCard from '../components/MelawaAnnouncementCard';
 import Hero from '../components/sections/Hero';
 import About from '../components/sections/About';
 import Activities from '../components/sections/Activities';
@@ -69,7 +68,6 @@ export default function HomePage() {
   return (
     <>
       <Announcements />
-      <MelawaAnnouncementCard framed />
       <Hero stats={stats} onNavigate={goTo} />
       <About />
       <Activities onNavigate={goTo} />
