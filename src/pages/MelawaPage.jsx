@@ -4,14 +4,14 @@ import Icon from '../components/Icon';
 import Mandala from '../components/Mandala';
 import MelawaDetails from '../components/MelawaDetails';
 import { useLanguage } from '../i18n/LanguageContext';
-import { cachedMelawas, fetchActiveMelawas } from '../services/melawa';
+import { fetchActiveMelawas } from '../services/melawa';
 
 // Melawa Schedule & Details: every live announcement in full, state-wide
 // first. Reached from the ticker's badge and "All melawas" link.
 export default function MelawaPage() {
   const { t } = useLanguage();
   const m = t.melawa;
-  const [rows, setRows] = useState(() => cachedMelawas());
+  const [rows, setRows] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);

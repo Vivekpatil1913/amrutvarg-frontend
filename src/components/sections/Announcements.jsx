@@ -8,7 +8,7 @@ import { ANNOUNCEMENTS_PATH } from '../layout/Header';
 import { useAnnouncements } from '../../data/useAnnouncements';
 import { useRotation } from '../../hooks/useRotation';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { cachedMelawas, fetchActiveMelawas, formatTiming, pickLang } from '../../services/melawa';
+import { fetchActiveMelawas, formatTiming, pickLang } from '../../services/melawa';
 
 // Time each item stays in view before the next one. Kept in step with the
 // notice-timer animation in global.css.
@@ -50,7 +50,7 @@ export default function Announcements() {
 
 // Live melawas, newest announced first.
 function useActiveMelawas() {
-  const [rows, setRows] = useState(() => cachedMelawas() || []);
+  const [rows, setRows] = useState([]);
   useEffect(() => {
     let alive = true;
     fetchActiveMelawas()

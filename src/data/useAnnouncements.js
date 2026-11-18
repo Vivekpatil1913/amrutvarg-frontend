@@ -50,7 +50,7 @@ export function useAnnouncements() {
     if (!CMS_API) return undefined;
     const ctrl = new AbortController();
 
-    fetch(`${CMS_API}/public/announcements`, { signal: ctrl.signal })
+    fetch(`${CMS_API}/public/announcements`, { signal: ctrl.signal, cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then(({ data }) => {
         setRaw(Array.isArray(data) ? data.map(fromCms) : []);

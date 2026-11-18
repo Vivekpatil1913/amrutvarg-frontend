@@ -4,7 +4,7 @@ import Icon from './Icon';
 import Modal from './Modal';
 import MelawaDetails from './MelawaDetails';
 import { useLanguage } from '../i18n/LanguageContext';
-import { cachedMelawas, fetchActiveMelawas, formatTiming, pickLang } from '../services/melawa';
+import { fetchActiveMelawas, formatTiming, pickLang } from '../services/melawa';
 
 // The flashing "Amrut Varg Melawa" bar above the site header.
 //
@@ -18,7 +18,7 @@ export const MELAWA_PATH = '/melawa';
 export default function MelawaTicker() {
   const { t, lang, formatDate } = useLanguage();
   const m = t.melawa;
-  const [rows, setRows] = useState(() => cachedMelawas() || []);
+  const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(null);
 
   useEffect(() => {

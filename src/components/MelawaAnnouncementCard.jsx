@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import { useLanguage } from '../i18n/LanguageContext';
-import { cachedMelawas, fetchActiveMelawas, formatTiming, pickLang } from '../services/melawa';
+import { fetchActiveMelawas, formatTiming, pickLang } from '../services/melawa';
 import { MELAWA_PATH } from './MelawaTicker';
 
 // Interactive 'Amrut Varg Melawa' announcement banners: the live melawas,
@@ -44,7 +44,7 @@ export default function MelawaAnnouncementCard({ framed = false }) {
   const { t, lang, formatDate } = useLanguage();
   const m = t.melawa;
   const p = t.vargPortal;
-  const [rows, setRows] = useState(() => cachedMelawas() || []);
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     let alive = true;

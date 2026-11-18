@@ -1,57 +1,30 @@
-// Amrut Varg Melawa announcements for the flashing ticker and the schedule page.
+// Amrut Varg Melawa announcements for the home-page strip, the Amrut Varg page
+// and the schedule page.
 //
-// The ticker sits on every page, so the list is kept for a couple of minutes in
-// sessionStorage as well as in memory: moving between pages does not refetch
-// it, and the server's own Cache-Control covers the rest. Storage can be
-// unavailable (private mode, blocked site data) — then it is memory only.
+// Always fetched fresh — nothing is kept between page loads or navigations —
+// so a melawa added, switched on or switched off in the CMS shows on the very
+// next load, exactly like announcements. The server answers with no-store too.
+// The only sharing is of a request already on its way, when two components
+// ask at the same moment.
 
 const CMS_API = import.meta.env.VITE_CMS_API;
-const KEY = 'amrut_melawa_active';
-const TTL_MS = 2 * 60 * 1000;
 
-let memory = null;
+// Earlier builds kept the list in sessionStorage for two minutes; drop any
+// copy a visitor's browser still holds so it can never be read again.
+try {
+  sessionStorage.removeItem('amrut_melawa_active');
+} catch {
+  /* storage unavailable — nothing to clear */
+}
+
 let inFlight = null;
 
-function readStored() {
-  try {
-    const raw = sessionStorage.getItem(KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    return parsed && Array.isArray(parsed.rows) && parsed.expires > Date.now() ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-function store(rows) {
-  memory = { rows, expires: Date.now() + TTL_MS };
-  try {
-    sessionStorage.setItem(KEY, JSON.stringify(memory));
-  } catch {
-    /* storage unavailable — memory copy only */
-  }
-}
-
-// Already-cached rows, for a first render with no flash of empty ticker.
-export function cachedMelawas() {
-  if (memory && memory.expires > Date.now()) return memory.rows;
-  const stored = readStored();
-  if (stored) memory = stored;
-  return stored?.rows ?? null;
-}
-
 export function fetchActiveMelawas() {
-  const cached = cachedMelawas();
-  if (cached) return Promise.resolve(cached);
   if (!CMS_API) return Promise.resolve([]);
   if (inFlight) return inFlight;
-  inFlight = fetch(`${CMS_API}/melawa/active`)
+  inFlight = fetch(`${CMS_API}/melawa/active`, { cache: 'no-store' })
     .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-    .then(({ data }) => {
-      const rows = Array.isArray(data) ? data : [];
-      store(rows);
-      return rows;
-    })
+    .then(({ data }) => (Array.isArray(data) ? data : []))
     .finally(() => {
       inFlight = null;
     });
