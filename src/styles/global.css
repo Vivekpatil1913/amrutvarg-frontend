@@ -588,6 +588,7 @@ select.input {
   font-weight: 700;
   font-size: 1.02rem;
   line-height: 1;
+  white-space: nowrap;
 }
 
 /* Pill navigation: links sit in one soft capsule; a pill slides to the active link */
@@ -793,13 +794,6 @@ select.input {
   .lang-en .nav__link {
     padding-inline: 5px;
     font-size: 0.78rem;
-  }
-}
-/* English nav labels are longer; the logo alone carries the brand there. */
-@media (min-width: 1440px) {
-  .lang-en .brand__divider,
-  .lang-en .brand__name {
-    display: none;
   }
 }
 @media (min-width: 1440px) and (max-width: 1699px) {

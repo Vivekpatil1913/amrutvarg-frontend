@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { activeAnnouncements, announcements as staticAnnouncements } from './announcements';
+import { activeAnnouncements } from './announcements';
 
 const CMS_API = import.meta.env.VITE_CMS_API;
 
 // The CMS stores one flat row per announcement, with the two languages in
-// separate columns. Reshape it into the form the strip and the page render —
-// the same one src/data/announcements.js produces.
+// separate columns. Reshape it into the form the strip and the page render
+// (described in src/data/announcements.js).
 export const fromCms = (row) => ({
   id: `cms-${row.id}`,
   title: { mr: row.title_mr || '', en: row.title_en || '' },
@@ -38,11 +38,13 @@ export const hasEventDetails = (item) =>
 // the way both the strip and the page show them.
 //
 // Extracted from the strip so the two cannot drift: the page must list exactly
-// what the strip rotates through, or "view all" would be a lie. Falls back to
-// the bundled list while loading and whenever the CMS cannot be reached, so an
-// outage never empties the bar.
+// what the strip rotates through, or "view all" would be a lie.
+//
+// The CMS is the only source: there is no bundled fallback list. While loading,
+// when the CMS has none, or when it cannot be reached, the list is empty and
+// the strip renders nothing.
 export function useAnnouncements() {
-  const [raw, setRaw] = useState(staticAnnouncements);
+  const [raw, setRaw] = useState([]);
 
   useEffect(() => {
     if (!CMS_API) return undefined;
@@ -51,10 +53,10 @@ export function useAnnouncements() {
     fetch(`${CMS_API}/public/announcements`, { signal: ctrl.signal })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then(({ data }) => {
-        if (Array.isArray(data) && data.length) setRaw(data.map(fromCms));
+        setRaw(Array.isArray(data) ? data.map(fromCms) : []);
       })
       .catch(() => {
-        // Keeps the bundled list on screen; visitors see no error.
+        // Leaves the list empty (strip hidden); visitors see no error.
       });
 
     return () => ctrl.abort();

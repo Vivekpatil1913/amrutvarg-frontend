@@ -511,7 +511,7 @@ const mr = {
     ],
   },
   // Labels of the announcement strip. The announcements themselves (in both
-  // languages) are in src/data/announcements.js.
+  // languages) come from the CMS (Admin → Announcements).
   announcements: {
     badge: 'ताज्या घोषणा',
     pageTitle: 'सर्व घोषणा',
